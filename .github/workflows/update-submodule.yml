@@ -1,0 +1,35 @@
+name: Update Submodule in Parent Repo
+
+on:
+  push:
+    branches:
+      - main  # or develop
+
+jobs:
+  update-parent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout submodule repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Clone parent repository
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git clone https://x-access-token:${{ secrets.PARENT_REPO_TOKEN }}@github.com/FelipeFerraz4/habit-tracker.git
+          cd habit-tracker
+          git checkout develop
+
+          git submodule update --init --recursive
+          cd front-end
+          git fetch
+          git checkout ${{ github.sha }}
+          cd ..
+
+          git add front-end
+          git commit -m "chore: update submodule to latest commit ${{ github.sha }}"
+          git push
