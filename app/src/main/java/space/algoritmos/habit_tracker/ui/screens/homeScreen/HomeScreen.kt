@@ -1,6 +1,5 @@
-package space.algoritmos.habit_tracker.ui.screens
+package space.algoritmos.habit_tracker.ui.screens.homeScreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,12 +11,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.model.Habit
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.rememberScrollState
+
+val dates = getLastAndNextNDaysDates(8, 3)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +37,7 @@ fun HomeScreen(
                     ) {
                         Text(
                             text = "Habit Tracker",
+                            fontSize = 32.sp,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -101,41 +100,16 @@ fun HomeScreen(
             // 📅 Heatmap
             Text(
                 text = "Progresso recente:",
-                fontSize = 18.sp,
+                fontSize = 24.sp,
                 modifier = Modifier.align(Alignment.Start)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            habits.forEach { habit ->
-                Text(
-                    text = habit.name,
-                    fontSize = 16.sp,
-                    modifier = Modifier.align(Alignment.Start)
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState())
-                ) {
-                    repeat(7) { day ->
-                        Box(
-                            modifier = Modifier
-                                .size(32.dp)
-                                .padding(2.dp)
-                                .background(
-                                    color = if (habit.wasCompletedOn(day)) Color(0xFF4CAF50) else Color(0xFFE0E0E0),
-                                    shape = MaterialTheme.shapes.extraSmall
-                                )
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(20.dp))
-            }
+            HabitsHeatmap(habits = habits, dates = dates)
 
             // ✅ Lista de hábitos
-            Text(text = "Seus hábitos:", fontSize = 16.sp)
+            Text(text = "Seus hábitos:", fontSize = 24.sp)
             Spacer(modifier = Modifier.height(8.dp))
             LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(habits) { habit ->
@@ -144,13 +118,17 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(60.dp),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                        colors = CardDefaults.cardColors(containerColor = habit.color)
                     ) {
                         Box(
                             contentAlignment = Alignment.CenterStart,
                             modifier = Modifier.padding(16.dp)
                         ) {
-                            Text(habit.name, fontSize = 16.sp)
+                            Text(
+                                habit.name,
+                                fontSize = 18.sp,
+                                color = MaterialTheme.colorScheme.onPrimary
+                            )
                         }
                     }
                 }
