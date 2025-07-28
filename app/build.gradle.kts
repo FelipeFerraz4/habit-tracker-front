@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "space.algoritmos.habit_tracker"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.navigation.compose)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.accompanist.flowlayout)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
