@@ -10,22 +10,7 @@ import space.algoritmos.habit_tracker.model.Habit
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.HomeScreen
 import space.algoritmos.habit_tracker.ui.screens.SplashScreen
 
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
-
-fun getLastNDaysDates(n: Int): List<String> {
-    val dates = mutableListOf<String>()
-    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    val calendar = Calendar.getInstance()
-
-    for (i in 0 until n) {
-        dates.add(formatter.format(calendar.time))
-        calendar.add(Calendar.DAY_OF_YEAR, -1)
-    }
-
-    return dates.reversed() // opcional, para deixar do mais antigo para o mais recente
-}
+import java.time.LocalDate
 
 @Composable
 fun AppNavHost(navController: NavHostController = rememberNavController()) {
@@ -34,28 +19,38 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             SplashScreen(navController)
         }
         composable("home") {
-            // Gerar os últimos 7 dias dinâmicos
-            val last7Days = getLastNDaysDates(7)
+
+            val today = LocalDate.now()
+            val days = (0..90).map { today.minusDays(it.toLong()) }.reversed()
 
             val fakeHabits = listOf(
                 Habit(
                     id = 1,
                     name = "Beber Água",
                     color = Color(0xFF4CAF50),
-                    completedDates = last7Days.filterIndexed { index, _ -> index % 2 == 0 } // exemplo: concluiu em dias pares
+                    progress = days.associateWith { date ->
+                        // Progresso 1f nos dias pares (index par), 0f nos outros
+                        if (days.indexOf(date) % 5 == 0) 0.75f else 0f
+                    }
                 ),
                 Habit(
                     id = 2,
                     name = "Fazer Exercício",
                     color = Color(0xFFFF5722),
-                    completedDates = last7Days.filterIndexed { index, _ -> index % 3 == 0 } // exemplo: concluiu em dias múltiplos de 3
+                    progress = days.associateWith { date ->
+                        // Progresso 1f nos dias múltiplos de 3, 0f nos outros
+                        if (days.indexOf(date) % 3 == 0) 1f else 0f
+                    }
                 ),
                 Habit(
                     id = 3,
                     name = "Ler um Livro",
                     color = Color(0xFF2196F3),
-                    completedDates = last7Days.filterIndexed { index, _ -> index % 4 != 0 } // exemplo: concluiu em quase todos os dias
-                ),
+                    progress = days.associateWith { date ->
+                        // Progresso 1f nos dias que não são múltiplos de 4, 0f nos outros
+                        if (days.indexOf(date) % 4 != 0) 0.8f else 0f
+                    }
+                )
             )
 
             HomeScreen(
