@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -19,8 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.model.Habit
 import java.time.YearMonth
-
-//val dates = getLastAndNextNDaysDates(8, 3)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +32,7 @@ fun HomeScreen(
     streakCount: Int
 ) {
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
+    val maxStreak by remember(habits) { mutableIntStateOf(calculateMaxStreak(habits)) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -93,13 +93,25 @@ fun HomeScreen(
             // 🔥 Streak
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             ) {
-                Text(text = "🔥", fontSize = 36.sp)
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(text = "$streakCount dias de sequência", fontSize = 20.sp)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = "🔥", fontSize = 36.sp)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "$streakCount dias", fontSize = 20.sp)
+                }
+
+                Spacer(modifier = Modifier.weight(1f)) // empurra para os cantos
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = "🏆", fontSize = 36.sp)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "Máx: $maxStreak", fontSize = 20.sp)
+                }
             }
+
 
             MonthlyHeatmap(
                 habits = habits,
