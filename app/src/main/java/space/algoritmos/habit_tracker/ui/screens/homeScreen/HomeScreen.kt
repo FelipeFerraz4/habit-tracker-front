@@ -9,13 +9,18 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.model.Habit
+import java.time.YearMonth
 
-val dates = getLastAndNextNDaysDates(8, 3)
+//val dates = getLastAndNextNDaysDates(8, 3)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,6 +32,7 @@ fun HomeScreen(
     onHabitClick: (Habit) -> Unit,
     streakCount: Int
 ) {
+    var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -95,18 +101,18 @@ fun HomeScreen(
                 Text(text = "$streakCount dias de sequência", fontSize = 20.sp)
             }
 
-            Spacer(modifier = Modifier.height(40.dp))
-
-            // 📅 Heatmap
-            Text(
-                text = "Progresso recente:",
-                fontSize = 24.sp,
-                modifier = Modifier.align(Alignment.Start)
+            MonthlyHeatmap(
+                habits = habits,
+                currentMonth = currentMonth,
+                onPreviousMonth = {
+                    currentMonth = currentMonth.minusMonths(1)
+                },
+                onNextMonth = {
+                    currentMonth = currentMonth.plusMonths(1)
+                }
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            HabitsHeatmap(habits = habits, dates = dates)
+            //HabitsHeatmap(habits = habits, dates = dates)
+            Spacer(modifier = Modifier.height(20.dp))
 
             // ✅ Lista de hábitos
             Text(text = "Seus hábitos:", fontSize = 24.sp)
