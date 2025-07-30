@@ -98,7 +98,7 @@ fun MonthlyHeatmap(
                                 Text(
                                     text = day.toString(),
                                     fontSize = 18.sp,
-                                    color = if (progress == 0f) Color.Black else Color.Black
+                                    color = MaterialTheme.colorScheme.onBackground
                                 )
                             }
                         } else {
