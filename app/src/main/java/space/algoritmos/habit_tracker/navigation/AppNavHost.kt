@@ -13,7 +13,11 @@ import space.algoritmos.habit_tracker.ui.screens.SplashScreen
 import java.time.LocalDate
 
 @Composable
-fun AppNavHost(navController: NavHostController = rememberNavController()) {
+fun AppNavHost(
+    navController: NavHostController = rememberNavController(),
+    isDarkTheme: Boolean,
+    onToggleTheme: () -> Unit
+) {
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
             SplashScreen(navController)
@@ -54,16 +58,26 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             )
 
             HomeScreen(
-                onMenuClick = { /* abrir drawer ou menu */ },
-                onSyncClick = { /* sincronizar com backend */ },
-                onAddHabitClick = { /* navegar para criar hábito */ },
                 habits = fakeHabits,
-                onHabitClick = { habit ->
-                    // exemplo: navegar para os detalhes do hábito
-                    // navController.navigate("habitDetail/${habit.id}")
-                },
-                streakCount = 7 // exemplo de dias seguidos
+                onHabitClick = { /* abrir detalhes */ },
+                streakCount = 5,
+
+                // Ainda não logado
+                isLoggedIn = false,
+
+                // Tema claro
+                isDarkTheme = isDarkTheme,
+                onToggleTheme = onToggleTheme,
+
+                // Ações ainda não implementadas
+                onLoginClick = { /* navegar para login */ },
+                onLogoutClick = { /* sair */ },
+                onStatsClick = { /* navegar para estatísticas */ },
+
+                onSyncClick = { /* sincronizar hábitos */ },
+                onAddHabitClick = { /* adicionar hábito */ }
             )
+
         }
     }
 }
