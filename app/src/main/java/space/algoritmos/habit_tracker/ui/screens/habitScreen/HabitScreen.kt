@@ -6,11 +6,17 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.model.Habit
+import java.time.YearMonth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,6 +26,8 @@ fun HabitDetailScreen(
     onBackClick: () -> Unit,
     onSyncClick: () -> Unit
 ) {
+    var currentMonth by remember { mutableStateOf(YearMonth.now()) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -93,7 +101,7 @@ fun HabitDetailScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "🔥", fontSize = 36.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "10 dias", fontSize = 20.sp)
+                    Text(text = "${habit.streakCount()} dias", fontSize = 20.sp)
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -101,9 +109,40 @@ fun HabitDetailScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = "🏆", fontSize = 36.sp)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Máx: 15", fontSize = 20.sp)
+                    Text(text = "Máx: ${habit.maxStreak()}", fontSize = 20.sp)
                 }
             }
+
+            Heatmap(
+                habit = habit,
+                currentMonth = currentMonth,
+                onPreviousMonth = {
+                    currentMonth = currentMonth.minusMonths(1)
+                },
+                onNextMonth = {
+                    currentMonth = currentMonth.plusMonths(1)
+                }
+            )
+
+            Spacer(modifier = Modifier.weight(1f)) // empurra o botão para o final
+
+            // 📅 Botão de registrar
+            Button(
+                onClick = onRegisterClick,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = habit.color,
+                    contentColor = Color.White
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+            ) {
+                Text(
+                    text = "Registrar Hábito",
+                    fontSize = 20.sp
+                )
+            }
+            Spacer(modifier = Modifier.size(32.dp))
         }
     }
 }

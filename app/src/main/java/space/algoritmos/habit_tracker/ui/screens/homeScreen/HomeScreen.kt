@@ -186,6 +186,7 @@ fun HomeScreen(
                                 Text(
                                     habit.name,
                                     fontSize = 18.sp,
+                                    style = MaterialTheme.typography.titleMedium,
                                     color = Color.White,
                                 )
                             }
