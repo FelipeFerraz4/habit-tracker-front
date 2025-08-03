@@ -3,10 +3,18 @@ package space.algoritmos.habit_tracker.model
 import androidx.compose.ui.graphics.Color
 import java.time.LocalDate
 
+enum class TrackingMode {
+    BINARY,       // Fiz ou não fiz
+    PERCENTAGE,   // 0% a 100%
+    VALUE         // Número de páginas, litros, etc.
+}
+
 data class Habit(
     val id: Int,
     val name: String,
     val color: Color,
+    val trackingMode: TrackingMode,
+    val goal: Float, // exemplo: 20 páginas, 3000ml, etc.
     val progress: Map<LocalDate, Float> = emptyMap()
 ) {
     fun progressOn(date: LocalDate): Float {
@@ -54,5 +62,4 @@ data class Habit(
 
         return streak
     }
-
 }
