@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import space.algoritmos.habit_tracker.model.Habit
 import space.algoritmos.habit_tracker.model.TrackingMode
 import space.algoritmos.habit_tracker.ui.screens.SplashScreen
+import space.algoritmos.habit_tracker.ui.screens.createHabitScreen.CreateHabitScreen
 import space.algoritmos.habit_tracker.ui.screens.habitRegisterScreen.HabitRegisterScreen
 import space.algoritmos.habit_tracker.ui.screens.habitScreen.HabitDetailScreen
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.HomeScreen
@@ -30,7 +31,7 @@ fun AppNavHost(
     val fakeHabits = remember {
         mutableStateListOf(
             Habit(
-                id = 1,
+                id = 0,
                 name = "Beber Água",
                 color = Color(0xFF4CAF50),
                 progress = days.associateWith { date ->
@@ -40,7 +41,7 @@ fun AppNavHost(
                 goal = 3000f,
             ),
             Habit(
-                id = 2,
+                id = 1,
                 name = "Fazer Exercício",
                 color = Color(0xFFFF5722),
                 progress = days.associateWith { date ->
@@ -50,7 +51,7 @@ fun AppNavHost(
                 goal = 1f
             ),
             Habit(
-                id = 3,
+                id = 2,
                 name = "Ler um Livro",
                 color = Color(0xFF2196F3),
                 progress = days.associateWith { date ->
@@ -80,8 +81,9 @@ fun AppNavHost(
                 onLoginClick = { /* TODO */ },
                 onLogoutClick = { /* TODO */ },
                 onStatsClick = { /* TODO */ },
-                onSyncClick = { /* TODO */ },
-                onAddHabitClick = { /* TODO */ }
+                onSyncClick = { /* TODO */ },onAddHabitClick = {
+                    navController.navigate("habitCreate")
+                }
             )
         }
 
@@ -131,5 +133,17 @@ fun AppNavHost(
             }
         }
 
+        composable("habitCreate") {
+            CreateHabitScreen(
+                onSave = { newHabit ->
+                    fakeHabits.add(newHabit)
+                    navController.popBackStack()
+                },
+                onCancel = {
+                    navController.popBackStack()
+                },
+                habits = fakeHabits,
+            )
+        }
     }
 }
