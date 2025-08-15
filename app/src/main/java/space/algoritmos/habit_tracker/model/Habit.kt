@@ -2,6 +2,7 @@ package space.algoritmos.habit_tracker.model
 
 import androidx.compose.ui.graphics.Color
 import java.time.LocalDate
+import java.util.UUID
 
 enum class TrackingMode {
     BINARY,       // Fiz ou não fiz
@@ -10,7 +11,7 @@ enum class TrackingMode {
 }
 
 data class Habit(
-    val id: Int,
+    val id: UUID = UUID.randomUUID(), // Gera um ID único por padrão
     val name: String,
     val color: Color,
     val trackingMode: TrackingMode,
