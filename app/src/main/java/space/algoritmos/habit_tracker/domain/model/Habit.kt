@@ -1,14 +1,8 @@
-package space.algoritmos.habit_tracker.model
+package space.algoritmos.habit_tracker.domain.model
 
 import androidx.compose.ui.graphics.Color
 import java.time.LocalDate
 import java.util.UUID
-
-enum class TrackingMode {
-    BINARY,       // Fiz ou não fiz
-    PERCENTAGE,   // 0% a 100%
-    VALUE         // Número de páginas, litros, etc.
-}
 
 data class Habit(
     val id: UUID = UUID.randomUUID(), // Gera um ID único por padrão
