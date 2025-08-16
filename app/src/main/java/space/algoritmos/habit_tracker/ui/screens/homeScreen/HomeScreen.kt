@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
-import space.algoritmos.habit_tracker.model.Habit
+import space.algoritmos.habit_tracker.domain.model.Habit
 import java.time.YearMonth
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,7 +23,6 @@ import java.time.YearMonth
 fun HomeScreen(
     habits: List<Habit>,
     onHabitClick: (Habit) -> Unit,
-    streakCount: Int,
 
     // Drawer + tema + conta
     isLoggedIn: Boolean,
@@ -41,7 +40,13 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
 
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
-    val maxStreak by remember(habits) { mutableIntStateOf(calculateMaxStreak(habits)) }
+    val maxStreak by remember(habits) {
+        mutableIntStateOf(calculateMaxStreak(habits))
+    }
+    val streakCount by remember(habits) {
+        mutableIntStateOf(calculateCombinedStreak(habits))
+    }
+
 
     ModalNavigationDrawer(
         drawerState = drawerState,

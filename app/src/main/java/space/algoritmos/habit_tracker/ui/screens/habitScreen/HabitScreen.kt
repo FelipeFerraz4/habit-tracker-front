@@ -15,7 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import space.algoritmos.habit_tracker.model.Habit
+import space.algoritmos.habit_tracker.domain.model.Habit
+import java.time.LocalDate
 import java.time.YearMonth
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,6 +28,7 @@ fun HabitDetailScreen(
     onSyncClick: () -> Unit
 ) {
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
+    var habitState by remember { mutableStateOf(habit) }
 
     Scaffold(
         topBar = {
@@ -114,35 +116,39 @@ fun HabitDetailScreen(
             }
 
             Heatmap(
-                habit = habit,
+                habit = habitState,
                 currentMonth = currentMonth,
-                onPreviousMonth = {
-                    currentMonth = currentMonth.minusMonths(1)
-                },
-                onNextMonth = {
-                    currentMonth = currentMonth.plusMonths(1)
-                }
+                onPreviousMonth = { currentMonth = currentMonth.minusMonths(1) },
+                onNextMonth = { currentMonth = currentMonth.plusMonths(1) }
             )
 
             Spacer(modifier = Modifier.weight(1f)) // empurra o botão para o final
 
             // 📅 Botão de registrar
             Button(
-                onClick = onRegisterClick,
+                onClick = {
+                    // 1️⃣ Registrar o progresso real no banco/repositório
+                    val today = LocalDate.now()
+                    val newValue = habit.progress[today] ?: 0f
+
+                    onRegisterClick() // aqui você chama a função que salva no HabitRepository
+
+                    // 2️⃣ Atualizar apenas o progresso do dia atual no estado local
+                    habitState = habitState.copy(
+                        progress = habitState.progress.toMutableMap().apply {
+                            put(today, newValue)
+                        }
+                    )
+                },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = habit.color,
+                    containerColor = habitState.color,
                     contentColor = Color.White
                 ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
+                modifier = Modifier.fillMaxWidth().height(56.dp)
             ) {
-                Text(
-                    text = "Registrar Hábito",
-                    fontSize = 20.sp
-                )
+                Text(text = "Registrar Hábito", fontSize = 24.sp)
             }
-            Spacer(modifier = Modifier.size(32.dp))
+            Spacer(modifier = Modifier.size(20.dp))
         }
     }
 }

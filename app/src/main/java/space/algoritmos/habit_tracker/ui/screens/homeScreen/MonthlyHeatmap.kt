@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import space.algoritmos.habit_tracker.model.Habit
+import space.algoritmos.habit_tracker.domain.model.Habit
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle

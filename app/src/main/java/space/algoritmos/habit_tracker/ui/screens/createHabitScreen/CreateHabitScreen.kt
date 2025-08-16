@@ -18,15 +18,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import space.algoritmos.habit_tracker.model.Habit
-import space.algoritmos.habit_tracker.model.TrackingMode
+import space.algoritmos.habit_tracker.domain.model.Habit
+import space.algoritmos.habit_tracker.domain.model.TrackingMode
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateHabitScreen(
     onSave: (Habit) -> Unit,
-    onCancel: () -> Unit,
-    habits: List<Habit>
+    onCancel: () -> Unit
 ) {
     var name by remember { mutableStateOf("") }
     var selectedColor by remember { mutableStateOf(Color(0xFF4CAF50)) }
@@ -150,7 +150,7 @@ fun CreateHabitScreen(
                         val goal = if (showGoalField) goalText.toFloatOrNull() ?: 0f else 1f
                         val finalMode = if(showGoalField) TrackingMode.VALUE else TrackingMode.BINARY
                         val newHabit = Habit(
-                            id = habits.size,
+                            id = UUID.randomUUID(),
                             name = name,
                             color = selectedColor,
                             trackingMode = finalMode,

@@ -1,6 +1,6 @@
 package space.algoritmos.habit_tracker.ui.screens.homeScreen
 
-import space.algoritmos.habit_tracker.model.Habit
+import space.algoritmos.habit_tracker.domain.model.Habit
 
 fun calculateMaxStreak(habits: List<Habit>): Int {
     if (habits.isEmpty()) return 0

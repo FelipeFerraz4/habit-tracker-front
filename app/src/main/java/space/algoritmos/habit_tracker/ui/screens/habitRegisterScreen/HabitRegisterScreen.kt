@@ -39,8 +39,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import space.algoritmos.habit_tracker.model.Habit
-import space.algoritmos.habit_tracker.model.TrackingMode
+import space.algoritmos.habit_tracker.domain.model.Habit
+import space.algoritmos.habit_tracker.domain.model.TrackingMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
