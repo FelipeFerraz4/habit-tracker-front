@@ -241,7 +241,7 @@ fun HabitRegisterScreen(
                             }
 
                             Spacer(modifier = Modifier.size(24.dp))
-
+                            /*
                             OutlinedButton(
                                 onClick = { statusMode = "percentage" },
                                 modifier = Modifier.height(40.dp),
@@ -249,6 +249,8 @@ fun HabitRegisterScreen(
                             ) {
                                 Text("Trocar para Porcentage")
                             }
+
+                             */
                         }
                     }
 
