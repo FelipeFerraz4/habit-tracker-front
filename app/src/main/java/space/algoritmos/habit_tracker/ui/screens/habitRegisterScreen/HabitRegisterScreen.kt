@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.domain.model.TrackingMode
+import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +50,35 @@ fun HabitRegisterScreen(
     onSave: (Float) -> Unit,
     onCancel: () -> Unit
 ) {
-    var value by remember { mutableStateOf("") }
+    var today = LocalDate.now()
+
+    var value by remember {
+        mutableStateOf(
+            when (habit.trackingMode) {
+                TrackingMode.VALUE -> {
+                    val saved = habit.progress[today] ?: 0f
+                    ((saved * habit.goal).toInt()).toString()
+                }
+                TrackingMode.PERCENTAGE -> {
+                    val saved = habit.progress[today] ?: 0f
+                    ((saved * 100).toInt()).toString()
+                }
+                TrackingMode.BINARY -> {
+                    if ((habit.progress[today] ?: 0f) > 0f) "1" else "0"
+                }
+            }
+        )
+    }
+
+    var selectedValue by remember {
+        mutableStateOf(
+            when (habit.trackingMode) {
+                TrackingMode.BINARY -> habit.progress[today]?.toFloat()
+                TrackingMode.VALUE -> value.toFloatOrNull()
+                TrackingMode.PERCENTAGE -> value.toFloatOrNull()?.div(100f)
+            }
+        )
+    }
 
     var statusMode by remember {
         mutableStateOf(
@@ -66,7 +95,6 @@ fun HabitRegisterScreen(
         TrackingMode.VALUE -> "Quanto você completou sua meta (${habit.goal}) hoje?"
         TrackingMode.PERCENTAGE -> "Qual a porcentagem da sua meta (${habit.goal}) você concluída hoje?"
     }
-    var selectedValue by remember { mutableStateOf<Float?>(null) }
 
     Scaffold(
         topBar = {
