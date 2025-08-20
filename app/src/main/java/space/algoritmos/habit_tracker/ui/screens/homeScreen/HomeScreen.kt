@@ -47,7 +47,6 @@ fun HomeScreen(
         mutableIntStateOf(calculateCombinedStreak(habits))
     }
 
-
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -132,69 +131,80 @@ fun HomeScreen(
             },
             containerColor = MaterialTheme.colorScheme.background
         ) { innerPadding ->
-            Column(
+
+            LazyColumn(
                 modifier = Modifier
                     .padding(innerPadding)
                     .padding(16.dp)
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 // 🔥 Streak
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "🔥", fontSize = 36.sp)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "$streakCount dias", fontSize = 20.sp)
-                    }
+                item {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = "🔥", fontSize = 36.sp)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "$streakCount dias", fontSize = 20.sp)
+                        }
 
-                    Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = Modifier.weight(1f))
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "🏆", fontSize = 36.sp)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Máx: $maxStreak", fontSize = 20.sp)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = "🏆", fontSize = 36.sp)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "Máx: $maxStreak", fontSize = 20.sp)
+                        }
                     }
                 }
 
-                MonthlyHeatmap(
-                    habits = habits,
-                    currentMonth = currentMonth,
-                    onPreviousMonth = {
-                        currentMonth = currentMonth.minusMonths(1)
-                    },
-                    onNextMonth = {
-                        currentMonth = currentMonth.plusMonths(1)
+                // Heatmap
+                item {
+                    MonthlyHeatmap(
+                        habits = habits,
+                        currentMonth = currentMonth,
+                        onPreviousMonth = {
+                            currentMonth = currentMonth.minusMonths(1)
+                        },
+                        onNextMonth = {
+                            currentMonth = currentMonth.plusMonths(1)
+                        }
+                    )
+                }
+
+                // Título da lista
+                item {
+                    Column {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = "Seus hábitos:", fontSize = 24.sp)
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
-                )
+                }
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Text(text = "Seus hábitos:", fontSize = 24.sp)
-                Spacer(modifier = Modifier.height(8.dp))
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    items(habits) { habit ->
-                        Card(
-                            onClick = { onHabitClick(habit) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(60.dp),
-                            colors = CardDefaults.cardColors(containerColor = habit.color)
+                // Lista de hábitos
+                items(habits) { habit ->
+                    Card(
+                        onClick = { onHabitClick(habit) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(60.dp),
+                        colors = CardDefaults.cardColors(containerColor = habit.color)
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.CenterStart,
+                            modifier = Modifier.padding(16.dp)
                         ) {
-                            Box(
-                                contentAlignment = Alignment.CenterStart,
-                                modifier = Modifier.padding(16.dp)
-                            ) {
-                                Text(
-                                    habit.name,
-                                    fontSize = 18.sp,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = Color.White,
-                                )
-                            }
+                            Text(
+                                habit.name,
+                                fontSize = 18.sp,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.White,
+                            )
                         }
                     }
                 }
