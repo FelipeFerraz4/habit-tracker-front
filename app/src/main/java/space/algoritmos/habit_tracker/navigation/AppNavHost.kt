@@ -29,10 +29,10 @@ fun AppNavHost(
     // Inicializa lista de hábitos a partir do repository
     val habitsState = remember { mutableStateListOf<Habit>().apply { addAll(habitRepository.getAllHabits()) } }
 
-    NavHost(navController = navController, startDestination = "splash") {
-        composable("splash") {
-            SplashScreen(navController)
-        }
+    NavHost(navController = navController, startDestination = "home") {
+//        composable("splash") {
+//            SplashScreen(navController)
+//        }
 
         composable("home") {
             HomeScreen(

@@ -3,8 +3,10 @@ package space.algoritmos.habit_tracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.*
 import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import space.algoritmos.habit_tracker.data.local.DatabaseHelper
 import space.algoritmos.habit_tracker.data.local.ThemeMode
@@ -15,33 +17,50 @@ import space.algoritmos.habit_tracker.navigation.AppNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        // PASSO 1: Instalar a splash antes do super
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
 
         val themePrefs = ThemePreferences(this)
 
         setContent {
-            val themeMode by themePrefs.themeFlow.collectAsState(initial = ThemeMode.DARK)
-            val coroutineScope = rememberCoroutineScope() // Scope do Compose
+            var themeMode by remember { mutableStateOf(ThemeMode.DARK) }
+            var isThemeReady by remember { mutableStateOf(false) }
 
-            val toggleTheme: () -> Unit = {
-                val newTheme = if (themeMode == ThemeMode.DARK) ThemeMode.LIGHT else ThemeMode.DARK
-                coroutineScope.launch {
-                    themePrefs.saveTheme(newTheme)
-                }
+            // PASSO 2: Controla o tempo que a splash fica visível
+            splashScreen.setKeepOnScreenCondition { !isThemeReady }
+
+            // PASSO 3: Carrega o tema uma única vez
+            LaunchedEffect(Unit) {
+                themeMode = themePrefs.themeFlow.first()
+                isThemeReady = true
             }
 
-            val dbHelper = remember { DatabaseHelper(this) }
-            val habitDao = remember { HabitDao(dbHelper) }
-            val habitRepository = remember { HabitRepository(habitDao) }
+            if (isThemeReady) {
+                val coroutineScope = rememberCoroutineScope()
 
-            MaterialTheme(
-                colorScheme = if (themeMode == ThemeMode.DARK) darkColorScheme() else lightColorScheme()
-            ) {
-                AppNavHost(
-                    isDarkTheme = themeMode == ThemeMode.DARK,
-                    onToggleTheme = toggleTheme,
-                    habitRepository = habitRepository
-                )
+                val toggleTheme: () -> Unit = {
+                    val newTheme = if (themeMode == ThemeMode.DARK) ThemeMode.LIGHT else ThemeMode.DARK
+                    coroutineScope.launch {
+                        themePrefs.saveTheme(newTheme)
+                        themeMode = newTheme
+                    }
+                }
+
+                val dbHelper = remember { DatabaseHelper(this) }
+                val habitDao = remember { HabitDao(dbHelper) }
+                val habitRepository = remember { HabitRepository(habitDao) }
+
+                MaterialTheme(
+                    colorScheme = if (themeMode == ThemeMode.DARK) darkColorScheme() else lightColorScheme()
+                ) {
+                    AppNavHost(
+                        isDarkTheme = themeMode == ThemeMode.DARK,
+                        onToggleTheme = toggleTheme,
+                        habitRepository = habitRepository
+                    )
+                }
             }
         }
     }
