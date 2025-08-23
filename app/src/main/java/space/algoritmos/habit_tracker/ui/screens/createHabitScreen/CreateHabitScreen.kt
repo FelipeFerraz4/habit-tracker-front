@@ -98,7 +98,7 @@ fun CreateHabitScreen(
                                 .background(color, CircleShape)
                                 .border(
                                     width = 2.dp,
-                                    color = if (selectedColor == color) Color.Black else Color.Transparent,
+                                    color = if (selectedColor == color) MaterialTheme.colorScheme.onBackground else Color.Transparent,
                                     shape = CircleShape
                                 )
                                 .clickable { selectedColor = color }
