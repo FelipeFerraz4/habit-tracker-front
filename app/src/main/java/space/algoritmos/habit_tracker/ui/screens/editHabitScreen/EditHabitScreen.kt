@@ -190,22 +190,57 @@ fun EditHabitScreen(
         if (showDeleteDialog) {
             AlertDialog(
                 onDismissRequest = { showDeleteDialog = false },
-                title = { Text("Deletar Hábito") },
-                text = { Text("Tem certeza que deseja deletar este hábito?") },
+                containerColor = MaterialTheme.colorScheme.surface,
+                title = {
+                    Text(
+                        text = "Excluir Hábito",
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                },
+                text = {
+                    Text(
+                        text = "Você realmente deseja remover este hábito ?",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                },
                 confirmButton = {
-                    TextButton(onClick = {
-                        onDelete(habit)
-                        showDeleteDialog = false
-                    }) {
-                        Text("Sim")
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Botão "Sim" à esquerda
+                        Button(
+                            onClick = {
+                                onDelete(habit)
+                                showDeleteDialog = false
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(
+                                text = "Sim",
+                                color = MaterialTheme.colorScheme.onError
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(16.dp)) // espaço entre os botões
+
+                        // Botão "Não" à direita
+                        OutlinedButton(
+                            onClick = { showDeleteDialog = false },
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text("Não")
+                        }
                     }
                 },
-                dismissButton = {
-                    TextButton(onClick = { showDeleteDialog = false }) {
-                        Text("Não")
-                    }
-                },
+                shape = RoundedCornerShape(16.dp)
             )
         }
+
+
     }
 }
