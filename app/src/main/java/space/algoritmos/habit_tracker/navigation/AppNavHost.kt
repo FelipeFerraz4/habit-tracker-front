@@ -18,6 +18,7 @@ import space.algoritmos.habit_tracker.ui.screens.homeScreen.HomeScreen
 import java.time.LocalDate
 import java.util.UUID
 import android.util.Log
+import space.algoritmos.habit_tracker.ui.screens.editHabitScreen.EditHabitScreen
 
 @Composable
 fun AppNavHost(
@@ -30,9 +31,7 @@ fun AppNavHost(
     val habitsState = remember { mutableStateListOf<Habit>().apply { addAll(habitRepository.getAllHabits()) } }
 
     NavHost(navController = navController, startDestination = "home") {
-//        composable("splash") {
-//            SplashScreen(navController)
-//        }
+
 
         composable("home") {
             HomeScreen(
@@ -66,7 +65,9 @@ fun AppNavHost(
                     onBackClick = {
                         navController.popBackStack()
                     },
-                    onSyncClick = { /* TODO */ },
+                    onEditClick = {
+                        navController.navigate("habitEdit/${habit.id}")
+                    },
                 )
             } else {
                 Text("Hábito não encontrado.")
@@ -123,6 +124,32 @@ fun AppNavHost(
                 }
             )
 
+        }
+
+        composable("habitEdit/{habitId}") { backStackEntry ->
+            val habitId = backStackEntry.arguments?.getString("habitId")?.let { UUID.fromString(it) }
+            val habitIndex = habitsState.indexOfFirst { it.id == habitId }
+
+            if (habitIndex != -1) {
+                EditHabitScreen(
+                    habit = habitsState[habitIndex],
+                    onSave = { updatedHabit ->
+                        habitRepository.updateHabit(updatedHabit)
+                        habitsState[habitIndex] = updatedHabit
+                        navController.popBackStack()
+                    },
+                    onDelete = {
+                        habitRepository.deleteHabit(habitsState[habitIndex].id)
+                        habitsState.removeAt(habitIndex)
+                        navController.popBackStack("home", inclusive = false)
+                    },
+                    onCancel = {
+                        navController.popBackStack()
+                    }
+                )
+            } else {
+                Text("Hábito não encontrado.")
+            }
         }
     }
 }

@@ -17,7 +17,6 @@ import space.algoritmos.habit_tracker.navigation.AppNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // PASSO 1: Instalar a splash antes do super
         val splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
@@ -28,10 +27,8 @@ class MainActivity : ComponentActivity() {
             var themeMode by remember { mutableStateOf(ThemeMode.DARK) }
             var isThemeReady by remember { mutableStateOf(false) }
 
-            // PASSO 2: Controla o tempo que a splash fica visível
             splashScreen.setKeepOnScreenCondition { !isThemeReady }
 
-            // PASSO 3: Carrega o tema uma única vez
             LaunchedEffect(Unit) {
                 themeMode = themePrefs.themeFlow.first()
                 isThemeReady = true

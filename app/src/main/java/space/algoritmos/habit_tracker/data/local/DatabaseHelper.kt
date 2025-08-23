@@ -20,6 +20,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
                 name TEXT NOT NULL,
                 color TEXT,
                 tracking_mode TEXT,
+                status TEXT,
                 goal INT,
                 progress TEXT
             )

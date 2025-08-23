@@ -19,6 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.domain.model.Habit
+import space.algoritmos.habit_tracker.domain.model.HabitStatus
 import space.algoritmos.habit_tracker.domain.model.TrackingMode
 import java.util.UUID
 
@@ -154,6 +155,7 @@ fun CreateHabitScreen(
                             name = name,
                             color = selectedColor,
                             trackingMode = finalMode,
+                            status = HabitStatus.ACTIVE,
                             goal = goal
                         )
                         onSave(newHabit)

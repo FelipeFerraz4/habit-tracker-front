@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import space.algoritmos.habit_tracker.data.local.DatabaseHelper
 import space.algoritmos.habit_tracker.domain.model.Habit
+import space.algoritmos.habit_tracker.domain.model.HabitStatus
 import space.algoritmos.habit_tracker.domain.model.TrackingMode
 import java.time.LocalDate
 import java.util.UUID
@@ -27,6 +28,7 @@ class HabitDao(private val dbHelper: DatabaseHelper) {
                 val colorHex = String.format("#%06X", 0xFFFFFF and habit.color.toArgb())
                 put("color", colorHex)
                 put("tracking_mode", habit.trackingMode.name)
+                put("status", habit.status.name)
                 put("goal", habit.goal)
                 put("progress", gson.toJson(habit.progress.mapKeys { it.key.toString() }))
             }
@@ -44,20 +46,21 @@ class HabitDao(private val dbHelper: DatabaseHelper) {
         val habits = mutableListOf<Habit>()
         try {
             Log.d("HabitDao", "Buscando todos os hábitos")
-            val cursor = db.query("habits", null, null, null, null, null, null)
+            val cursor = db.query("habits", null, null, null, null, null, null, null)
             if (cursor.moveToFirst()) {
                 do {
                     val id = UUID.fromString(cursor.getString(cursor.getColumnIndexOrThrow("id")))
                     val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
                     val color = Color(cursor.getString(cursor.getColumnIndexOrThrow("color")).toColorInt())
                     val trackingMode = TrackingMode.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("tracking_mode")))
+                    val status = HabitStatus.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("status")))
                     val goal = cursor.getInt(cursor.getColumnIndexOrThrow("goal"))
                     val progressJson = cursor.getString(cursor.getColumnIndexOrThrow("progress")) ?: "{}"
                     val type = object : TypeToken<Map<String, Int>>() {}.type
                     val progressStringMap: Map<String, Int> = gson.fromJson(progressJson, type)
                     val progressMap = progressStringMap.mapKeys { LocalDate.parse(it.key) }
 
-                    habits.add(Habit(id, name, color, trackingMode, goal, progressMap))
+                    habits.add(Habit(id, name, color, trackingMode, status, goal, progressMap))
                 } while (cursor.moveToNext())
             }
             Log.d("HabitDao", "Hábitos carregados: ${habits.size}")
@@ -87,13 +90,14 @@ class HabitDao(private val dbHelper: DatabaseHelper) {
                 val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
                 val color = Color(cursor.getString(cursor.getColumnIndexOrThrow("color")).toColorInt())
                 val trackingMode = TrackingMode.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("tracking_mode")))
+                val status = HabitStatus.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("status")))
                 val goal = cursor.getInt(cursor.getColumnIndexOrThrow("goal"))
                 val progressJson = cursor.getString(cursor.getColumnIndexOrThrow("progress")) ?: "{}"
                 val type = object : TypeToken<Map<String, Int>>() {}.type
                 val progressStringMap: Map<String, Int> = gson.fromJson(progressJson, type)
                 val progressMap = progressStringMap.mapKeys { LocalDate.parse(it.key) }
 
-                habit = Habit(id, name, color, trackingMode, goal, progressMap)
+                habit = Habit(id, name, color, trackingMode, status, goal, progressMap)
                 Log.d("HabitDao", "Hábito encontrado: $habit")
             } else {
                 Log.d("HabitDao", "Hábito não encontrado para ID: $id")
@@ -116,6 +120,7 @@ class HabitDao(private val dbHelper: DatabaseHelper) {
                 val colorHex = String.format("#%06X", 0xFFFFFF and habit.color.toArgb())
                 put("color", colorHex)
                 put("tracking_mode", habit.trackingMode.name)
+                put("status", habit.status.name)
                 put("goal", habit.goal)
                 put("progress", gson.toJson(habit.progress.mapKeys { it.key.toString() }))
             }

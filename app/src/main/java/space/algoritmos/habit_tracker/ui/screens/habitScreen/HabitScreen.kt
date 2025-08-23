@@ -3,7 +3,7 @@ package space.algoritmos.habit_tracker.ui.screens.habitScreen
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,7 +25,7 @@ fun HabitDetailScreen(
     habit: Habit,
     onRegisterClick: () -> Unit,
     onBackClick: () -> Unit,
-    onSyncClick: () -> Unit
+    onEditClick: () -> Unit
 ) {
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     var habitState by remember { mutableStateOf(habit) }
@@ -56,10 +56,10 @@ fun HabitDetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onSyncClick) {
+                    IconButton(onClick = onEditClick) {
                         Icon(
-                            imageVector = Icons.Default.Sync,
-                            contentDescription = "Sincronizar",
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Editar",
                             tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(32.dp)
                         )
