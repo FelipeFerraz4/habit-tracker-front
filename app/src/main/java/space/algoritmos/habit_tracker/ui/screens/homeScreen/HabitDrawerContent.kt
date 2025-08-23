@@ -37,6 +37,10 @@ fun HabitDrawerContent(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
+    val themeText = if (isDarkTheme) "Ativar Modo Claro" else "Ativar Modo Escuro"
+    val themeIcon = if (isDarkTheme) Icons.Filled.WbSunny else Icons.Filled.DarkMode
+
+
     ModalDrawerSheet(
         modifier = Modifier.width(280.dp) // aproximadamente metade em celulares comuns
     ) {
@@ -88,13 +92,8 @@ fun HabitDrawerContent(
             Spacer(modifier = Modifier.height(16.dp))
 
             NavigationDrawerItem(
-                label = { Text(if (isDarkTheme) "Ativar Modo Claro" else "Ativar Modo Escuro", fontSize = 18.sp) },
-                icon = {
-                    Icon(
-                        imageVector = if (isDarkTheme) Icons.Filled.WbSunny else Icons.Filled.DarkMode,
-                        contentDescription = null
-                    )
-                },
+                label = { Text(themeText, fontSize = 18.sp) },
+                icon = { Icon(imageVector = themeIcon, contentDescription = null) },
                 selected = false,
                 onClick = {
                     onToggleTheme()

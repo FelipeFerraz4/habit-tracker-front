@@ -11,28 +11,42 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
 
+// Dark theme
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF6200EE),
-    secondary = Color(0xFF03DAC6),
-    background = Color(0xFF121212),
-    surface = Color(0xFF1F1F1F),
+    primary = Purple40,
+    secondary = Teal40,
+    tertiary = Pink40,
+    background = Gray90,
+    surface = Color(0xFF2C2C2C),
+    surfaceVariant = Color(0xFF373737),
+    error = Color(0xFFCF6679),
+    outline = Color(0xFFB0B0B0),
     onPrimary = Color.Black,
     onSecondary = Color.Black,
+    onTertiary = Color.Black,
     onBackground = Color.White,
     onSurface = Color.White,
-    tertiary = Pink40,
+    onError = Color.Black
 )
+
+// Light theme
 private val LightColorScheme = lightColorScheme(
+    primary = Purple80,
+    secondary = Teal40,
     tertiary = Pink40,
-    primary = Color(0xFF6200EE),
-    secondary = Color(0xFF03DAC6),
-    background = Color(0xFFFFFFFF),
-    surface = Color(0xFFFFFFFF),
+    background = Gray10,
+    surface = Color.White,
+    surfaceVariant = Color(0xFFE0E0E0),
+    error = Color(0xFFB00020),
+    outline = Color(0xFF707070),
     onPrimary = Color.White,
     onSecondary = Color.Black,
+    onTertiary = Color.White,
     onBackground = Color.Black,
     onSurface = Color.Black,
+    onError = Color.White
 )
+
 
 @Composable
 fun HabittrackerTheme(

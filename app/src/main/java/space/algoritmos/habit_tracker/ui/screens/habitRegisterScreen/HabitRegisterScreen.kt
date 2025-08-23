@@ -146,21 +146,27 @@ fun HabitRegisterScreen(
                             Button(
                                 onClick = { selectedValue = 1 },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (selectedValue == 1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                                    containerColor = if (selectedValue == 1) MaterialTheme.colorScheme.primary
+                                    else MaterialTheme.colorScheme.secondaryContainer, // destaque neutro
+                                    contentColor = if (selectedValue == 1) MaterialTheme.colorScheme.onPrimary
+                                    else MaterialTheme.colorScheme.onSecondaryContainer
                                 ),
                                 modifier = Modifier
                                     .height(48.dp)
                                     .width(150.dp)
-
                             ) {
                                 Text("Sim", fontSize = 20.sp)
                             }
+
                             Spacer(modifier = Modifier.size(20.dp))
 
                             Button(
                                 onClick = { selectedValue = 0 },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (selectedValue == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                                    containerColor = if (selectedValue == 0) MaterialTheme.colorScheme.primary
+                                    else MaterialTheme.colorScheme.secondaryContainer, // destaque neutro
+                                    contentColor = if (selectedValue == 0) MaterialTheme.colorScheme.onPrimary
+                                    else MaterialTheme.colorScheme.onSecondaryContainer
                                 ),
                                 modifier = Modifier
                                     .height(48.dp)
@@ -168,6 +174,7 @@ fun HabitRegisterScreen(
                             ) {
                                 Text("Não", fontSize = 20.sp)
                             }
+
                         }
                     }
 

@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import kotlinx.coroutines.launch
 import space.algoritmos.habit_tracker.data.local.DatabaseHelper
+import space.algoritmos.habit_tracker.data.local.ThemeMode
+import space.algoritmos.habit_tracker.data.local.ThemePreferences
 import space.algoritmos.habit_tracker.data.local.dao.HabitDao
 import space.algoritmos.habit_tracker.data.repository.HabitRepository
 import space.algoritmos.habit_tracker.navigation.AppNavHost
@@ -14,25 +16,29 @@ import space.algoritmos.habit_tracker.navigation.AppNavHost
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val themePrefs = ThemePreferences(this)
+
         setContent {
-            var isDarkTheme by rememberSaveable { mutableStateOf(true) }
-            val toggleTheme = { isDarkTheme = !isDarkTheme }
+            val themeMode by themePrefs.themeFlow.collectAsState(initial = ThemeMode.DARK)
+            val coroutineScope = rememberCoroutineScope() // Scope do Compose
 
-            // 1️⃣ Instanciar DatabaseHelper
+            val toggleTheme: () -> Unit = {
+                val newTheme = if (themeMode == ThemeMode.DARK) ThemeMode.LIGHT else ThemeMode.DARK
+                coroutineScope.launch {
+                    themePrefs.saveTheme(newTheme)
+                }
+            }
+
             val dbHelper = remember { DatabaseHelper(this) }
-
-            // 2️⃣ Criar DAO
             val habitDao = remember { HabitDao(dbHelper) }
-
-            // 3️⃣ Criar Repository
             val habitRepository = remember { HabitRepository(habitDao) }
 
             MaterialTheme(
-                colorScheme = if (isDarkTheme) darkColorScheme() else lightColorScheme()
+                colorScheme = if (themeMode == ThemeMode.DARK) darkColorScheme() else lightColorScheme()
             ) {
-                // Passar repository para o NavHost / Screens
                 AppNavHost(
-                    isDarkTheme = isDarkTheme,
+                    isDarkTheme = themeMode == ThemeMode.DARK,
                     onToggleTheme = toggleTheme,
                     habitRepository = habitRepository
                 )

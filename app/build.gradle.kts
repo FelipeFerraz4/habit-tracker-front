@@ -51,7 +51,8 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.accompanist.flowlayout)
-    implementation(libs.gson) 
+    implementation(libs.gson)
+    implementation(libs.androidx.datastore.preferences)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
