@@ -72,10 +72,11 @@ fun Heatmap(
                             val date = currentMonth.atDay(day)
                             val progress = habit.progressOn(date)
 
-                            val color = if (progress == 0f) {
+                            val ratio = (progress.toFloat() / habit.goal).coerceIn(0f, 1f)
+                            val color = if (progress == 0) {
                                 Color.LightGray.copy(alpha = 0.3f)
                             } else {
-                                habit.color.copy(alpha = progress)
+                                habit.color.copy(alpha = ratio)
                             }
 
                             Box(

@@ -147,7 +147,7 @@ fun CreateHabitScreen(
             ) {
                 Button(
                     onClick = {
-                        val goal = if (showGoalField) goalText.toFloatOrNull() ?: 0f else 1f
+                        val goal = if (showGoalField) goalText.toIntOrNull() ?: 1 else 1
                         val finalMode = if(showGoalField) TrackingMode.VALUE else TrackingMode.BINARY
                         val newHabit = Habit(
                             id = UUID.randomUUID(),

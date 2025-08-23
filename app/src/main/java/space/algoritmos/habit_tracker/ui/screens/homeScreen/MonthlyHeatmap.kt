@@ -20,9 +20,16 @@ import java.util.Locale
 
 fun dailyProgress(date: LocalDate, habits: List<Habit>): Float {
     if (habits.isEmpty()) return 0f
-    val total = habits.fold(0f) { acc, habit -> acc + habit.progressOn(date) }
-    return (total / habits.size).coerceIn(0f, 1f)
+
+    val validProgress = habits
+        .filter { it.goal > 0 }
+        .map { it.progressOn(date).toFloat() / it.goal }
+
+    if (validProgress.isEmpty()) return 0f
+
+    return validProgress.average().toFloat().coerceIn(0f, 1f)
 }
+
 
 @Composable
 fun MonthlyHeatmap(

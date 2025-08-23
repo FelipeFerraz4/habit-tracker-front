@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -47,7 +45,7 @@ import java.time.LocalDate
 @Composable
 fun HabitRegisterScreen(
     habit: Habit,
-    onSave: (Float) -> Unit,
+    onSave: (Int) -> Unit,
     onCancel: () -> Unit
 ) {
     var today = LocalDate.now()
@@ -55,17 +53,8 @@ fun HabitRegisterScreen(
     var value by remember {
         mutableStateOf(
             when (habit.trackingMode) {
-                TrackingMode.VALUE -> {
-                    val saved = habit.progress[today] ?: 0f
-                    ((saved * habit.goal).toInt()).toString()
-                }
-                TrackingMode.PERCENTAGE -> {
-                    val saved = habit.progress[today] ?: 0f
-                    ((saved * 100).toInt()).toString()
-                }
-                TrackingMode.BINARY -> {
-                    if ((habit.progress[today] ?: 0f) > 0f) "1" else "0"
-                }
+                TrackingMode.VALUE -> (habit.progress[today] ?: 0).toString()
+                TrackingMode.BINARY -> if ((habit.progress[today] ?: 0) > 0) "1" else "0"
             }
         )
     }
@@ -73,9 +62,8 @@ fun HabitRegisterScreen(
     var selectedValue by remember {
         mutableStateOf(
             when (habit.trackingMode) {
-                TrackingMode.BINARY -> habit.progress[today]?.toFloat()
-                TrackingMode.VALUE -> value.toFloatOrNull()
-                TrackingMode.PERCENTAGE -> value.toFloatOrNull()?.div(100f)
+                TrackingMode.BINARY -> habit.progress[today] ?: 0
+                TrackingMode.VALUE -> value.toIntOrNull()
             }
         )
     }
@@ -85,7 +73,6 @@ fun HabitRegisterScreen(
             when (habit.trackingMode) {
                 TrackingMode.BINARY -> "binary"
                 TrackingMode.VALUE -> "value"
-                TrackingMode.PERCENTAGE -> "percentage"
             }
         )
     }
@@ -93,7 +80,6 @@ fun HabitRegisterScreen(
     val label = when (habit.trackingMode) {
         TrackingMode.BINARY -> "Você completou este hábito hoje?"
         TrackingMode.VALUE -> "Quanto você completou sua meta (${habit.goal}) hoje?"
-        TrackingMode.PERCENTAGE -> "Qual a porcentagem da sua meta (${habit.goal}) você concluída hoje?"
     }
 
     Scaffold(
@@ -158,9 +144,9 @@ fun HabitRegisterScreen(
                             modifier = Modifier.padding(bottom = 18.dp)
                         ) {
                             Button(
-                                onClick = { selectedValue = 1f },
+                                onClick = { selectedValue = 1 },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (selectedValue == 1f) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                                    containerColor = if (selectedValue == 1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
                                 ),
                                 modifier = Modifier
                                     .height(48.dp)
@@ -172,9 +158,9 @@ fun HabitRegisterScreen(
                             Spacer(modifier = Modifier.size(20.dp))
 
                             Button(
-                                onClick = { selectedValue = 0f },
+                                onClick = { selectedValue = 0 },
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (selectedValue == 0f) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
+                                    containerColor = if (selectedValue == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground
                                 ),
                                 modifier = Modifier
                                     .height(48.dp)
@@ -192,7 +178,7 @@ fun HabitRegisterScreen(
                                 value = value,
                                 onValueChange = {
                                     value = it
-                                    selectedValue = it.toFloatOrNull()?.coerceAtLeast(0f) ?: 0f
+                                    selectedValue = it.toIntOrNull()?.coerceAtLeast(0) ?: 0
                                 },
                                 label = {
                                     Text("Digite a quantidade (un)", fontSize = 20.sp)
@@ -217,9 +203,9 @@ fun HabitRegisterScreen(
                             ) {
                                 Button(
                                     onClick = {
-                                        val current = value.toFloatOrNull() ?: 0f
-                                        val newValue = (current - 1).coerceAtLeast(0f) // evita negativo
-                                        value = if (newValue % 1f == 0f) newValue.toInt().toString() else newValue.toString()
+                                        val current = value.toIntOrNull() ?: 0
+                                        val newValue = (current - 1).coerceAtLeast(0) // evita negativo
+                                        value = newValue.toString()
                                         selectedValue = newValue
                                     },
                                     modifier = Modifier.weight(1f)
@@ -229,9 +215,9 @@ fun HabitRegisterScreen(
 
                                 Button(
                                     onClick = {
-                                        val current = value.toFloatOrNull() ?: 0f
+                                        val current = value.toIntOrNull() ?: 0
                                         val newValue = current + 1
-                                        value = if (newValue % 1f == 0f) newValue.toInt().toString() else newValue.toString()
+                                        value = newValue.toString()
                                         selectedValue = newValue
                                     },
                                     modifier = Modifier.weight(1f)
@@ -241,126 +227,6 @@ fun HabitRegisterScreen(
                             }
 
                             Spacer(modifier = Modifier.size(24.dp))
-                            /*
-                            OutlinedButton(
-                                onClick = { statusMode = "percentage" },
-                                modifier = Modifier.height(40.dp),
-                                border = BorderStroke(2.dp, MaterialTheme.colorScheme.onBackground)
-                            ) {
-                                Text("Trocar para Porcentage")
-                            }
-
-                             */
-                        }
-                    }
-
-                    "percentage" -> {
-                        Spacer(modifier = Modifier.size(40.dp))
-
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            // Campo de entrada + botão salvar
-                            OutlinedTextField(
-                                value = if(value == "") {
-                                    value
-                                } else {
-                                    "$value%"
-                                },
-                                onValueChange = {
-                                    value = it
-                                    selectedValue = it.toFloatOrNull()?.coerceIn(0f, 100f)?.div(100f) ?: 0f
-                                },
-                                label = {
-                                    Text("Digite o valor (%)", fontSize = 20.sp)
-                                },
-                                textStyle = TextStyle( // Isso centraliza o texto digitado
-                                    fontSize = 20.sp,
-                                    textAlign = TextAlign.Center
-                                ),
-                                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                                modifier = Modifier
-                                    .fillMaxWidth(0.95f)
-                                    .clip(RoundedCornerShape(16.dp)),
-                                shape = RoundedCornerShape(16.dp),
-                            )
-
-                            Spacer(modifier = Modifier.size(20.dp))
-                            // LazyRow com 0 até 100%
-                            val listState = rememberLazyListState(initialFirstVisibleItemIndex = 48)
-
-                            LazyRow(
-                                state = listState,
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 1.dp)
-                            ) {
-                                items(101) { i -> // 0 até 100
-                                    val percentFloat = i / 100f
-                                    Button(
-                                        onClick = {
-                                            selectedValue = percentFloat
-                                            value = i.toString()
-                                        },
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = if (selectedValue == percentFloat)
-                                                MaterialTheme.colorScheme.primary
-                                            else MaterialTheme.colorScheme.onBackground
-                                        ),
-                                        modifier = Modifier
-                                            .height(44.dp)
-                                            .width(78.dp)
-                                    ) {
-                                        Text("$i", fontSize = 16.sp)
-                                    }
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.size(20.dp))
-                            // Botões com valores mais comuns
-                            val commonPercentages = listOf(10, 20, 25, 33, 50, 66, 75, 90, 100)
-
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                commonPercentages.chunked(3).forEach { rowValues ->
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                    ) {
-                                        rowValues.forEach { percent ->
-                                            val percentFloat = percent / 100f
-                                            Button(
-                                                onClick = {
-                                                    selectedValue = percentFloat
-                                                    value = percent.toString()
-                                                },
-                                                colors = ButtonDefaults.buttonColors(
-                                                    containerColor = if (selectedValue == percentFloat)
-                                                        MaterialTheme.colorScheme.primary
-                                                    else MaterialTheme.colorScheme.onBackground
-                                                ),
-                                                modifier = Modifier.weight(1f).height(45.dp)
-                                            ) {
-                                                Text("$percent%", fontSize = 18.sp)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.size(10.dp))
-
-                            OutlinedButton(
-                                onClick = { statusMode = "value" },
-                                modifier = Modifier
-                                    .height(40.dp),
-                                border = BorderStroke(2.dp, MaterialTheme.colorScheme.onBackground)
-                            ) {
-                                Text("Trocar para value")
-                            }
                         }
                     }
                 }
@@ -374,20 +240,13 @@ fun HabitRegisterScreen(
                     onClick = {
                         val finalValue = when (habit.trackingMode) {
                             TrackingMode.BINARY -> selectedValue ?: return@Button
-                            TrackingMode.PERCENTAGE -> {
-                                val rawValue = value.toFloatOrNull() ?: return@Button
-                                rawValue.coerceIn(0f, 100f) / 100f
-                            }
-                            TrackingMode.VALUE -> {
-                                val rawValue = value.toFloatOrNull() ?: return@Button
-                                (rawValue / habit.goal).coerceIn(0f, 1f)
-                            }
+                            TrackingMode.VALUE -> (value.toIntOrNull() ?: return@Button).coerceAtLeast(0)
                         }
                         onSave(finalValue)
                     },
                     enabled = when (habit.trackingMode) {
                         TrackingMode.BINARY -> selectedValue != null
-                        else -> value.toFloatOrNull() != null
+                        else -> value.toIntOrNull() != null
                     },
                     modifier = Modifier
                         .height(56.dp)

@@ -129,7 +129,7 @@ fun HabitDetailScreen(
                 onClick = {
                     // 1️⃣ Registrar o progresso real no banco/repositório
                     val today = LocalDate.now()
-                    val newValue = habit.progress[today] ?: 0f
+                    val newValue = habit.progress[today] ?: 0
 
                     onRegisterClick() // aqui você chama a função que salva no HabitRepository
 

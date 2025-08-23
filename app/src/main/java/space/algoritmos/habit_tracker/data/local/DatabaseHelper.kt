@@ -20,7 +20,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
                 name TEXT NOT NULL,
                 color TEXT,
                 tracking_mode TEXT,
-                goal REAL,
+                goal INT,
                 progress TEXT
             )
         """.trimIndent()

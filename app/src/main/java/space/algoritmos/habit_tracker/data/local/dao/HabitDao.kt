@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.graphics.toColorInt
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import space.algoritmos.habit_tracker.data.local.DatabaseHelper
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.domain.model.TrackingMode
@@ -50,12 +51,11 @@ class HabitDao(private val dbHelper: DatabaseHelper) {
                     val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
                     val color = Color(cursor.getString(cursor.getColumnIndexOrThrow("color")).toColorInt())
                     val trackingMode = TrackingMode.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("tracking_mode")))
-                    val goal = cursor.getFloat(cursor.getColumnIndexOrThrow("goal"))
+                    val goal = cursor.getInt(cursor.getColumnIndexOrThrow("goal"))
                     val progressJson = cursor.getString(cursor.getColumnIndexOrThrow("progress")) ?: "{}"
-                    val progressMap: Map<LocalDate, Float> =
-                        gson.fromJson(progressJson, Map::class.java)
-                            .entries
-                            .associate { (k, v) -> LocalDate.parse(k as String) to (v as Double).toFloat() }
+                    val type = object : TypeToken<Map<String, Int>>() {}.type
+                    val progressStringMap: Map<String, Int> = gson.fromJson(progressJson, type)
+                    val progressMap = progressStringMap.mapKeys { LocalDate.parse(it.key) }
 
                     habits.add(Habit(id, name, color, trackingMode, goal, progressMap))
                 } while (cursor.moveToNext())
@@ -87,12 +87,11 @@ class HabitDao(private val dbHelper: DatabaseHelper) {
                 val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
                 val color = Color(cursor.getString(cursor.getColumnIndexOrThrow("color")).toColorInt())
                 val trackingMode = TrackingMode.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("tracking_mode")))
-                val goal = cursor.getFloat(cursor.getColumnIndexOrThrow("goal"))
+                val goal = cursor.getInt(cursor.getColumnIndexOrThrow("goal"))
                 val progressJson = cursor.getString(cursor.getColumnIndexOrThrow("progress")) ?: "{}"
-                val progressMap: Map<LocalDate, Float> =
-                    gson.fromJson(progressJson, Map::class.java)
-                        .entries
-                        .associate { (k, v) -> LocalDate.parse(k as String) to (v as Double).toFloat() }
+                val type = object : TypeToken<Map<String, Int>>() {}.type
+                val progressStringMap: Map<String, Int> = gson.fromJson(progressJson, type)
+                val progressMap = progressStringMap.mapKeys { LocalDate.parse(it.key) }
 
                 habit = Habit(id, name, color, trackingMode, goal, progressMap)
                 Log.d("HabitDao", "Hábito encontrado: $habit")

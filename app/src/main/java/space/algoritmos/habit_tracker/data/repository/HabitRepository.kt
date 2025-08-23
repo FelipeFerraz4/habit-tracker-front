@@ -17,11 +17,7 @@ class HabitRepository(private val habitDao: HabitDao) {
 
     fun deleteHabit(id: UUID) = habitDao.deleteHabit(id)
 
-    /**
-     * Atualiza o progresso diário de um hábito.
-     * Se o hábito não existir, não faz nada.
-     */
-    fun updateProgress(habitId: UUID, date: LocalDate, value: Float) {
+    fun updateProgress(habitId: UUID, date: LocalDate, value: Int) {
         val habit = getHabitById(habitId) ?: return
         val newProgress = habit.progress.toMutableMap()
         newProgress[date] = value

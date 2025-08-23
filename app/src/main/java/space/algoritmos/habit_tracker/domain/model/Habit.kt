@@ -9,18 +9,18 @@ data class Habit(
     val name: String,
     val color: Color,
     val trackingMode: TrackingMode,
-    val goal: Float, // exemplo: 20 páginas, 3000ml, etc.
-    val progress: Map<LocalDate, Float> = emptyMap()
+    val goal: Int, // exemplo: 20 páginas, 3000ml, etc.
+    val progress: Map<LocalDate, Int> = emptyMap()
 ) {
-    fun progressOn(date: LocalDate): Float {
-        return progress[date] ?: 0f
+    fun progressOn(date: LocalDate): Int {
+        return progress[date] ?: 0
     }
 
     fun maxStreak(): Int {
         if (progress.isEmpty()) return 0
 
         val completedDates = progress
-            .filter { it.value > 0f }
+            .filter { it.value > 0 }
             .keys
             .sorted()
 
@@ -50,7 +50,7 @@ data class Habit(
         var streak = 0
         var date = today
 
-        while (progress[date]?.let { it > 0f } == true) {
+        while (progress[date]?.let { it > 0 } == true) {
             streak++
             date = date.minusDays(1)
         }
