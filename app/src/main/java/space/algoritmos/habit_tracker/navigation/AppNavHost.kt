@@ -10,7 +10,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import space.algoritmos.habit_tracker.data.repository.HabitRepository
 import space.algoritmos.habit_tracker.domain.model.Habit
-import space.algoritmos.habit_tracker.ui.screens.SplashScreen
 import space.algoritmos.habit_tracker.ui.screens.createHabitScreen.CreateHabitScreen
 import space.algoritmos.habit_tracker.ui.screens.habitRegisterScreen.HabitRegisterScreen
 import space.algoritmos.habit_tracker.ui.screens.habitScreen.HabitDetailScreen
@@ -143,7 +142,7 @@ fun AppNavHost(
                         habitsState.removeAt(habitIndex)
                         navController.popBackStack("home", inclusive = false)
                     },
-                    onCancel = {
+                    onBackClick = {
                         navController.popBackStack()
                     }
                 )

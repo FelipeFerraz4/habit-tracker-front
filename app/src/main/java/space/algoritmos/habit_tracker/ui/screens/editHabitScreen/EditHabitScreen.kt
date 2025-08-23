@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,13 +30,14 @@ fun EditHabitScreen(
     habit: Habit,
     onSave: (Habit) -> Unit,
     onDelete: (Habit) -> Unit,
-    onCancel: () -> Unit
+    onBackClick: () -> Unit
 ) {
     var name by remember { mutableStateOf(habit.name) }
     var selectedColor by remember { mutableStateOf(habit.color) }
     var trackingMode by remember { mutableStateOf(habit.trackingMode) }
     var goalText by remember { mutableStateOf(habit.goal.toString()) }
     var showGoalField by remember { mutableStateOf(habit.trackingMode == TrackingMode.VALUE) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     val colors = listOf(
         Color(0xFFE91E63), Color(0xFF9C27B0), Color(0xFF3F51B5), Color(0xFF2196F3),
@@ -53,6 +57,25 @@ fun EditHabitScreen(
                             fontSize = 28.sp,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Voltar",
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { showDeleteDialog = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Deletar Hábito",
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(32.dp)
                         )
                     }
                 },
@@ -134,61 +157,55 @@ fun EditHabitScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Column {
-                // Botão de excluir hábito
-                OutlinedButton(
-                    onClick = { onDelete(habit) },
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.error
-                    ),
-                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.error),
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(
+                    onClick = {
+                        val goal = if (showGoalField) goalText.toIntOrNull() ?: 1 else 1
+                        val updatedHabit = habit.copy(
+                            name = name,
+                            color = selectedColor,
+                            trackingMode = trackingMode,
+                            goal = goal
+                        )
+                        onSave(updatedHabit)
+                    },
+                    enabled = name.isNotBlank(),
+                    border = BorderStroke(2.dp, Color.Gray),
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .weight(1f)
                         .height(56.dp)
                 ) {
-                    Text("Excluir Hábito", fontSize = 20.sp)
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Button(
-                        onClick = {
-                            val goal = if (showGoalField) goalText.toIntOrNull() ?: 1 else 1
-                            val updatedHabit = habit.copy(
-                                name = name,
-                                color = selectedColor,
-                                trackingMode = trackingMode,
-                                goal = goal
-                            )
-                            onSave(updatedHabit)
-                        },
-                        enabled = name.isNotBlank(),
-                        border = BorderStroke(2.dp, Color.Gray),
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(56.dp)
-                    ) {
-                        Text("Salvar", fontSize = 20.sp)
-                    }
-
-                    OutlinedButton(
-                        onClick = onCancel,
-                        border = BorderStroke(2.dp, Color.Gray),
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(56.dp)
-                    ) {
-                        Text("Cancelar", fontSize = 20.sp)
-                    }
+                    Text("Salvar", fontSize = 20.sp)
                 }
             }
 
             Spacer(modifier = Modifier.size(20.dp))
+        }
+
+        // AlertDialog de confirmação de exclusão
+        if (showDeleteDialog) {
+            AlertDialog(
+                onDismissRequest = { showDeleteDialog = false },
+                title = { Text("Deletar Hábito") },
+                text = { Text("Tem certeza que deseja deletar este hábito?") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        onDelete(habit)
+                        showDeleteDialog = false
+                    }) {
+                        Text("Sim")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteDialog = false }) {
+                        Text("Não")
+                    }
+                },
+            )
         }
     }
 }
