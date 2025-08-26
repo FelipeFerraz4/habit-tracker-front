@@ -7,7 +7,6 @@
 
         <item name="windowSplashScreenBackground">@color/cor_de_fundo_splash</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
-
         <item name="postSplashScreenTheme">@style/Theme.HabitTracker</item>
 
     </style>
