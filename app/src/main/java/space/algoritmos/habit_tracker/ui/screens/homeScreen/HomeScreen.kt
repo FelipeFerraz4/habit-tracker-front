@@ -173,7 +173,8 @@ fun HomeScreen(
                         },
                         onNextMonth = {
                             currentMonth = currentMonth.plusMonths(1)
-                        }
+                        },
+                        isDarkTheme
                     )
                 }
 

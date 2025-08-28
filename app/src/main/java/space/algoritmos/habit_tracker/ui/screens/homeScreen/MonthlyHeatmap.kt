@@ -40,7 +40,8 @@ fun MonthlyHeatmap(
     habits: List<Habit>,
     currentMonth: YearMonth,
     onPreviousMonth: () -> Unit,
-    onNextMonth: () -> Unit
+    onNextMonth: () -> Unit,
+    isDarkTheme: Boolean
 ) {
     val daysInMonth = currentMonth.lengthOfMonth()
 
@@ -88,11 +89,12 @@ fun MonthlyHeatmap(
                         val day = weekStart + dayOffset
                         if (day <= daysInMonth) {
                             val date = currentMonth.atDay(day)
-                            val progress = dailyProgress(date, habits)
+                            var progress = dailyProgress(date, habits)
 
                             val color = if (progress == 0f) {
                                 Color.LightGray.copy(alpha = 0.3f)
                             } else {
+                                progress = if (isDarkTheme) {1f - progress} else progress
                                 Color(0xFF2196F3).copy(alpha = progress)
                             }
 
