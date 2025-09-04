@@ -28,7 +28,6 @@ android {
         }
     }
 
-    // Java/Kotlin versão mínima recomendada pelo Compose moderno
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -40,6 +39,11 @@ android {
     buildFeatures {
         compose = true
     }
+}
+
+// **Habilitar JUnit 5 no Gradle**
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -67,12 +71,19 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core.splashscreen)
 
-    // Testes
+    // JUnit 4 (opcional, pode manter para compatibilidade)
     testImplementation(libs.junit)
+
+    // AndroidX Test
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Compose Test (usa BoM também)
+    // JUnit 5
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+
+    // Compose Test
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
 
