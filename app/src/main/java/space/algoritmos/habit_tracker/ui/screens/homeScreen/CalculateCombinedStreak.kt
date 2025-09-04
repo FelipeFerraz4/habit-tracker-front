@@ -9,9 +9,14 @@ fun calculateCombinedStreak(habits: List<Habit>, today: LocalDate = LocalDate.no
     var streak = 0
     var date = today
 
+    // Primeiro, se não há progresso hoje, começa de ontem
+    if (habits.none { it.progressOn(today) > 0 }) {
+        date = today.minusDays(1)
+    }
+
+    // Agora conta streak para trás
     while (true) {
-        // Verifica se algum hábito foi feito nesse dia
-        val anyDone = habits.any { it.progressOn(date) > 0f }
+        val anyDone = habits.any { it.progressOn(date) > 0 }
         if (anyDone) {
             streak++
             date = date.minusDays(1)
