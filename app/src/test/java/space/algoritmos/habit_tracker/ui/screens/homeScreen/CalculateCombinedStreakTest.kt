@@ -14,7 +14,7 @@ class CalculateCombinedStreakTest {
         return Habit(
             name = "Test Habit",
             color = Color.Red,
-            trackingMode = TrackingMode.BINARY, // adapte conforme seu enum
+            trackingMode = TrackingMode.BINARY,
             status = HabitStatus.ACTIVE,
             goal = 1,
             progress = completedDates.associateWith { 1 }
@@ -22,13 +22,13 @@ class CalculateCombinedStreakTest {
     }
 
     @Test
-    fun `retorna 0 quando lista de hábitos está vazia`() {
+    fun `returns 0 when habit list is empty`() {
         val result = calculateCombinedStreak(emptyList(), LocalDate.of(2025, 9, 4))
         assertEquals(0, result)
     }
 
     @Test
-    fun `conta streak incluindo hoje quando hábitos foram feitos hoje`() {
+    fun `counts streak including today when habits are done today`() {
         val today = LocalDate.of(2025, 9, 4)
         val habit = makeHabit(today, today.minusDays(1))
         val result = calculateCombinedStreak(listOf(habit), today)
@@ -36,7 +36,7 @@ class CalculateCombinedStreakTest {
     }
 
     @Test
-    fun `ignora hoje e conta streak a partir de ontem quando nada foi feito hoje`() {
+    fun `ignores today and counts streak from yesterday when nothing is done today`() {
         val today = LocalDate.of(2025, 9, 4)
         val habit = makeHabit(today.minusDays(1), today.minusDays(2))
         val result = calculateCombinedStreak(listOf(habit), today)
@@ -44,15 +44,15 @@ class CalculateCombinedStreakTest {
     }
 
     @Test
-    fun `streak quebra se houver um dia sem hábitos feitos no meio`() {
+    fun `streak breaks if there is a missing day in the middle`() {
         val today = LocalDate.of(2025, 9, 4)
-        val habit = makeHabit(today, today.minusDays(2)) // ontem ficou vazio
+        val habit = makeHabit(today, today.minusDays(2)) // yesterday is missing
         val result = calculateCombinedStreak(listOf(habit), today)
         assertEquals(1, result)
     }
 
     @Test
-    fun `streak considera múltiplos hábitos`() {
+    fun `streak considers multiple habits together`() {
         val today = LocalDate.of(2025, 9, 4)
         val habit1 = makeHabit(today.minusDays(1))
         val habit2 = makeHabit(today.minusDays(2), today.minusDays(3))
