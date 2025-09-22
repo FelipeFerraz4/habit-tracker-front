@@ -9,10 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.domain.model.Habit
+import space.algoritmos.habit_tracker.ui.screens.habitScreen.utils.calculateDayColor
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
@@ -70,17 +70,7 @@ fun Heatmap(
                         val day = weekStart + dayOffset
                         if (day <= daysInMonth) {
                             val date = currentMonth.atDay(day)
-                            val progress = habit.progressOn(date)
-
-                            var ratio = 1f
-                            if (progress.toFloat() < habit.goal) {
-                                ratio = ((progress.toFloat() % habit.goal) / habit.goal).coerceIn(0f, 1f)
-                            }
-                            val color = if (progress == 0) {
-                                Color.LightGray.copy(alpha = 0.3f)
-                            } else {
-                                habit.color.copy(alpha = ratio)
-                            }
+                            val color = calculateDayColor(habit, date)
 
                             Box(
                                 modifier = Modifier
