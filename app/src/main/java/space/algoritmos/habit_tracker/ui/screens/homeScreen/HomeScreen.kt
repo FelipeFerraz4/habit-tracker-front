@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import space.algoritmos.habit_tracker.domain.model.Habit
+import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateCombinedStreak
+import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateMaxStreak
 import java.time.YearMonth
 
 @OptIn(ExperimentalMaterial3Api::class)

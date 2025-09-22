@@ -1,4 +1,4 @@
-package space.algoritmos.habit_tracker.ui.screens.homeScreen
+package space.algoritmos.habit_tracker.ui.screens.homeScreen.utils
 
 import space.algoritmos.habit_tracker.domain.model.Habit
 import java.time.LocalDate

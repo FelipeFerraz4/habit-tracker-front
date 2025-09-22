@@ -6,6 +6,7 @@ import space.algoritmos.habit_tracker.domain.model.Habit
 import androidx.compose.ui.graphics.Color
 import space.algoritmos.habit_tracker.domain.model.HabitStatus
 import space.algoritmos.habit_tracker.domain.model.TrackingMode
+import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateCombinedStreak
 import java.time.LocalDate
 
 class CalculateCombinedStreakTest {

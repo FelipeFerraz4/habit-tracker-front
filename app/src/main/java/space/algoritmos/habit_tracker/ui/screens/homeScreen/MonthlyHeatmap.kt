@@ -13,27 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.domain.model.Habit
-import java.time.LocalDate
+import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.dailyProgress
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
-
-fun dailyProgress(date: LocalDate, habits: List<Habit>): Float {
-    if (habits.isEmpty()) return 0f
-
-    return habits
-        .map { habit ->
-            val progress = habit.progressOn(date).toFloat()
-            when {
-                habit.goal <= 0 -> 0f
-                progress > habit.goal -> 1f
-                else -> progress / habit.goal
-            }
-        }
-        .average()
-        .toFloat()
-        .coerceIn(0f, 1f)
-}
 
 @Composable
 fun MonthlyHeatmap(
