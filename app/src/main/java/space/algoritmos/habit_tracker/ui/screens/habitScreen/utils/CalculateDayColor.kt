@@ -6,9 +6,10 @@ import java.time.LocalDate
 
 fun calculateDayColor(habit: Habit, date: LocalDate): Color {
     val progress = habit.progressOn(date)
+    val goal = kotlin.math.abs(habit.goal)
 
-    val ratio = if (progress.toFloat() < habit.goal && habit.goal > 0) {
-        (progress.toFloat() / habit.goal).coerceIn(0f, 1f)
+    val ratio = if (goal > 0 && progress.toFloat() < goal) {
+        (progress.toFloat() / goal).coerceIn(0f, 1f)
     } else {
         1f
     }
