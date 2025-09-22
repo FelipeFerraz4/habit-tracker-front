@@ -3,33 +3,31 @@ name: Update Submodule in Parent Repo
 on:
   push:
     branches:
-      - main  # or develop
+      - main  # develop
 
 jobs:
   update-parent:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout submodule repo
+      - name: Checkout parent repository with submodules
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          submodules: recursive
 
-      - name: Clone parent repository
+      - name: Configure Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git clone https://x-access-token:${{ secrets.PARENT_REPO_TOKEN }}@github.com/FelipeFerraz4/habit-tracker.git
-          cd habit-tracker
-          git checkout develop
-
-          git submodule update --init --recursive
+      - name: Update front-end submodule
+        run: |
           cd front-end
           git fetch
           git checkout ${{ github.sha }}
           cd ..
 
           git add front-end
-          git commit -m "chore: update submodule to latest commit ${{ github.sha }}"
-          git push
+          git commit -m "chore: update front-end submodule to latest commit ${{ github.sha }}"
+          git push origin develop
