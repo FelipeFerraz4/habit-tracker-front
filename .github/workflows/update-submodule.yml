@@ -3,45 +3,52 @@ name: Update Submodules in Parent Repo
 on:
   push:
     branches:
-      - main  # develop
+      - main  # quando houver push na main do submodule front-end/back-end
 
 jobs:
-  update-submodules:
+  update-parent:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout parent repository with submodules
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          submodules: recursive  # garante que todos os submodules sejam clonados
-
       - name: Configure Git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Update submodules to latest commits
+      - name: Check PARENT_REPO_TOKEN
         run: |
-          # Inicializa e atualiza todos os submodules
+          if [ -z "${{ secrets.PARENT_REPO_TOKEN }}" ]; then
+            echo "❌ ERROR: PARENT_REPO_TOKEN is missing or empty!"
+            exit 1
+          fi
+          echo "✅ PARENT_REPO_TOKEN is set"
+
+      - name: Clone parent repository
+        run: |
+          echo "Cloning parent repository..."
+          git clone https://x-access-token:${{ secrets.PARENT_REPO_TOKEN }}@github.com/FelipeFerraz4/habit-tracker.git || { echo "❌ Failed to clone parent repository. Check PARENT_REPO_TOKEN."; exit 1; }
+          cd habit-tracker
+          git checkout develop || { echo "❌ Branch 'develop' not found in parent repository."; exit 1; }
+
+          # Inicializa os submodules
           git submodule update --init --recursive
 
-          # Array com os submodules que você quer atualizar
+          # Atualiza cada submodule
           for submodule in front-end back-end; do
             if [ -d "$submodule" ]; then
               echo "Updating $submodule..."
               cd $submodule
-              git fetch --all
-              git checkout ${{ github.sha }} || echo "Commit ${{ github.sha }} not found in $submodule"
+              git fetch origin main || { echo "❌ Failed to fetch main for $submodule"; cd ..; continue; }
+              git checkout origin/main || { echo "⚠️ main branch not found in $submodule"; cd ..; continue; }
               cd ..
               git add $submodule
             else
-              echo "Submodule $submodule does not exist, skipping..."
+              echo "⚠️ Submodule $submodule not found, skipping..."
             fi
           done
 
           # Commit se houver mudanças
-          git diff --cached --quiet || git commit -m "chore: update submodules to latest commit ${{ github.sha }}"
+          git diff --cached --quiet || git commit -m "chore: update submodules to latest main commits from front-end and back-end"
 
-          # Push para o branch
-          git push origin develop
+          # Push para develop do repo pai
+          git push origin develop || { echo "❌ Failed to push to develop. Check PARENT_REPO_TOKEN or branch permissions."; exit 1; }
