@@ -1,12 +1,11 @@
-package space.algoritmos.habit_tracker.ui.screens.homeScreen
+package space.algoritmos.habit_tracker.ui.screens.homeScreen.utils
 
-import org.junit.jupiter.api.Assertions.assertEquals
+import androidx.compose.ui.graphics.Color
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import space.algoritmos.habit_tracker.domain.model.Habit
-import androidx.compose.ui.graphics.Color
 import space.algoritmos.habit_tracker.domain.model.HabitStatus
 import space.algoritmos.habit_tracker.domain.model.TrackingMode
-import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateMaxStreak
 import java.time.LocalDate
 
 class CalculateMaxStreakTest {
@@ -14,7 +13,7 @@ class CalculateMaxStreakTest {
     private fun makeHabit(vararg completedDates: LocalDate): Habit {
         return Habit(
             name = "Test Habit",
-            color = Color.Red,
+            color = Color.Companion.Red,
             trackingMode = TrackingMode.BINARY,
             status = HabitStatus.ACTIVE,
             goal = 1,
@@ -25,21 +24,21 @@ class CalculateMaxStreakTest {
     @Test
     fun `returns 0 when habit list is empty`() {
         val result = calculateMaxStreak(emptyList())
-        assertEquals(0, result)
+        Assertions.assertEquals(0, result)
     }
 
     @Test
     fun `returns 0 when no habit has progress`() {
         val habit = Habit(
             name = "Empty Habit",
-            color = Color.Blue,
+            color = Color.Companion.Blue,
             trackingMode = TrackingMode.BINARY,
             status = HabitStatus.ACTIVE,
             goal = 1,
             progress = emptyMap()
         )
         val result = calculateMaxStreak(listOf(habit))
-        assertEquals(0, result)
+        Assertions.assertEquals(0, result)
     }
 
     @Test
@@ -47,7 +46,7 @@ class CalculateMaxStreakTest {
         val today = LocalDate.of(2025, 9, 4)
         val habit = makeHabit(today, today.minusDays(1), today.minusDays(2))
         val result = calculateMaxStreak(listOf(habit))
-        assertEquals(3, result)
+        Assertions.assertEquals(3, result)
     }
 
     @Test
@@ -55,7 +54,7 @@ class CalculateMaxStreakTest {
         val today = LocalDate.of(2025, 9, 4)
         val habit = makeHabit(today, today.minusDays(2))
         val result = calculateMaxStreak(listOf(habit))
-        assertEquals(1, result)
+        Assertions.assertEquals(1, result)
     }
 
     @Test
@@ -64,7 +63,7 @@ class CalculateMaxStreakTest {
         val habit1 = makeHabit(today.minusDays(1))
         val habit2 = makeHabit(today.minusDays(2), today.minusDays(3))
         val result = calculateMaxStreak(listOf(habit1, habit2))
-        assertEquals(3, result)
+        Assertions.assertEquals(3, result)
     }
 
     @Test
@@ -75,6 +74,6 @@ class CalculateMaxStreakTest {
             today.minusDays(5), today.minusDays(6), today.minusDays(7), today.minusDays(8) // sequence of 4
         )
         val result = calculateMaxStreak(listOf(habit))
-        assertEquals(4, result)
+        Assertions.assertEquals(4, result)
     }
 }
