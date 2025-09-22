@@ -17,6 +17,10 @@ import space.algoritmos.habit_tracker.ui.screens.homeScreen.HomeScreen
 import java.time.LocalDate
 import java.util.UUID
 import android.util.Log
+import space.algoritmos.habit_tracker.navigation.utils.addHabit
+import space.algoritmos.habit_tracker.navigation.utils.deleteHabit
+import space.algoritmos.habit_tracker.navigation.utils.updateHabit
+import space.algoritmos.habit_tracker.navigation.utils.updateHabitProgress
 import space.algoritmos.habit_tracker.ui.screens.editHabitScreen.EditHabitScreen
 
 @Composable
@@ -26,11 +30,10 @@ fun AppNavHost(
     onToggleTheme: () -> Unit,
     habitRepository: HabitRepository
 ) {
-    // Inicializa lista de hábitos a partir do repository
+    // Initialize habits list from repository
     val habitsState = remember { mutableStateListOf<Habit>().apply { addAll(habitRepository.getAllHabits()) } }
 
     NavHost(navController = navController, startDestination = "home") {
-
 
         composable("home") {
             HomeScreen(
@@ -82,18 +85,8 @@ fun AppNavHost(
                     habit = habitsState[habitIndex],
                     onSave = { value ->
                         val today = LocalDate.now()
-                        val habit = habitsState[habitIndex]
-
-                        // Atualiza no repository
-                        habitRepository.updateProgress(habit.id, today, value)
-
-                        // Atualiza o estado local para a UI
-                        habitsState[habitIndex] = habit.copy(
-                            progress = habit.progress.toMutableMap().apply {
-                                put(today, value)
-                            }
-                        )
-
+                        val updatedHabit = updateHabitProgress(habitsState[habitIndex], today, value, habitRepository)
+                        habitsState[habitIndex] = updatedHabit
                         navController.popBackStack()
                     },
                     onCancel = {
@@ -110,8 +103,9 @@ fun AppNavHost(
                 onSave = { newHabit ->
                     try {
                         Log.d("HabitDebug", "Tentando salvar hábito: $newHabit")
-                        habitRepository.addHabit(newHabit)
-                        habitsState.add(newHabit)
+                        val updatedList = addHabit(habitsState, newHabit, habitRepository)
+                        habitsState.clear()
+                        habitsState.addAll(updatedList)
                         Log.d("HabitDebug", "Hábito salvo com sucesso!")
                         navController.popBackStack()
                     } catch (e: Exception) {
@@ -122,7 +116,6 @@ fun AppNavHost(
                     navController.popBackStack()
                 }
             )
-
         }
 
         composable("habitEdit/{habitId}") { backStackEntry ->
@@ -133,13 +126,15 @@ fun AppNavHost(
                 EditHabitScreen(
                     habit = habitsState[habitIndex],
                     onSave = { updatedHabit ->
-                        habitRepository.updateHabit(updatedHabit)
-                        habitsState[habitIndex] = updatedHabit
+                        val updatedList = updateHabit(habitsState, updatedHabit, habitRepository)
+                        habitsState.clear()
+                        habitsState.addAll(updatedList)
                         navController.popBackStack()
                     },
                     onDelete = {
-                        habitRepository.deleteHabit(habitsState[habitIndex].id)
-                        habitsState.removeAt(habitIndex)
+                        val updatedList = deleteHabit(habitsState, habitsState[habitIndex].id, habitRepository)
+                        habitsState.clear()
+                        habitsState.addAll(updatedList)
                         navController.popBackStack("home", inclusive = false)
                     },
                     onBackClick = {
