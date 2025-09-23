@@ -83,6 +83,10 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(libs.junit.jupiter.params)
 
+    // Mockito moderno para Kotlin
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+
     // Compose Test
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
