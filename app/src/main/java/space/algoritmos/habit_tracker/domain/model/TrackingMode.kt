@@ -1,6 +1,12 @@
 package space.algoritmos.habit_tracker.domain.model
 
 enum class TrackingMode {
-    BINARY,       // Fiz ou não fiz
-    VALUE         // Número de páginas, litros, etc.
+    BINARY {
+        override fun isCompleted(progress: Int, goal: Int) = progress > 0
+    },
+    VALUE {
+        override fun isCompleted(progress: Int, goal: Int) = progress >= goal
+    };
+
+    abstract fun isCompleted(progress: Int, goal: Int): Boolean
 }
