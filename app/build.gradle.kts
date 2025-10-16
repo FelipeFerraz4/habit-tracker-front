@@ -71,6 +71,9 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core.splashscreen)
 
+    //MPAndroidChart
+    implementation(libs.mpandroidchart)
+
     // JUnit 4 (opcional, pode manter para compatibilidade)
     testImplementation(libs.junit)
 

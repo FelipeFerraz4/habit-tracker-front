@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun StatisticItem(label: String, value: String) {
@@ -25,9 +26,9 @@ fun StatisticItem(label: String, value: String) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(label, fontWeight = FontWeight.Medium)
+            Text(label, fontWeight = FontWeight.Medium, fontSize = 16.sp)
             Text(value, fontWeight = FontWeight.Bold)
         }
     }

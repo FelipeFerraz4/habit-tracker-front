@@ -1,6 +1,8 @@
 package space.algoritmos.habit_tracker.ui.screens.statisticsScreen
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,6 +13,8 @@ import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateCombinedStreak
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateMaxStreak
+import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.DailyAggregateLineChart
+import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.WeeklyBarChart
 import java.time.LocalDate
 
 @Composable
@@ -29,7 +33,8 @@ fun GeneralStatistics(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -44,5 +49,17 @@ fun GeneralStatistics(
         StatisticItem("Sequência Atual Combinada", "$combinedStreak dias")
         StatisticItem("Maior Sequência Combinada", "$maxStreak dias")
         StatisticItem("Média de Progresso por Dia", "%.1f".format(avgProgress))
+
+        Spacer(Modifier.height(16.dp))
+
+        // Agregado semanal geral
+        WeeklyBarChart(habits = habits)
+
+        Spacer(Modifier.height(12.dp))
+
+        // Linha diária agregada geral (somando todos os hábitos)
+        DailyAggregateLineChart(habits)
+
+        Spacer(Modifier.height(16.dp))
     }
 }
