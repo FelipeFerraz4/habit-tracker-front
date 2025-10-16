@@ -10,7 +10,7 @@ data class Habit(
     val color: Color,
     val trackingMode: TrackingMode,
     val status: HabitStatus,
-    val goal: Int, // exemplo: 20 páginas, 3000ml, etc.
+    val goal: Int,
     val progress: Map<LocalDate, Int> = emptyMap()
 ) {
     fun progressOn(date: LocalDate): Int {

@@ -2,6 +2,7 @@ package space.algoritmos.habit_tracker.data.local.dao
 
 import android.content.ContentValues
 import android.database.Cursor
+import android.util.Log
 import space.algoritmos.habit_tracker.data.local.DatabaseHelper
 import space.algoritmos.habit_tracker.data.local.converters.ColorConverter
 import space.algoritmos.habit_tracker.data.local.converters.ProgressJsonConverter
@@ -77,14 +78,22 @@ class HabitDao(private val dbHelper: DatabaseHelper) {
 
     // Helper interno
     private fun cursorToHabit(cursor: Cursor): Habit {
+        // Adicione logs para depurar
+        val goalValue = cursor.getInt(cursor.getColumnIndexOrThrow("goal"))
+        val progressJson = cursor.getString(cursor.getColumnIndexOrThrow("progress"))
+
+        // Log para ver o que está no banco
+        Log.d("HabitDaoDebug", "Goal from DB: $goalValue")
+        Log.d("HabitDaoDebug", "Progress JSON from DB: $progressJson")
+
         return Habit(
             id = UuidConverter.fromString(cursor.getString(cursor.getColumnIndexOrThrow("id")))!!,
             name = cursor.getString(cursor.getColumnIndexOrThrow("name")),
             color = ColorConverter.fromString(cursor.getString(cursor.getColumnIndexOrThrow("color")))!!,
             trackingMode = TrackingMode.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("tracking_mode"))),
             status = HabitStatus.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("status"))),
-            goal = cursor.getInt(cursor.getColumnIndexOrThrow("goal")),
-            progress = ProgressJsonConverter.fromJson(cursor.getString(cursor.getColumnIndexOrThrow("progress")))
+            goal = goalValue,
+            progress = ProgressJsonConverter.fromJson(progressJson)
         )
     }
 }

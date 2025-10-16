@@ -10,7 +10,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
 
     companion object {
         const val DATABASE_NAME = "habit_tracker_database.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -34,8 +34,20 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         try {
-            db?.execSQL("DROP TABLE IF EXISTS habits")
-            onCreate(db)
+            if (db == null) return
+
+            // Atualizações graduais, de acordo com a versão antiga
+            var version = oldVersion
+
+//            if (version < 2) {
+//                // Adiciona a coluna status sem perder dados antigos
+//                db.execSQL("ALTER TABLE habits ADD COLUMN status TEXT DEFAULT 'ACTIVE'")
+//                version = 2
+//            }
+
+            // Exemplo de futura atualização:
+            // if (version < 3) { ... ; version = 3 }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }

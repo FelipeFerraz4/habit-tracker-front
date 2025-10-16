@@ -22,6 +22,7 @@ import space.algoritmos.habit_tracker.navigation.utils.deleteHabit
 import space.algoritmos.habit_tracker.navigation.utils.updateHabit
 import space.algoritmos.habit_tracker.navigation.utils.updateHabitProgress
 import space.algoritmos.habit_tracker.ui.screens.editHabitScreen.EditHabitScreen
+import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.StatisticsScreen // 👈 import da tela
 
 @Composable
 fun AppNavHost(
@@ -30,7 +31,6 @@ fun AppNavHost(
     onToggleTheme: () -> Unit,
     habitRepository: HabitRepository
 ) {
-    // Initialize habits list from repository
     val habitsState = remember { mutableStateListOf<Habit>().apply { addAll(habitRepository.getAllHabits()) } }
 
     NavHost(navController = navController, startDestination = "home") {
@@ -46,11 +46,20 @@ fun AppNavHost(
                 onToggleTheme = onToggleTheme,
                 onLoginClick = { /* TODO */ },
                 onLogoutClick = { /* TODO */ },
-                onStatsClick = { /* TODO */ },
+                onStatsClick = { // 👈 agora chama a tela de estatísticas
+                    navController.navigate("statistics")
+                },
                 onSyncClick = { /* TODO */ },
                 onAddHabitClick = {
                     navController.navigate("habitCreate")
                 }
+            )
+        }
+
+        composable("statistics") { // 👈 nova rota adicionada
+            StatisticsScreen(
+                habits = habitsState,
+                onBackClick = { navController.popBackStack() }
             )
         }
 

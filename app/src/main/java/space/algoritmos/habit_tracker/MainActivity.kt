@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
         val splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
+//        deleteDatabase("habit_tracker_database.db")
 
         val themePrefs = ThemePreferences(this)
 
