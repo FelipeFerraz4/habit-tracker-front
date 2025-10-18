@@ -26,7 +26,7 @@ fun DailyHabitCountBarChart(
 ) {
     val colors = MaterialTheme.colorScheme
 
-    val entries = remember(habits) {
+    val entries = remember(habits, daysToShow) {
         val today = LocalDate.now()
         val startDate = today.minusDays(daysToShow.toLong() - 1)
 
@@ -74,18 +74,22 @@ fun DailyHabitCountBarChart(
             }
         },
         update = { chart ->
-            val barColors = entries.map { Purple40.toArgb() }
             val dataSet = BarDataSet(entries, "Hábitos por dia").apply {
+                setColor(Purple40.toArgb())
                 valueTextColor = colors.onSurfaceVariant.toArgb()
                 setDrawValues(false)
                 highLightColor = Purple80.toArgb() // cor ao clicar
             }
-            
 
             chart.data = BarData(dataSet).apply { barWidth = 0.6f }
+
+            // Encaixa exatamente as barras nas bordas do eixo X
+            chart.setFitBars(true)
+
             chart.data.notifyDataChanged()
             chart.notifyDataSetChanged()
 
+            // Janela visível e foco no dia mais recente
             chart.setVisibleXRangeMaximum(daysToShow.toFloat())
             chart.moveViewToX(entries.lastOrNull()?.x ?: 0f)
 
@@ -114,7 +118,8 @@ fun DailyHabitCountBarChart(
                 override fun getY(): Float = (-height).toFloat()
             }
 
-            chart.invalidate()
+            // Animação de entrada após configurar dados/viewport
+            chart.animateY(700)
         }
     )
 }
