@@ -14,6 +14,7 @@ import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateCombinedStreak
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateMaxStreak
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.DailyAggregateLineChart
+import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.DailyHabitCountBarChart
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.WeeklyBarChart
 import java.time.LocalDate
 
@@ -49,6 +50,12 @@ fun GeneralStatistics(
         StatisticItem("Sequência Atual Combinada", "$combinedStreak dias")
         StatisticItem("Maior Sequência Combinada", "$maxStreak dias")
         StatisticItem("Média de Progresso por Dia", "%.1f".format(avgProgress))
+
+        Spacer(Modifier.height(16.dp))
+
+        Text("Hábitos concluídos por dia", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+
+        DailyHabitCountBarChart(habits)
 
         Spacer(Modifier.height(16.dp))
 
