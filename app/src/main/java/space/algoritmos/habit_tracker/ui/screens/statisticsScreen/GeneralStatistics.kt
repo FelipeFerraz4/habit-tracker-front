@@ -15,6 +15,7 @@ import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateCombi
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateMaxStreak
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.DailyAggregateLineChart
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.DailyHabitCountBarChart
+import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.GeneralHabitsProgressLineChart
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.WeeklyBarChart
 import java.time.LocalDate
 
@@ -53,14 +54,16 @@ fun GeneralStatistics(
 
         Spacer(Modifier.height(16.dp))
 
-        Text("Hábitos concluídos por dia", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        Text("Hábitos concluídos", fontWeight = FontWeight.Bold, fontSize = 20.sp)
 
         DailyHabitCountBarChart(habits)
 
         Spacer(Modifier.height(16.dp))
 
+        Text("Evolução dos hábitos", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+
         // Agregado semanal geral
-        WeeklyBarChart(habits = habits)
+        GeneralHabitsProgressLineChart(habits = habits)
 
         Spacer(Modifier.height(12.dp))
 
