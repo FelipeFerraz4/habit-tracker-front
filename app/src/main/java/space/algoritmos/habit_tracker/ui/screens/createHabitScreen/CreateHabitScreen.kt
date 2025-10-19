@@ -41,6 +41,10 @@ fun CreateHabitScreen(
         Color(0xFF009688), Color(0xFF4CAF50), Color(0xFFFFC107), Color(0xFFFF5722)
     )
 
+    // Estado para o seletor de cor personalizada
+    var showColorPicker by remember { mutableStateOf(false) }
+    var customColor by remember { mutableStateOf(selectedColor) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -72,7 +76,7 @@ fun CreateHabitScreen(
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("Criar novo hábito", style = MaterialTheme.typography.headlineMedium)
-                Spacer(modifier = Modifier.height(64.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
                 OutlinedTextField(
                     value = name,
@@ -87,33 +91,128 @@ fun CreateHabitScreen(
 
                 Spacer(modifier = Modifier.height(44.dp))
 
-                Text("Escolha a cor:", style = MaterialTheme.typography.bodyLarge, fontSize = 20.sp)
+                // ===== Escolha de cor =====
+                Text(
+                    "Escolha a cor:",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontSize = 20.sp
+                )
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     colors.forEach { color ->
                         Box(
                             modifier = Modifier
-                                .size(32.dp)
+                                .size(36.dp)
                                 .background(color, CircleShape)
                                 .border(
                                     width = 2.dp,
                                     color = if (selectedColor == color) MaterialTheme.colorScheme.onBackground else Color.Transparent,
                                     shape = CircleShape
                                 )
-                                .clickable { selectedColor = color }
+                                .clickable {
+                                    selectedColor = color
+                                    customColor = color
+                                }
                         )
                     }
+
+                    // Botão de cor personalizada
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .background(customColor, CircleShape)
+                            .border(
+                                width = 2.dp,
+                                color = if (!colors.contains(selectedColor)) MaterialTheme.colorScheme.onBackground else Color.Gray,
+                                shape = CircleShape
+                            )
+                            .clickable { showColorPicker = true },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("+", fontSize = 24.sp, color = MaterialTheme.colorScheme.onPrimary)
+                    }
+                }
+
+                // ===== Dialog do seletor de cor personalizada =====
+                if (showColorPicker) {
+                    AlertDialog(
+                        onDismissRequest = { showColorPicker = false },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                selectedColor = customColor
+                                showColorPicker = false
+                            }) {
+                                Text("Confirmar")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showColorPicker = false }) {
+                                Text("Cancelar")
+                            }
+                        },
+                        title = { Text("Escolha uma cor personalizada") },
+                        text = {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(80.dp)
+                                        .background(customColor, CircleShape)
+                                        .border(2.dp, Color.Gray, CircleShape)
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                // Sliders RGB
+                                var r by remember { mutableFloatStateOf(customColor.red) }
+                                var g by remember { mutableFloatStateOf(customColor.green) }
+                                var b by remember { mutableFloatStateOf(customColor.blue) }
+
+                                fun updateColor() {
+                                    customColor = Color(r, g, b)
+                                }
+
+                                listOf(
+                                    "R" to r,
+                                    "G" to g,
+                                    "B" to b
+                                ).forEach { (label, value) ->
+                                    Text("$label: ${(value * 255).toInt()}")
+                                    Slider(
+                                        value = value,
+                                        onValueChange = {
+                                            when (label) {
+                                                "R" -> r = it
+                                                "G" -> g = it
+                                                "B" -> b = it
+                                            }
+                                            updateColor()
+                                        },
+                                        valueRange = 0f..1f,
+                                        modifier = Modifier.fillMaxWidth(0.9f)
+                                    )
+                                }
+                            }
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(44.dp))
 
+                // ===== Campo de meta =====
                 if (showGoalField) {
+                    Spacer(modifier = Modifier.height(20.dp))
                     Text(
                         text = "Defina a meta para este hábito:",
-                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp, fontWeight = FontWeight.SemiBold),
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ),
                         color = MaterialTheme.colorScheme.onSurface
                     )
 
@@ -145,16 +244,16 @@ fun CreateHabitScreen(
                         trackingMode = if (showGoalField) TrackingMode.VALUE else TrackingMode.BINARY
                     },
                     border = BorderStroke(2.dp, Color.Gray),
-                    modifier = Modifier
-                        .padding(4.dp)
+                    modifier = Modifier.padding(4.dp)
                 ) {
                     Text(if (showGoalField) "Remover meta" else "Adicionar meta", fontSize = 20.sp)
                 }
-
             }
 
+            Spacer(modifier = Modifier.height(30.dp))
             Spacer(modifier = Modifier.weight(1f))
 
+            // ===== Botões de ação =====
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
@@ -165,7 +264,7 @@ fun CreateHabitScreen(
                 Button(
                     onClick = {
                         val goal = if (showGoalField) goalText.toIntOrNull() ?: 1 else 1
-                        val finalMode = if(showGoalField) TrackingMode.VALUE else TrackingMode.BINARY
+                        val finalMode = if (showGoalField) TrackingMode.VALUE else TrackingMode.BINARY
                         val newHabit = Habit(
                             id = UUID.randomUUID(),
                             name = name,
