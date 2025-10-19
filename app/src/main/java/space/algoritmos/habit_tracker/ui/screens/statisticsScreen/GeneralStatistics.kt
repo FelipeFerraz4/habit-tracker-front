@@ -19,7 +19,6 @@ import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.GeneralH
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.WeeklyProgressPieChart
 import java.time.LocalDate
 import java.time.DayOfWeek
-import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
 @Composable
@@ -31,8 +30,21 @@ fun GeneralStatistics(
     val totalDays = habits.sumOf { it.progress.size }
     val combinedStreak = calculateCombinedStreak(habits, LocalDate.now())
     val maxStreak = calculateMaxStreak(habits)
-    val avgProgress = if (totalDays > 0) {
-        habits.sumOf { it.progress.values.sum() }.toFloat() / totalDays
+    val daysToShow = 30
+    val today = LocalDate.now()
+    val start = today.minusDays(daysToShow - 1L)
+    val totalPoints = habits.size * daysToShow
+
+    val sumRatios = habits.sumOf { habit ->
+        val goal = habit.goal.coerceAtLeast(1)
+        (0 until daysToShow).sumOf { offset ->
+            val date = start.plusDays(offset.toLong())
+            val raw = habit.progressOn(date).toDouble()
+            (raw / goal).coerceAtMost(1.0) // limite opcional a 100%
+        }
+    }
+    val avgProgressPercent30d = if (totalPoints > 0) {
+        ((sumRatios / totalPoints) * 100.0).toFloat()
     } else 0f
 
     // Semana atual começando na segunda-feira
@@ -54,11 +66,11 @@ fun GeneralStatistics(
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        StatisticItem("Hábitos Ativos", totalHabits.toString())
+        StatisticItem("Número de Hábitos", totalHabits.toString())
         StatisticItem("Dias Registrados", totalDays.toString())
-        StatisticItem("Sequência Atual Combinada", "$combinedStreak dias")
-        StatisticItem("Maior Sequência Combinada", "$maxStreak dias")
-        StatisticItem("Média de Progresso por Dia", "%.1f".format(avgProgress))
+        StatisticItem("Ofensiva Atual", "$combinedStreak dias")
+        StatisticItem("Maior Ofensiva Registrado", "$maxStreak dias")
+        StatisticItem("Média de Progresso por Dia", "%.1f".format(avgProgressPercent30d))
 
         Spacer(Modifier.height(16.dp))
 
