@@ -16,6 +16,7 @@ import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateCombi
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateMaxStreak
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.DailyHabitCountBarChart
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.GeneralHabitsProgressLineChart
+import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.WeekdayPatternBarChartMulti
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.WeeklyProgressPieChart
 import java.time.LocalDate
 import java.time.DayOfWeek
@@ -81,6 +82,11 @@ fun GeneralStatistics(
 
         Text("Progresso dos Hábitos", fontWeight = FontWeight.Bold, fontSize = 20.sp)
         GeneralHabitsProgressLineChart(habits = habits)
+
+        Spacer(Modifier.height(16.dp))
+
+        Text("Progresso por Dia da Semana", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        WeekdayPatternBarChartMulti(habits)
 
         Spacer(Modifier.height(16.dp))
 

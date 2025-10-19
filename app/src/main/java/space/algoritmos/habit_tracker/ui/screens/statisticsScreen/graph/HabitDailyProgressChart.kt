@@ -75,7 +75,7 @@ fun HabitDailyProgressChart(
         },
         update = { chart ->
             val dataSet = BarDataSet(entries, habit.name).apply {
-                setColor(colors.primary.toArgb())
+                setColor(habit.color.toArgb())
                 valueTextColor = colors.onSurfaceVariant.toArgb()
                 setDrawValues(false)
                 highLightColor = colors.secondary.toArgb()
