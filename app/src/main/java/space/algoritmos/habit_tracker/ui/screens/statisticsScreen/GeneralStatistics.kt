@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -13,11 +14,13 @@ import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateCombinedStreak
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateMaxStreak
-import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.DailyAggregateLineChart
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.DailyHabitCountBarChart
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.GeneralHabitsProgressLineChart
-import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.WeeklyBarChart
+import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.graph.WeeklyProgressPieChart
 import java.time.LocalDate
+import java.time.DayOfWeek
+import java.time.format.DateTimeFormatter
+import java.time.temporal.TemporalAdjusters
 
 @Composable
 fun GeneralStatistics(
@@ -31,6 +34,11 @@ fun GeneralStatistics(
     val avgProgress = if (totalDays > 0) {
         habits.sumOf { it.progress.values.sum() }.toFloat() / totalDays
     } else 0f
+
+    // Semana atual começando na segunda-feira
+    val startOfWeek = remember {
+        LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+    }
 
     Column(
         modifier = modifier
@@ -54,21 +62,22 @@ fun GeneralStatistics(
 
         Spacer(Modifier.height(16.dp))
 
-        Text("Hábitos concluídos", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-
+        Text("Hábitos Concluídos", fontWeight = FontWeight.Bold, fontSize = 20.sp)
         DailyHabitCountBarChart(habits)
 
         Spacer(Modifier.height(16.dp))
 
-        Text("Evolução dos hábitos", fontWeight = FontWeight.Bold, fontSize = 20.sp)
-
-        // Agregado semanal geral
+        Text("Progresso dos Hábitos", fontWeight = FontWeight.Bold, fontSize = 20.sp)
         GeneralHabitsProgressLineChart(habits = habits)
 
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(16.dp))
 
-        // Linha diária agregada geral (somando todos os hábitos)
-        DailyAggregateLineChart(habits)
+        Text("Progresso Semanal", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        WeeklyProgressPieChart(
+            habits = habits,
+            startOfWeek = startOfWeek,
+            capAt100 = true
+        )
 
         Spacer(Modifier.height(16.dp))
     }

@@ -154,7 +154,7 @@ fun GeneralHabitsProgressLineChart(
                     val meta = e?.data as? PointMeta
                     val raw = meta?.raw ?: e?.y?.toInt() ?: 0
                     val percentTxt = if (normalizeToPercent) " (${e?.y?.toInt()}%)" else ""
-                    tv.text = "$habitName — $dateTxt\nProgresso: $raw$percentTxt"
+                    tv.text = "$habitName\n$dateTxt\n$raw$percentTxt"
                     tv.setTextColor(colors.onSurface.toArgb())
                     tv.setBackgroundColor(colors.surfaceContainerHigh.toArgb())
                     super.refreshContent(e, h)
