@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,7 +34,7 @@ fun CreateHabitScreen(
     var selectedColor by remember { mutableStateOf(Color(0xFF4CAF50)) }
     var trackingMode by remember { mutableStateOf<TrackingMode?>(null) }
     var goalText by remember { mutableStateOf("") }
-    var showGoalField by remember { mutableStateOf(false) }
+    var showGoalField by remember { mutableStateOf(true) }
 
     val colors = listOf(
         Color(0xFFE91E63), Color(0xFF9C27B0), Color(0xFF3F51B5), Color(0xFF2196F3),
@@ -109,6 +110,35 @@ fun CreateHabitScreen(
 
                 Spacer(modifier = Modifier.height(44.dp))
 
+                if (showGoalField) {
+                    Text(
+                        text = "Defina a meta para este hábito:",
+                        style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp, fontWeight = FontWeight.SemiBold),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    OutlinedTextField(
+                        value = goalText,
+                        onValueChange = { goalText = it },
+                        label = { Text("Meta (ex: 20 páginas, 3000 ml, etc.)") },
+                        placeholder = { Text("Insira o valor da meta") },
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                        textStyle = TextStyle(
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        ),
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+
                 OutlinedButton(
                     onClick = {
                         showGoalField = !showGoalField
@@ -121,20 +151,6 @@ fun CreateHabitScreen(
                     Text(if (showGoalField) "Remover meta" else "Adicionar meta", fontSize = 20.sp)
                 }
 
-                if (showGoalField) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    OutlinedTextField(
-                        value = goalText,
-                        onValueChange = { goalText = it },
-                        label = { Text("Meta (ex: 20 páginas)", fontSize = 18.sp) },
-                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        textStyle = TextStyle(fontSize = 22.sp),
-                        modifier = Modifier
-                            .fillMaxWidth(0.93f)
-                            .clip(RoundedCornerShape(16.dp)),
-                        shape = RoundedCornerShape(16.dp),
-                    )
-                }
             }
 
             Spacer(modifier = Modifier.weight(1f))
