@@ -46,10 +46,10 @@ fun AppNavHost(
                 onToggleTheme = onToggleTheme,
                 onLoginClick = { /* TODO */ },
                 onLogoutClick = { /* TODO */ },
-                onStatsClick = { // 👈 agora chama a tela de estatísticas
+                onSyncClick = { /* TODO */ },
+                onStatsClick = {
                     navController.navigate("statistics")
                 },
-                onSyncClick = { /* TODO */ },
                 onAddHabitClick = {
                     navController.navigate("habitCreate")
                 }

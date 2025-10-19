@@ -49,6 +49,16 @@ fun HomeScreen(
         mutableIntStateOf(calculateCombinedStreak(habits))
     }
 
+    var showDialog by remember { mutableStateOf(false) }
+    var dialogType by remember { mutableStateOf("") }
+
+    if (showDialog) {
+        ComingSoonDialog(
+            onDismiss = { showDialog = false },
+            onType = dialogType
+        )
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -57,11 +67,13 @@ fun HomeScreen(
                 isDarkTheme = isDarkTheme,
                 onToggleTheme = onToggleTheme,
                 onLoginClick = {
-                    onLoginClick()
+                    dialogType = "login"
+                    showDialog = true
                     coroutineScope.launch { drawerState.close() }
                 },
                 onLogoutClick = {
-                    onLogoutClick()
+                    dialogType = "logout"
+                    showDialog = true
                     coroutineScope.launch { drawerState.close() }
                 },
                 onStatsClick = {
@@ -73,7 +85,8 @@ fun HomeScreen(
                     coroutineScope.launch { drawerState.close() }
                 },
                 onSyncClick = {
-                    onSyncClick()
+                    dialogType = "sync"
+                    showDialog = true
                     coroutineScope.launch { drawerState.close() }
                 },
                 drawerState = drawerState
@@ -109,7 +122,10 @@ fun HomeScreen(
                         }
                     },
                     actions = {
-                        IconButton(onClick = onSyncClick) {
+                        IconButton(onClick = {
+                            dialogType = "sync"
+                            showDialog = true
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Sync,
                                 contentDescription = "Sincronizar",
