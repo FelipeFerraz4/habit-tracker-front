@@ -21,3 +21,22 @@ fun scheduleDailyNotification(workManager: WorkManager) {
         workRequest
     )
 }
+
+fun scheduleHabitReminder(workManager: WorkManager, hour: Int, minute: Int) {
+    val now = java.time.LocalDateTime.now()
+    val targetTime = now.withHour(hour).withMinute(minute).withSecond(0)
+    var delay = Duration.between(now, targetTime).toMillis()
+    if (delay < 0) delay += TimeUnit.DAYS.toMillis(1)
+
+    val workRequest = OneTimeWorkRequestBuilder<HabitReminderWorker>()
+        .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+        .addTag("habit_reminder")
+        .build()
+
+    workManager.enqueueUniqueWork(
+        "habit_reminder",
+        ExistingWorkPolicy.REPLACE,
+        workRequest
+    )
+}
+
