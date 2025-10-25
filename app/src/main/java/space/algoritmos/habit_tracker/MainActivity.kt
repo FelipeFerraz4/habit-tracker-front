@@ -24,6 +24,7 @@ import space.algoritmos.habit_tracker.navigation.AppNavHost
 import space.algoritmos.habit_tracker.notifications.DailyNotificationWorker
 // ✅ Importa o agendador
 import space.algoritmos.habit_tracker.notifications.scheduleDailyNotification
+import space.algoritmos.habit_tracker.notifications.scheduleHabitReminder
 
 class MainActivity : ComponentActivity() {
 
@@ -50,12 +51,15 @@ class MainActivity : ComponentActivity() {
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 scheduleDailyNotification(workManager)
+                scheduleHabitReminder(workManager, 9, 0)
             } else {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         } else {
             // Para versões anteriores ao Android 13
             scheduleDailyNotification(workManager)
+            scheduleHabitReminder(workManager, 9, 0)
+
         }
 
         // -------------------------------------------------
