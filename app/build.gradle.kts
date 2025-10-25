@@ -90,6 +90,10 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
 
+    // Local Notification
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.appcompat)
+
     // Compose Test
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)

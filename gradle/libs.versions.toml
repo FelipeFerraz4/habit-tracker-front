@@ -15,6 +15,8 @@ gson = "2.10.1"
 datastorePreferences = "1.1.0"
 coreSplashScreen = "1.0.1"
 mpandroidchart = "v3.1.0"
+work = "2.9.0"
+appcompat = "1.7.0"
 
 [libraries]
 # Core AndroidX
@@ -58,6 +60,10 @@ junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engi
 junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit5" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version = "5.6.0" }
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.1.0" }
+
+# --- Local Notification ---
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
