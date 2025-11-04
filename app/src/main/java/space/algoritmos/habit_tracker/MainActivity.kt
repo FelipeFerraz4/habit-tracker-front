@@ -22,7 +22,7 @@ import space.algoritmos.habit_tracker.data.local.dao.HabitDao
 import space.algoritmos.habit_tracker.data.repository.HabitRepository
 import space.algoritmos.habit_tracker.navigation.AppNavHost
 import space.algoritmos.habit_tracker.notifications.DailyNotificationWorker
-// ✅ Importa o agendador
+// Importa o agendador
 import space.algoritmos.habit_tracker.notifications.scheduleDailyNotification
 import space.algoritmos.habit_tracker.notifications.scheduleHabitReminder
 
