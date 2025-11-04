@@ -126,9 +126,21 @@ fun GeneralHabitsProgressLineChart(
         },
         update = { chart ->
             chart.data = LineData(lineDataSets)
-
             chart.data.notifyDataChanged()
             chart.notifyDataSetChanged()
+
+            val dataMax = chart.data?.yMax ?: 100f
+            val topWithMargin = maxOf(100f, dataMax * 1.20f) // 10% de margem visual
+            chart.axisLeft.apply {
+                axisMinimum = 0f
+                axisMaximum = topWithMargin
+                // mantém o formatter em %
+                valueFormatter = object : ValueFormatter() {
+                    override fun getAxisLabel(value: Float, axis: AxisBase): String {
+                        return "${value.toInt()}%"
+                    }
+                }
+            }
 
             // Janela e foco no último dia
             chart.setVisibleXRangeMaximum(daysToShow.toFloat())
