@@ -5,11 +5,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,7 +36,6 @@ fun CreateHabitScreen(
 ) {
     var name by remember { mutableStateOf("") }
     var selectedColor by remember { mutableStateOf(Color(0xFF4CAF50)) }
-    var trackingMode by remember { mutableStateOf<TrackingMode?>(null) }
     var goalText by remember { mutableStateOf("") }
     var showGoalField by remember { mutableStateOf(true) }
 
@@ -74,7 +77,13 @@ fun CreateHabitScreen(
                 .padding(12.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            // Nova Column rolável para o conteúdo principal
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .weight(1f) // Ocupa o espaço disponível, empurrando os botões para baixo
+                    .verticalScroll(rememberScrollState()) // Adiciona a rolagem vertical
+            ) {
                 Text("Criar novo hábito", style = MaterialTheme.typography.headlineMedium)
                 Spacer(modifier = Modifier.height(32.dp))
 
@@ -202,58 +211,45 @@ fun CreateHabitScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(44.dp))
+            Spacer(modifier = Modifier.height(44.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = "Defina a meta para este hábito:",
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
 
-                // ===== Campo de meta =====
-                if (showGoalField) {
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        text = "Defina a meta para este hábito:",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.SemiBold
-                        ),
+                Spacer(modifier = Modifier.height(10.dp))
+
+                OutlinedTextField(
+                    value = goalText,
+                    onValueChange = { goalText = it },
+                    label = { Text("Meta (ex: 20 páginas, 3000 ml, etc.)") },
+                    placeholder = { Text("Insira o valor da meta") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                    textStyle = TextStyle(
+                        fontSize = 20.sp,
                         color = MaterialTheme.colorScheme.onSurface
-                    )
+                    ),
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                )
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-                    OutlinedTextField(
-                        value = goalText,
-                        onValueChange = { goalText = it },
-                        label = { Text("Meta (ex: 20 páginas, 3000 ml, etc.)") },
-                        placeholder = { Text("Insira o valor da meta") },
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        textStyle = TextStyle(
-                            fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.onSurface
-                        ),
-                        shape = RoundedCornerShape(16.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-                }
-
-                OutlinedButton(
-                    onClick = {
-                        showGoalField = !showGoalField
-                        trackingMode = if (showGoalField) TrackingMode.VALUE else TrackingMode.BINARY
-                    },
-                    border = BorderStroke(2.dp, Color.Gray),
-                    modifier = Modifier.padding(4.dp)
-                ) {
-                    Text(if (showGoalField) "Remover meta" else "Adicionar meta", fontSize = 20.sp)
-                }
+                // Adicionado um Spacer ao final para garantir que o último elemento não fique colado nos botões
+                Spacer(modifier = Modifier.height(30.dp))
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
-            Spacer(modifier = Modifier.weight(1f))
 
             // ===== Botões de ação =====
+            // Esta Row permanece fixa na parte inferior da tela
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
