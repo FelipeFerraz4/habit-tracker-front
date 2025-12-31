@@ -140,30 +140,19 @@ fun EditHabitScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                OutlinedButton(
-                    onClick = {
-                        showGoalField = !showGoalField
-                        trackingMode = if (showGoalField) TrackingMode.VALUE else TrackingMode.BINARY
-                    },
-                    border = BorderStroke(2.dp, Color.Gray),
-                ) {
-                    Text(if (showGoalField) "Remover meta" else "Adicionar meta", fontSize = 20.sp)
-                }
+                Spacer(modifier = Modifier.height(16.dp))
+                OutlinedTextField(
+                    value = goalText,
+                    onValueChange = { goalText = it },
+                    label = { Text("Meta (ex: 20 páginas)", fontSize = 18.sp) },
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                    textStyle = TextStyle(fontSize = 22.sp),
+                    modifier = Modifier
+                        .fillMaxWidth(0.93f)
+                        .clip(RoundedCornerShape(16.dp)),
+                    shape = RoundedCornerShape(16.dp),
+                )
 
-                if (showGoalField) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    OutlinedTextField(
-                        value = goalText,
-                        onValueChange = { goalText = it },
-                        label = { Text("Meta (ex: 20 páginas)", fontSize = 18.sp) },
-                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                        textStyle = TextStyle(fontSize = 22.sp),
-                        modifier = Modifier
-                            .fillMaxWidth(0.93f)
-                            .clip(RoundedCornerShape(16.dp)),
-                        shape = RoundedCornerShape(16.dp),
-                    )
-                }
                 // Spacer para garantir que o conteúdo não cole nos botões inferiores
                 Spacer(modifier = Modifier.height(20.dp))
             }
