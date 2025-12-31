@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="app_name">Daily Habit</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+
+    <!-- CreateHabitScreen -->
+    <string name="create_new_habit">Create new habit</string>
+    <string name="habit_name_label">Habit Name</string>
+    <string name="choose_color">Choose a colour:</string>
+    <string name="choose_custom_color">Choose a custom colour</string>
+    <string name="define_habit_goal">Define the goal for this habit:</string>
+    <string name="goal_label">Goal (e.g. 20 pages, 3000 ml, etc.)</string>
+    <string name="goal_placeholder">Enter the goal value</string>
+
+    <!-- StatisticsScreen -->
+    <string name="chart_tooltip_format">%1$s\n%2$d</string>
+    <string name="weekly_chart_tooltip_format">Week • %1$d</string>
+    <string name="streak_chart_tooltip_format">%1$s • streak %2$d</string>
+    <string name="daily_habit_count_format">%1$s\n%2$d</string>
+</resources>
