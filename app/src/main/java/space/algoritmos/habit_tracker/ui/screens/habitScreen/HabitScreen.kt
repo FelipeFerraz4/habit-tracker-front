@@ -1,6 +1,9 @@
 package space.algoritmos.habit_tracker.ui.screens.habitScreen
 
 import androidx.compose.foundation.layout.*
+// Importações para a funcionalidade de rolagem
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
@@ -71,69 +74,73 @@ fun HabitDetailScreen(
             )
         }
     ) { innerPadding ->
+        // Column principal que organiza a tela em "conteúdo" e "botão de ação"
         Column(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Título centralizado
-            Row(
+            // Column interna e rolável para todo o conteúdo de detalhe
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                    .weight(1f) // Ocupa todo o espaço disponível, empurrando o botão para baixo
+                    .verticalScroll(rememberScrollState()), // <<-- MUDANÇA PRINCIPAL
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp) // Espaçamento entre os itens
             ) {
+                // Título
                 Text(
                     text = habit.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontSize = 32.sp
                 )
-            }
 
-            // 🔥 Streak
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "🔥", fontSize = 36.sp)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "${habit.streakCount()} dias", fontSize = 20.sp)
+                // 🔥 Streak
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceAround, // Usa SpaceAround para melhor distribuição
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = "🔥", fontSize = 36.sp)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "${habit.streakCount()} dias", fontSize = 20.sp)
+                    }
+
+                    // Spacer(modifier = Modifier.weight(1f)) // Não é mais necessário com SpaceAround
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = "🏆", fontSize = 36.sp)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Máx: ${habit.maxStreak()}", fontSize = 20.sp)
+                    }
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                Heatmap(
+                    habit = habitState,
+                    currentMonth = currentMonth,
+                    onPreviousMonth = { currentMonth = currentMonth.minusMonths(1) },
+                    onNextMonth = { currentMonth = currentMonth.plusMonths(1) }
+                )
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "🏆", fontSize = 36.sp)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Máx: ${habit.maxStreak()}", fontSize = 20.sp)
-                }
+                // Adiciona um spacer no final da rolagem para não colar no botão
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
-            Heatmap(
-                habit = habitState,
-                currentMonth = currentMonth,
-                onPreviousMonth = { currentMonth = currentMonth.minusMonths(1) },
-                onNextMonth = { currentMonth = currentMonth.plusMonths(1) }
-            )
+            // O Spacer com weight(1f) foi removido daqui e a lógica movida para a Column interna
 
-            Spacer(modifier = Modifier.weight(1f)) // empurra o botão para o final
-
-            // 📅 Botão de registrar
+            // 📅 Botão de registrar - Fixo na parte inferior
             Button(
                 onClick = {
-                    // 1️⃣ Registrar o progresso real no banco/repositório
                     val today = LocalDate.now()
                     val newValue = habit.progress[today] ?: 0
 
-                    onRegisterClick() // aqui você chama a função que salva no HabitRepository
+                    onRegisterClick()
 
-                    // 2️⃣ Atualizar apenas o progresso do dia atual no estado local
                     habitState = habitState.copy(
                         progress = habitState.progress.toMutableMap().apply {
                             put(today, newValue)
@@ -144,11 +151,12 @@ fun HabitDetailScreen(
                     containerColor = habitState.color,
                     contentColor = Color.White
                 ),
-                modifier = Modifier.fillMaxWidth().height(56.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
             ) {
                 Text(text = "Registrar Hábito", fontSize = 24.sp)
             }
-            Spacer(modifier = Modifier.size(20.dp))
         }
     }
 }

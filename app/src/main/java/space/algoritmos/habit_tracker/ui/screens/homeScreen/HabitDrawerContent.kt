@@ -6,6 +6,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+// Importações necessárias para o scroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.WbSunny
@@ -42,11 +45,13 @@ fun HabitDrawerContent(
 
 
     ModalDrawerSheet(
-        modifier = Modifier.width(280.dp) // aproximadamente metade em celulares comuns
+        modifier = Modifier.width(280.dp)
     ) {
+        // A principal mudança está aqui
         Column(
             modifier = Modifier
                 .fillMaxHeight()
+                .verticalScroll(rememberScrollState()) // <<-- ADICIONADO SCROLL
                 .padding(16.dp)
         ) {
             Text(
