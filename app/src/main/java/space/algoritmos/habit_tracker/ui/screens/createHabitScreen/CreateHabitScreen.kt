@@ -147,7 +147,7 @@ fun CreateHabitScreen(
                     }
                 }
 
-                // ===== Dialog do seletor de cor personalizada =====
+                // ===== Dialog do seletor de cor personalizada (AGORA RESPONSIVO) =====
                 if (showColorPicker) {
                     AlertDialog(
                         onDismissRequest = { showColorPicker = false },
@@ -166,7 +166,11 @@ fun CreateHabitScreen(
                         },
                         title = { Text("Escolha uma cor personalizada") },
                         text = {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            // Adicionamos uma Column rolável aqui
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.verticalScroll(rememberScrollState()) // <<--- ESSA É A MUDANÇA
+                            ) {
                                 Box(
                                     modifier = Modifier
                                         .size(80.dp)
@@ -184,11 +188,7 @@ fun CreateHabitScreen(
                                     customColor = Color(r, g, b)
                                 }
 
-                                listOf(
-                                    "R" to r,
-                                    "G" to g,
-                                    "B" to b
-                                ).forEach { (label, value) ->
+                                listOf("R" to r, "G" to g, "B" to b).forEach { (label, value) ->
                                     Text("$label: ${(value * 255).toInt()}")
                                     Slider(
                                         value = value,
@@ -211,7 +211,7 @@ fun CreateHabitScreen(
                     )
                 }
 
-            Spacer(modifier = Modifier.height(44.dp))
+                Spacer(modifier = Modifier.height(44.dp))
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = "Defina a meta para este hábito:",

@@ -5,12 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-// Adicionar as importações para a rolagem
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -23,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,7 +39,6 @@ fun EditHabitScreen(
 ) {
     var name by remember { mutableStateOf(habit.name) }
     var selectedColor by remember { mutableStateOf(habit.color) }
-    var trackingMode by remember { mutableStateOf(habit.trackingMode) }
     var goalText by remember { mutableStateOf(habit.goal.toString()) }
     var showGoalField by remember { mutableStateOf(habit.trackingMode == TrackingMode.VALUE) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -48,6 +47,11 @@ fun EditHabitScreen(
         Color(0xFFE91E63), Color(0xFF9C27B0), Color(0xFF3F51B5), Color(0xFF2196F3),
         Color(0xFF009688), Color(0xFF4CAF50), Color(0xFFFFC107), Color(0xFFFF5722)
     )
+
+    // ===== ESTADOS PARA O SELETOR DE COR PERSONALIZADA =====
+    var showColorPicker by remember { mutableStateOf(false) }
+    // Inicializa 'customColor' com a cor selecionada (que vem do hábito)
+    var customColor by remember { mutableStateOf(selectedColor) }
 
     Scaffold(
         topBar = {
@@ -97,12 +101,11 @@ fun EditHabitScreen(
                 .padding(12.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Nova Column rolável para o conteúdo principal
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .weight(1f) // Ocupa o espaço disponível, empurrando o botão de salvar para baixo
-                    .verticalScroll(rememberScrollState()) // Adiciona a rolagem vertical
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
                     value = name,
@@ -117,60 +120,160 @@ fun EditHabitScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
+                // ===== Escolha de cor (MODIFICADO) =====
                 Text("Escolha a cor:", style = MaterialTheme.typography.bodyLarge, fontSize = 20.sp)
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     colors.forEach { color ->
                         Box(
                             modifier = Modifier
-                                .size(32.dp)
+                                .size(36.dp)
                                 .background(color, CircleShape)
                                 .border(
                                     width = 2.dp,
                                     color = if (selectedColor == color) MaterialTheme.colorScheme.onBackground else Color.Transparent,
                                     shape = CircleShape
                                 )
-                                .clickable { selectedColor = color }
+                                .clickable {
+                                    selectedColor = color
+                                    // Atualiza customColor também, para que o picker comece da última cor selecionada
+                                    customColor = color
+                                }
                         )
                     }
+
+                    // Botão de cor personalizada
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .background(customColor, CircleShape)
+                            .border(
+                                width = 2.dp,
+                                // Destaca se a cor selecionada não for uma das predefinidas
+                                color = if (!colors.contains(selectedColor)) MaterialTheme.colorScheme.onBackground else Color.Gray,
+                                shape = CircleShape
+                            )
+                            .clickable { showColorPicker = true },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("+", fontSize = 24.sp, color = MaterialTheme.colorScheme.onPrimary)
+                    }
+                }
+
+
+                // ===== Dialog do seletor de cor personalizada (AGORA RESPONSIVO) =====
+                if (showColorPicker) {
+                    AlertDialog(
+                        onDismissRequest = { showColorPicker = false },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                selectedColor = customColor
+                                showColorPicker = false
+                            }) {
+                                Text("Confirmar")
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showColorPicker = false }) {
+                                Text("Cancelar")
+                            }
+                        },
+                        title = { Text("Escolha uma cor personalizada") },
+                        text = {
+                            // Adicionamos uma Column rolável aqui
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier.verticalScroll(rememberScrollState()) // <<--- ESSA É A MUDANÇA
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(80.dp)
+                                        .background(customColor, CircleShape)
+                                        .border(2.dp, Color.Gray, CircleShape)
+                                )
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                // Sliders RGB
+                                var r by remember { mutableFloatStateOf(customColor.red) }
+                                var g by remember { mutableFloatStateOf(customColor.green) }
+                                var b by remember { mutableFloatStateOf(customColor.blue) }
+
+                                fun updateColor() {
+                                    customColor = Color(r, g, b)
+                                }
+
+                                listOf("R" to r, "G" to g, "B" to b).forEach { (label, value) ->
+                                    Text("$label: ${(value * 255).toInt()}")
+                                    Slider(
+                                        value = value,
+                                        onValueChange = {
+                                            when (label) {
+                                                "R" -> r = it
+                                                "G" -> g = it
+                                                "B" -> b = it
+                                            }
+                                            updateColor()
+                                        },
+                                        valueRange = 0f..1f,
+                                        modifier = Modifier.fillMaxWidth(0.9f)
+                                    )
+                                }
+                            }
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = "Defina a meta para este hábito:",
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(10.dp))
                 OutlinedTextField(
                     value = goalText,
                     onValueChange = { goalText = it },
-                    label = { Text("Meta (ex: 20 páginas)", fontSize = 18.sp) },
+                    label = { Text("Meta (ex: 20 páginas, 3000 ml, etc.)") },
+                    singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                    textStyle = TextStyle(fontSize = 22.sp),
+                    textStyle = TextStyle(fontSize = 20.sp),
                     modifier = Modifier
-                        .fillMaxWidth(0.93f)
-                        .clip(RoundedCornerShape(16.dp)),
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
                     shape = RoundedCornerShape(16.dp),
                 )
 
-                // Spacer para garantir que o conteúdo não cole nos botões inferiores
+                Spacer(modifier = Modifier.height(20.dp))
+
                 Spacer(modifier = Modifier.height(20.dp))
             }
 
-            // O Spacer com weight(1f) foi removido daqui e a lógica movida para a Column interna
-
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(
                     onClick = {
                         val goal = if (showGoalField) goalText.toIntOrNull() ?: 1 else 1
+                        val finalMode = if (showGoalField) TrackingMode.VALUE else TrackingMode.BINARY
                         val updatedHabit = habit.copy(
                             name = name,
                             color = selectedColor,
-                            trackingMode = trackingMode,
+                            trackingMode = finalMode,
                             goal = goal
                         )
                         onSave(updatedHabit)
