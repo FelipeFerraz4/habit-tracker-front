@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+// Importações para a funcionalidade de rolagem
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -48,7 +51,7 @@ fun HabitRegisterScreen(
     onSave: (Int) -> Unit,
     onCancel: () -> Unit
 ) {
-    var today = LocalDate.now()
+    val today = LocalDate.now()
 
     var value by remember {
         mutableStateOf(
@@ -68,7 +71,7 @@ fun HabitRegisterScreen(
         )
     }
 
-    var statusMode by remember {
+    val statusMode by remember {
         mutableStateOf(
             when (habit.trackingMode) {
                 TrackingMode.BINARY -> "binary"
@@ -109,144 +112,170 @@ fun HabitRegisterScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            // Adicionado para manter os botões na parte inferior
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = habit.name,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(bottom = 16.dp),
-                fontSize = 32.sp,
-                textAlign = TextAlign.Justify
-            )
-
+            // A Column rolável para o conteúdo principal
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
-                    .padding(4.dp),
-                verticalArrangement = Arrangement.Center,
+                    .weight(1f) // Ocupa o espaço disponível
+                    .verticalScroll(rememberScrollState()), // <<-- MUDANÇA PRINCIPAL
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = label,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(bottom = 24.dp),
-                    fontSize = 24.sp,
-                    textAlign = TextAlign.Center
+                    text = habit.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 16.dp),
+                    fontSize = 32.sp,
+                    textAlign = TextAlign.Center // Melhor para nomes curtos
                 )
 
-                when (statusMode) {
-                    "binary" -> {
-                        Spacer(modifier = Modifier.size(150.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 18.dp)
-                        ) {
-                            Button(
-                                onClick = { selectedValue = 1 },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (selectedValue == 1) MaterialTheme.colorScheme.primary
-                                    else MaterialTheme.colorScheme.secondaryContainer, // destaque neutro
-                                    contentColor = if (selectedValue == 1) MaterialTheme.colorScheme.onPrimary
-                                    else MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier
-                                    .height(48.dp)
-                                    .width(150.dp)
-                            ) {
-                                Text("Sim", fontSize = 20.sp)
-                            }
+                // Este Column agrupa o conteúdo que deve ser centralizado e rolável
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
+                    // Arrangement.Center aqui garante que o conteúdo tente se centralizar
+                    // verticalmente dentro do espaço rolável.
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(bottom = 24.dp),
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center
+                    )
 
-                            Spacer(modifier = Modifier.size(20.dp))
-
-                            Button(
-                                onClick = { selectedValue = 0 },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = if (selectedValue == 0) MaterialTheme.colorScheme.primary
-                                    else MaterialTheme.colorScheme.secondaryContainer, // destaque neutro
-                                    contentColor = if (selectedValue == 0) MaterialTheme.colorScheme.onPrimary
-                                    else MaterialTheme.colorScheme.onSecondaryContainer
-                                ),
-                                modifier = Modifier
-                                    .height(48.dp)
-                                    .width(150.dp)
-                            ) {
-                                Text("Não", fontSize = 20.sp)
-                            }
-
-                        }
-                    }
-
-                    "value" -> {
-                        Spacer(modifier = Modifier.size(80.dp))
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            OutlinedTextField(
-                                value = value,
-                                onValueChange = {
-                                    value = it
-                                    selectedValue = it.toIntOrNull()?.coerceAtLeast(0) ?: 0
-                                },
-                                label = {
-                                    Text("Digite a quantidade (un)", fontSize = 20.sp)
-                                },
-                                textStyle = TextStyle( // centraliza o texto digitado
-                                    fontSize = 20.sp,
-                                    textAlign = TextAlign.Center
-                                ),
-                                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                                modifier = Modifier
-                                    .fillMaxWidth(0.95f)
-                                    .clip(RoundedCornerShape(16.dp)),
-                                shape = RoundedCornerShape(16.dp),
-                            )
-
-                            Spacer(modifier = Modifier.size(50.dp))
-
+                    when (statusMode) {
+                        "binary" -> {
+                            // Spacers podem ser reduzidos ou removidos para telas menores
+                            Spacer(modifier = Modifier.height(80.dp))
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(0.5f)
+                                modifier = Modifier.padding(bottom = 18.dp)
                             ) {
                                 Button(
-                                    onClick = {
-                                        val current = value.toIntOrNull() ?: 0
-                                        val newValue = (current - 1).coerceAtLeast(0) // evita negativo
-                                        value = newValue.toString()
-                                        selectedValue = newValue
-                                    },
-                                    modifier = Modifier.weight(1f)
+                                    onClick = { selectedValue = 1 },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = if (selectedValue == 1) MaterialTheme.colorScheme.primary
+                                        else MaterialTheme.colorScheme.secondaryContainer,
+                                        contentColor = if (selectedValue == 1) MaterialTheme.colorScheme.onPrimary
+                                        else MaterialTheme.colorScheme.onSecondaryContainer
+                                    ),
+                                    modifier = Modifier
+                                        .height(48.dp)
+                                        .width(150.dp)
                                 ) {
-                                    Text("-", fontSize = 24.sp)
+                                    Text("Sim", fontSize = 20.sp)
                                 }
+
+                                Spacer(modifier = Modifier.size(20.dp))
 
                                 Button(
-                                    onClick = {
-                                        val current = value.toIntOrNull() ?: 0
-                                        val newValue = current + 1
-                                        value = newValue.toString()
-                                        selectedValue = newValue
-                                    },
-                                    modifier = Modifier.weight(1f)
+                                    onClick = { selectedValue = 0 },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = if (selectedValue == 0) MaterialTheme.colorScheme.primary
+                                        else MaterialTheme.colorScheme.secondaryContainer,
+                                        contentColor = if (selectedValue == 0) MaterialTheme.colorScheme.onPrimary
+                                        else MaterialTheme.colorScheme.onSecondaryContainer
+                                    ),
+                                    modifier = Modifier
+                                        .height(48.dp)
+                                        .width(150.dp)
                                 ) {
-                                    Text("+", fontSize = 24.sp)
+                                    Text("Não", fontSize = 20.sp)
                                 }
                             }
+                        }
 
-                            Spacer(modifier = Modifier.size(24.dp))
+                        "value" -> {
+                            Spacer(modifier = Modifier.height(40.dp))
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                OutlinedTextField(
+                                    value = value,
+                                    onValueChange = {
+                                        value = it
+                                        selectedValue = it.toIntOrNull()?.coerceAtLeast(0) ?: 0
+                                    },
+                                    label = {
+                                        Text("Digite a quantidade (un)", fontSize = 20.sp)
+                                    },
+                                    textStyle = TextStyle(
+                                        fontSize = 20.sp,
+                                        textAlign = TextAlign.Center
+                                    ),
+                                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.95f)
+                                        .clip(RoundedCornerShape(16.dp)),
+                                    shape = RoundedCornerShape(16.dp),
+                                )
+
+                                Spacer(modifier = Modifier.size(50.dp))
+
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth(0.5f)
+                                ) {
+                                    Button(
+                                        onClick = {
+                                            val current = value.toIntOrNull() ?: 0
+                                            val newValue = (current - 1).coerceAtLeast(0)
+                                            value = newValue.toString()
+                                            selectedValue = newValue
+                                        },
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        Text("-", fontSize = 24.sp)
+                                    }
+
+                                    Button(
+                                        onClick = {
+                                            val current = value.toIntOrNull() ?: 0
+                                            val newValue = current + 1
+                                            value = newValue.toString()
+                                            selectedValue = newValue
+                                        },
+                                        modifier = Modifier.weight(1f)
+                                    ) {
+                                        Text("+", fontSize = 24.sp)
+                                    }
+                                }
+                            }
                         }
                     }
+                    // Spacer no final da coluna rolável para não colar nos botões de baixo
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
 
+            // Botões de Ação - Permanecem na parte inferior
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.padding(top = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp) // Adiciona um respiro na parte inferior
             ) {
+                OutlinedButton(
+                    onClick = onCancel,
+                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.onBackground),
+                    modifier = Modifier
+                        .height(56.dp)
+                        .weight(1f)
+                ) {
+                    Text("Cancelar", fontSize = 24.sp)
+                }
+
                 Button(
                     onClick = {
                         val finalValue = when (habit.trackingMode) {
-                            TrackingMode.BINARY -> selectedValue ?: return@Button
+                            TrackingMode.BINARY -> selectedValue as Int? ?: return@Button
                             TrackingMode.VALUE -> (value.toIntOrNull() ?: return@Button).coerceAtLeast(0)
                         }
                         onSave(finalValue)
@@ -257,24 +286,11 @@ fun HabitRegisterScreen(
                     },
                     modifier = Modifier
                         .height(56.dp)
-                        .width(160.dp)
+                        .weight(1f)
                 ) {
                     Text("Salvar", fontSize = 24.sp)
                 }
-
-                OutlinedButton(
-                    onClick = onCancel,
-                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.onBackground),
-                    modifier = Modifier
-                        .height(56.dp)
-                        .width(160.dp)
-                ) {
-                    Text("Cancelar", fontSize = 24.sp)
-                }
             }
-
-            Spacer(modifier = Modifier.size(32.dp))
         }
-
     }
 }
