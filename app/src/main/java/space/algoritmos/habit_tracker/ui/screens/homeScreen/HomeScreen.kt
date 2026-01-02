@@ -12,9 +12,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateCombinedStreak
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateMaxStreak
@@ -102,7 +105,7 @@ fun HomeScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Habit Tracker",
+                                text = stringResource(id = R.string.app_name),
                                 fontSize = 32.sp,
                                 style = MaterialTheme.typography.titleLarge,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -115,7 +118,7 @@ fun HomeScreen(
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
-                                contentDescription = "Menu",
+                                contentDescription = stringResource(id = R.string.home_menu_description),
                                 tint = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.size(32.dp)
                             )
@@ -128,7 +131,7 @@ fun HomeScreen(
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Sync,
-                                contentDescription = "Sincronizar",
+                                contentDescription = stringResource(id = R.string.home_sync_description),
                                 tint = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.size(32.dp)
                             )
@@ -143,7 +146,7 @@ fun HomeScreen(
                 FloatingActionButton(onClick = onAddHabitClick) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Adicionar Hábito"
+                        contentDescription = stringResource(id = R.string.home_add_habit_description)
                     )
                 }
             },
@@ -168,7 +171,14 @@ fun HomeScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(text = "🔥", fontSize = 36.sp)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "$streakCount dias", fontSize = 20.sp)
+                            Text(
+                                text = LocalContext.current.resources.getQuantityString(
+                                    R.plurals.streak_days,
+                                    streakCount,
+                                    streakCount
+                                ),
+                                fontSize = 20.sp
+                            )
                         }
 
                         Spacer(modifier = Modifier.weight(1f))
@@ -176,7 +186,10 @@ fun HomeScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(text = "🏆", fontSize = 36.sp)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "Máx: $maxStreak", fontSize = 20.sp)
+                            Text(
+                                text = stringResource(id = R.string.streak_max, maxStreak),
+                                fontSize = 20.sp
+                            )
                         }
                     }
                 }
@@ -199,7 +212,7 @@ fun HomeScreen(
                 item {
                     Column {
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = "Seus hábitos:", fontSize = 24.sp)
+                        Text(text = stringResource(id = R.string.home_your_habits_title), fontSize = 24.sp)
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }

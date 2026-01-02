@@ -61,6 +61,12 @@
     <string name="heatmap_previous_month">前の月</string>
     <string name="heatmap_next_month">次の月</string>
 
+    <!-- HomeScreen -->
+    <string name="home_menu_description">メニュー</string>
+    <string name="home_sync_description">同期</string>
+    <string name="home_add_habit_description">習慣を追加</string>
+    <string name="home_your_habits_title">あなたの習慣：</string>
+
     <!-- StatisticsScreen -->
     <string name="chart_tooltip_format">%1$s\n%2$d</string>
     <string name="weekly_chart_tooltip_format">週 • %1$d</string>

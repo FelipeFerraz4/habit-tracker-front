@@ -62,6 +62,12 @@
     <string name="heatmap_previous_month">Previous month</string>
     <string name="heatmap_next_month">Next month</string>
 
+    <!-- HomeScreen -->
+    <string name="home_menu_description">Menu</string>
+    <string name="home_sync_description">Sync</string>
+    <string name="home_add_habit_description">Add habit</string>
+    <string name="home_your_habits_title">Your habits:</string>
+
     <!-- StatisticsScreen -->
     <string name="chart_tooltip_format">%1$s\n%2$d</string>
     <string name="weekly_chart_tooltip_format">Week • %1$d</string>
