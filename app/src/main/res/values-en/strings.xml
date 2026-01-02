@@ -6,6 +6,14 @@
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
 
+    <!-- ComingSoonDialog -->
+    <string name="coming_soon_title">Coming soon!</string>
+    <string name="coming_soon_login_message">Login will be available in the next version of the app.</string>
+    <string name="coming_soon_logout_message">Logout will be available in the next version of the app.</string>
+    <string name="coming_soon_sync_message">Cloud sync will be available in the next version.</string>
+    <string name="coming_soon_default_message">This feature will be available in the next version of the app.</string>
+    <string name="coming_soon_ok_button">OK</string>
+
     <!-- CreateHabitScreen -->
     <string name="create_new_habit">Create new habit</string>
     <string name="habit_name_label">Habit Name</string>
@@ -39,6 +47,10 @@
     <string name="register_habit_value_placeholder">Enter the amount (unit)</string>
     <string name="common_yes">Yes</string>
     <string name="common_no">No</string>
+
+    <!-- Heatmap -->
+    <string name="heatmap_previous_month">Previous month</string>
+    <string name="heatmap_next_month">Next month</string>
 
     <!-- StatisticsScreen -->
     <string name="chart_tooltip_format">%1$s\n%2$d</string>

@@ -6,6 +6,14 @@
     <string name="cancel">キャンセル</string>
     <string name="save">保存</string>
 
+    <!-- ComingSoonDialog -->
+    <string name="coming_soon_title">近日公開！</string>
+    <string name="coming_soon_login_message">ログインは次のバージョンで利用可能になります。</string>
+    <string name="coming_soon_logout_message">ログアウトは次のバージョンで利用可能になります。</string>
+    <string name="coming_soon_sync_message">クラウド同期は次のバージョンで利用可能になります。</string>
+    <string name="coming_soon_default_message">この機能は次のバージョンで利用可能になります。</string>
+    <string name="coming_soon_ok_button">OK</string>
+
     <!-- CreateHabitScreen -->
     <string name="create_new_habit">新しい習慣を作成</string>
     <string name="habit_name_label">習慣の名前</string>
@@ -38,6 +46,10 @@
     <string name="register_habit_value_placeholder">数量を入力（単位）</string>
     <string name="common_yes">はい</string>
     <string name="common_no">いいえ</string>
+
+    <!-- Heatmap -->
+    <string name="heatmap_previous_month">前の月</string>
+    <string name="heatmap_next_month">次の月</string>
 
     <!-- StatisticsScreen -->
     <string name="chart_tooltip_format">%1$s\n%2$d</string>
