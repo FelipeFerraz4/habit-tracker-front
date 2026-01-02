@@ -72,4 +72,17 @@
     <string name="weekly_chart_tooltip_format">週 • %1$d</string>
     <string name="streak_chart_tooltip_format">%1$s • 連続記録 %2$d</string>
     <string name="daily_habit_count_format">%1$s\n%2$d</string>
+
+    <!-- Statistics - DailyHabitCountBarChart -->
+    <string name="chart_no_data">データなし</string>
+    <string name="chart_habits_per_day_label">1日あたりの習慣</string>
+
+    <!-- Statistics - GeneralHabitsProgressLineChart & Common -->
+    <string name="chart_progress_tooltip_percent">
+        %1$s\n%2$s\n%3$d（%4$d％）
+    </string>
+    <string name="chart_progress_tooltip_raw">
+        %1$s\n%2$s\n%3$d
+    </string>
+
 </resources>

@@ -7,16 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarData
 import space.algoritmos.habit_tracker.ui.theme.Purple40
 import space.algoritmos.habit_tracker.ui.theme.Purple80
 import java.time.LocalDate
+import java.time.format.FormatStyle
 
 @Composable
 fun DailyHabitCountBarChart(
@@ -25,6 +27,9 @@ fun DailyHabitCountBarChart(
     daysToShow: Int = 30
 ) {
     val colors = MaterialTheme.colorScheme
+
+    val noDataText = stringResource(id = R.string.chart_no_data)
+    val habitsPerDayLabel = stringResource(id = R.string.chart_habits_per_day_label)
 
     val entries = remember(habits, daysToShow) {
         val today = LocalDate.now()
@@ -51,7 +56,7 @@ fun DailyHabitCountBarChart(
                 legend.isEnabled = false
 
                 xAxis.apply {
-                    valueFormatter = DateAxisFormatter("dd/MM")
+                    valueFormatter = DateAxisFormatter()
                     position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
                     textColor = colors.onSurface.toArgb()
                     gridColor = colors.outlineVariant.toArgb()
@@ -69,12 +74,12 @@ fun DailyHabitCountBarChart(
                 }
                 axisRight.isEnabled = false
 
-                setNoDataText("Sem dados")
+                setNoDataText(noDataText)
                 setNoDataTextColor(colors.onSurfaceVariant.toArgb())
             }
         },
         update = { chart ->
-            val dataSet = BarDataSet(entries, "Hábitos por dia").apply {
+            val dataSet = BarDataSet(entries, habitsPerDayLabel).apply {
                 setColor(Purple40.toArgb())
                 valueTextColor = colors.onSurfaceVariant.toArgb()
                 setDrawValues(false)
@@ -82,23 +87,18 @@ fun DailyHabitCountBarChart(
             }
 
             chart.data = BarData(dataSet).apply { barWidth = 0.6f }
-
-            // Encaixa exatamente as barras nas bordas do eixo X
             chart.setFitBars(true)
-
             chart.data.notifyDataChanged()
             chart.notifyDataSetChanged()
-
-            // Janela visível e foco no dia mais recente
             chart.setVisibleXRangeMaximum(daysToShow.toFloat())
             chart.moveViewToX(entries.lastOrNull()?.x ?: 0f)
 
-            // Tooltip
+            // Tooltip (já estava usando recurso de string, o que é ótimo)
             chart.marker = object : com.github.mikephil.charting.components.MarkerView(
                 chart.context, android.R.layout.simple_list_item_1
             ) {
                 private val tv = findViewById<android.widget.TextView>(android.R.id.text1)
-                private val vf = DateAxisFormatter("dd MMM")
+                private val vf = DateAxisFormatter(FormatStyle.MEDIUM)
                 override fun refreshContent(
                     e: com.github.mikephil.charting.data.Entry?,
                     h: com.github.mikephil.charting.highlight.Highlight?
@@ -117,8 +117,6 @@ fun DailyHabitCountBarChart(
                 override fun getX(): Float = (-width / 2).toFloat()
                 override fun getY(): Float = (-height).toFloat()
             }
-
-            // Animação de entrada após configurar dados/viewport
             chart.animateY(700)
         }
     )

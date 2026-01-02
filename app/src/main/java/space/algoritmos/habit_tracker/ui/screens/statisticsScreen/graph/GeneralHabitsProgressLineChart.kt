@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.LineChart
@@ -17,8 +18,10 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
+import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import java.time.LocalDate
+import java.time.format.FormatStyle
 
 // Metadados para o Marker (nome do hábito, data, valor bruto e meta)
 private data class PointMeta(
@@ -36,6 +39,8 @@ fun GeneralHabitsProgressLineChart(
     normalizeToPercent: Boolean = true
 ) {
     val colors = MaterialTheme.colorScheme
+    // MODIFICADO: Carregando o texto de "Sem dados" a partir dos recursos.
+    val noDataText = stringResource(id = R.string.chart_no_data)
 
     // 1) Eixo temporal comum de N dias; 2) Um dataset por hábito; 3) Normalização por meta (0–100%)
     val lineDataSets = remember(habits, daysToShow, normalizeToPercent) {
@@ -93,7 +98,8 @@ fun GeneralHabitsProgressLineChart(
                 }
 
                 xAxis.apply {
-                    valueFormatter = DateAxisFormatter("dd/MM")
+                    // MODIFICADO: Usando nosso formatador de data localizado.
+                    valueFormatter = DateAxisFormatter()
                     position = XAxis.XAxisPosition.BOTTOM
                     textColor = colors.onSurface.toArgb()
                     gridColor = colors.outlineVariant.toArgb()
@@ -120,7 +126,8 @@ fun GeneralHabitsProgressLineChart(
                 }
                 axisRight.isEnabled = false
 
-                setNoDataText("Sem dados")
+                // MODIFICADO: Usando a string de recurso para o texto de "Sem dados".
+                setNoDataText(noDataText)
                 setNoDataTextColor(colors.onSurfaceVariant.toArgb())
             }
         },
@@ -130,11 +137,10 @@ fun GeneralHabitsProgressLineChart(
             chart.notifyDataSetChanged()
 
             val dataMax = chart.data?.yMax ?: 100f
-            val topWithMargin = maxOf(100f, dataMax * 1.20f) // 10% de margem visual
+            val topWithMargin = maxOf(100f, dataMax * 1.20f)
             chart.axisLeft.apply {
                 axisMinimum = 0f
                 axisMaximum = topWithMargin
-                // mantém o formatter em %
                 valueFormatter = object : ValueFormatter() {
                     override fun getAxisLabel(value: Float, axis: AxisBase): String {
                         return "${value.toInt()}%"
@@ -152,21 +158,35 @@ fun GeneralHabitsProgressLineChart(
                 chart.context, android.R.layout.simple_list_item_1
             ) {
                 private val tv = findViewById<android.widget.TextView>(android.R.id.text1)
-                private val vf = DateAxisFormatter("dd MMM")
+                private val vf = DateAxisFormatter(FormatStyle.MEDIUM)
                 override fun refreshContent(
                     e: Entry?,
                     h: com.github.mikephil.charting.highlight.Highlight?
                 ) {
                     val dateTxt = vf.getFormattedValue(e?.x ?: 0f)
-                    // Nome do hábito a partir do DataSet selecionado
                     val habitName = h?.dataSetIndex
                         ?.let { idx -> chart.data?.getDataSetByIndex(idx)?.label }
                         ?: ""
-                    // Metadados brutos do ponto
                     val meta = e?.data as? PointMeta
                     val raw = meta?.raw ?: e?.y?.toInt() ?: 0
-                    val percentTxt = if (normalizeToPercent) " (${e?.y?.toInt()}%)" else ""
-                    tv.text = "$habitName\n$dateTxt\n$raw$percentTxt"
+
+                    tv.text = if (normalizeToPercent) {
+                        val percentValue = e?.y?.toInt() ?: 0
+                        chart.context.getString(
+                            R.string.chart_progress_tooltip_percent,
+                            habitName,
+                            dateTxt,
+                            raw,
+                            percentValue
+                        )
+                    } else {
+                        chart.context.getString(
+                            R.string.chart_progress_tooltip_raw,
+                            habitName,
+                            dateTxt,
+                            raw
+                        )
+                    }
                     tv.setTextColor(colors.onSurface.toArgb())
                     tv.setBackgroundColor(colors.surfaceContainerHigh.toArgb())
                     super.refreshContent(e, h)
