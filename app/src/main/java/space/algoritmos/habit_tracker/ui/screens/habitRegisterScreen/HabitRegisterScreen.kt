@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-// Importações para a funcionalidade de rolagem
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,6 +39,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.domain.model.TrackingMode
 import java.time.LocalDate
@@ -81,8 +82,8 @@ fun HabitRegisterScreen(
     }
 
     val label = when (habit.trackingMode) {
-        TrackingMode.BINARY -> "Você completou este hábito hoje?"
-        TrackingMode.VALUE -> "Quanto você completou sua meta (${habit.goal}) hoje?"
+        TrackingMode.BINARY -> stringResource(id = R.string.register_habit_binary_label)
+        TrackingMode.VALUE -> stringResource(id = R.string.register_habit_value_label, habit.goal)
     }
 
     Scaffold(
@@ -94,7 +95,7 @@ fun HabitRegisterScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Habit Tracker",
+                            text = stringResource(id = R.string.app_name),
                             fontSize = 32.sp,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
@@ -120,8 +121,8 @@ fun HabitRegisterScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f) // Ocupa o espaço disponível
-                    .verticalScroll(rememberScrollState()), // <<-- MUDANÇA PRINCIPAL
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
@@ -129,16 +130,13 @@ fun HabitRegisterScreen(
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 16.dp),
                     fontSize = 32.sp,
-                    textAlign = TextAlign.Center // Melhor para nomes curtos
+                    textAlign = TextAlign.Center
                 )
 
-                // Este Column agrupa o conteúdo que deve ser centralizado e rolável
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(4.dp),
-                    // Arrangement.Center aqui garante que o conteúdo tente se centralizar
-                    // verticalmente dentro do espaço rolável.
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -152,7 +150,6 @@ fun HabitRegisterScreen(
 
                     when (statusMode) {
                         "binary" -> {
-                            // Spacers podem ser reduzidos ou removidos para telas menores
                             Spacer(modifier = Modifier.height(80.dp))
                             Row(
                                 horizontalArrangement = Arrangement.Center,
@@ -171,7 +168,7 @@ fun HabitRegisterScreen(
                                         .height(48.dp)
                                         .width(150.dp)
                                 ) {
-                                    Text("Sim", fontSize = 20.sp)
+                                    Text(stringResource(id = R.string.common_yes), fontSize = 20.sp)
                                 }
 
                                 Spacer(modifier = Modifier.size(20.dp))
@@ -188,7 +185,7 @@ fun HabitRegisterScreen(
                                         .height(48.dp)
                                         .width(150.dp)
                                 ) {
-                                    Text("Não", fontSize = 20.sp)
+                                    Text(stringResource(id = R.string.common_no), fontSize = 20.sp)
                                 }
                             }
                         }
@@ -203,7 +200,7 @@ fun HabitRegisterScreen(
                                         selectedValue = it.toIntOrNull()?.coerceAtLeast(0) ?: 0
                                     },
                                     label = {
-                                        Text("Digite a quantidade (un)", fontSize = 20.sp)
+                                        Text(stringResource(id = R.string.register_habit_value_placeholder), fontSize = 20.sp)
                                     },
                                     textStyle = TextStyle(
                                         fontSize = 20.sp,
@@ -250,17 +247,15 @@ fun HabitRegisterScreen(
                             }
                         }
                     }
-                    // Spacer no final da coluna rolável para não colar nos botões de baixo
                     Spacer(modifier = Modifier.height(20.dp))
                 }
             }
 
-            // Botões de Ação - Permanecem na parte inferior
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp) // Adiciona um respiro na parte inferior
+                    .padding(bottom = 8.dp)
             ) {
                 OutlinedButton(
                     onClick = onCancel,
@@ -269,13 +264,13 @@ fun HabitRegisterScreen(
                         .height(56.dp)
                         .weight(1f)
                 ) {
-                    Text("Cancelar", fontSize = 24.sp)
+                    Text(stringResource(id = R.string.cancel), fontSize = 24.sp)
                 }
 
                 Button(
                     onClick = {
                         val finalValue = when (habit.trackingMode) {
-                            TrackingMode.BINARY -> selectedValue as Int? ?: return@Button
+                            TrackingMode.BINARY -> selectedValue ?: return@Button
                             TrackingMode.VALUE -> (value.toIntOrNull() ?: return@Button).coerceAtLeast(0)
                         }
                         onSave(finalValue)
@@ -288,7 +283,7 @@ fun HabitRegisterScreen(
                         .height(56.dp)
                         .weight(1f)
                 ) {
-                    Text("Salvar", fontSize = 24.sp)
+                    Text(stringResource(id = R.string.save), fontSize = 24.sp)
                 }
             }
         }

@@ -24,6 +24,13 @@
     <string name="delete_habit_confirm">はい</string>
     <string name="delete_habit_cancel">いいえ</string>
 
+    <!-- HabitRegisterScreen -->
+    <string name="register_habit_binary_label">今日はこの習慣を達成しましたか？</string>
+    <string name="register_habit_value_label">今日、目標（%d）のうちどれくらい達成しましたか？</string>
+    <string name="register_habit_value_placeholder">数量を入力（単位）</string>
+    <string name="common_yes">はい</string>
+    <string name="common_no">いいえ</string>
+
     <!-- StatisticsScreen -->
     <string name="chart_tooltip_format">%1$s\n%2$d</string>
     <string name="weekly_chart_tooltip_format">週 • %1$d</string>

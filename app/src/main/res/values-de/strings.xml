@@ -24,6 +24,13 @@
     <string name="delete_habit_confirm">Ja</string>
     <string name="delete_habit_cancel">Nein</string>
 
+    <!-- HabitRegisterScreen -->
+    <string name="register_habit_binary_label">Haben Sie diese Gewohnheit heute abgeschlossen?</string>
+    <string name="register_habit_value_label">Wie viel von Ihrem Ziel (%d) haben Sie heute erreicht?</string>
+    <string name="register_habit_value_placeholder">Menge eingeben (Einheit)</string>
+    <string name="common_yes">Ja</string>
+    <string name="common_no">Nein</string>
+
     <!-- StatisticsScreen -->
     <string name="chart_tooltip_format">%1$s\n%2$d</string>
     <string name="weekly_chart_tooltip_format">Woche • %1$d</string>
