@@ -24,6 +24,14 @@
     <string name="delete_habit_confirm">예</string>
     <string name="delete_habit_cancel">아니요</string>
 
+    <!-- HabitScreen -->
+    <string name="edit_button_description">편집</string>
+    <plurals name="streak_days">
+        <item quantity="other">%d일</item>
+    </plurals>
+    <string name="streak_max">최대: %d</string>
+    <string name="register_habit_button">습관 기록</string>
+
     <!-- HabitRegisterScreen -->
     <string name="register_habit_binary_label">오늘 이 습관을 완료했나요?</string>
     <string name="register_habit_value_label">오늘 목표(%d) 중 얼마나 완료했나요?</string>

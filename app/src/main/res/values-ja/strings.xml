@@ -24,6 +24,14 @@
     <string name="delete_habit_confirm">はい</string>
     <string name="delete_habit_cancel">いいえ</string>
 
+    <!-- HabitScreen -->
+    <string name="edit_button_description">編集</string>
+    <plurals name="streak_days">
+        <item quantity="other">%d日</item>
+    </plurals>
+    <string name="streak_max">最大：%d</string>
+    <string name="register_habit_button">習慣を記録</string>
+
     <!-- HabitRegisterScreen -->
     <string name="register_habit_binary_label">今日はこの習慣を達成しましたか？</string>
     <string name="register_habit_value_label">今日、目標（%d）のうちどれくらい達成しましたか？</string>

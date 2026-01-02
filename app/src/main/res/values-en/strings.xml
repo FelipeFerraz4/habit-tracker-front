@@ -24,6 +24,15 @@
     <string name="delete_habit_confirm">Yes</string>
     <string name="delete_habit_cancel">No</string>
 
+    <!-- HabitScreen -->
+    <string name="edit_button_description">Edit</string>
+    <plurals name="streak_days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <string name="streak_max">Max: %d</string>
+    <string name="register_habit_button">Register Habit</string>
+
     <!-- HabitRegisterScreen -->
     <string name="register_habit_binary_label">Did you complete this habit today?</string>
     <string name="register_habit_value_label">How much of your goal (%d) did you complete today?</string>

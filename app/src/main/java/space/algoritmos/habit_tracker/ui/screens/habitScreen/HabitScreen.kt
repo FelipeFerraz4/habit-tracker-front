@@ -1,7 +1,6 @@
 package space.algoritmos.habit_tracker.ui.screens.habitScreen
 
 import androidx.compose.foundation.layout.*
-// Importações para a funcionalidade de rolagem
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -18,6 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
+import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import java.time.LocalDate
 import java.time.YearMonth
@@ -42,7 +44,7 @@ fun HabitDetailScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Habit Tracker",
+                            text = stringResource(id = R.string.app_name),
                             fontSize = 32.sp,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
@@ -53,7 +55,7 @@ fun HabitDetailScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Voltar",
+                            contentDescription = stringResource(id = R.string.back_button_description),
                             modifier = Modifier.size(32.dp)
                         )
                     }
@@ -62,7 +64,7 @@ fun HabitDetailScreen(
                     IconButton(onClick = onEditClick) {
                         Icon(
                             imageVector = Icons.Default.Edit,
-                            contentDescription = "Editar",
+                            contentDescription = stringResource(id = R.string.edit_button_description),
                             tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(32.dp)
                         )
@@ -74,7 +76,6 @@ fun HabitDetailScreen(
             )
         }
     ) { innerPadding ->
-        // Column principal que organiza a tela em "conteúdo" e "botão de ação"
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -82,25 +83,22 @@ fun HabitDetailScreen(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Column interna e rolável para todo o conteúdo de detalhe
             Column(
                 modifier = Modifier
-                    .weight(1f) // Ocupa todo o espaço disponível, empurrando o botão para baixo
-                    .verticalScroll(rememberScrollState()), // <<-- MUDANÇA PRINCIPAL
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp) // Espaçamento entre os itens
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Título
                 Text(
                     text = habit.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontSize = 32.sp
                 )
 
-                // 🔥 Streak
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceAround, // Usa SpaceAround para melhor distribuição
+                    horizontalArrangement = Arrangement.SpaceAround,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -108,15 +106,13 @@ fun HabitDetailScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = "🔥", fontSize = 36.sp)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "${habit.streakCount()} dias", fontSize = 20.sp)
+                        Text(text = LocalContext.current.resources.getQuantityString(R.plurals.streak_days, habit.streakCount(), habit.streakCount()), fontSize = 20.sp)
                     }
-
-                    // Spacer(modifier = Modifier.weight(1f)) // Não é mais necessário com SpaceAround
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = "🏆", fontSize = 36.sp)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Máx: ${habit.maxStreak()}", fontSize = 20.sp)
+                        Text(text = stringResource(id = R.string.streak_max, habit.maxStreak()), fontSize = 20.sp)
                     }
                 }
 
@@ -127,13 +123,9 @@ fun HabitDetailScreen(
                     onNextMonth = { currentMonth = currentMonth.plusMonths(1) }
                 )
 
-                // Adiciona um spacer no final da rolagem para não colar no botão
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            // O Spacer com weight(1f) foi removido daqui e a lógica movida para a Column interna
-
-            // 📅 Botão de registrar - Fixo na parte inferior
             Button(
                 onClick = {
                     val today = LocalDate.now()
@@ -155,7 +147,7 @@ fun HabitDetailScreen(
                     .fillMaxWidth()
                     .height(56.dp)
             ) {
-                Text(text = "Registrar Hábito", fontSize = 24.sp)
+                Text(text = stringResource(id = R.string.register_habit_button), fontSize = 24.sp)
             }
         }
     }
