@@ -32,6 +32,23 @@
     <string name="delete_habit_confirm">Sí</string>
     <string name="delete_habit_cancel">No</string>
 
+    <!-- HabitDrawerContent -->
+    <string name="drawer_menu_title">Menú</string>
+    <string name="drawer_statistics">Estadísticas</string>
+    <string name="drawer_add_habit">Añadir hábito</string>
+    <string name="drawer_sync">Sincronizar</string>
+    <string name="drawer_enable_light_mode">Activar modo claro</string>
+    <string name="drawer_enable_dark_mode">Activar modo oscuro</string>
+    <string name="drawer_logout">Cerrar sesión / Cambiar cuenta</string>
+    <string name="drawer_login">Iniciar sesión</string>
+
+    <!-- HabitRegisterScreen -->
+    <string name="register_habit_binary_label">¿Completaste este hábito hoy?</string>
+    <string name="register_habit_value_label">¿Cuánto de tu objetivo (%d) completaste hoy?</string>
+    <string name="register_habit_value_placeholder">Introduce la cantidad (unidad)</string>
+    <string name="common_yes">Sí</string>
+    <string name="common_no">No</string>
+
     <!-- HabitScreen -->
     <string name="edit_button_description">Editar</string>
     <plurals name="streak_days">
@@ -41,13 +58,6 @@
     </plurals>
     <string name="streak_max">Máx: %d</string>
     <string name="register_habit_button">Registrar hábito</string>
-
-    <!-- HabitRegisterScreen -->
-    <string name="register_habit_binary_label">¿Completaste este hábito hoy?</string>
-    <string name="register_habit_value_label">¿Cuánto de tu objetivo (%d) completaste hoy?</string>
-    <string name="register_habit_value_placeholder">Introduce la cantidad (unidad)</string>
-    <string name="common_yes">Sí</string>
-    <string name="common_no">No</string>
 
     <!-- Heatmap -->
     <string name="heatmap_previous_month">Mes anterior</string>

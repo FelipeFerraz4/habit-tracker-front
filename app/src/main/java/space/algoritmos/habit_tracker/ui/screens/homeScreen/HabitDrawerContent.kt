@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-// Importações necessárias para o scroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -22,9 +21,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import space.algoritmos.habit_tracker.R
 
 @Composable
 fun HabitDrawerContent(
@@ -40,22 +41,24 @@ fun HabitDrawerContent(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    val themeText = if (isDarkTheme) "Ativar Modo Claro" else "Ativar Modo Escuro"
+    val themeText = if (isDarkTheme) {
+        stringResource(id = R.string.drawer_enable_light_mode)
+    } else {
+        stringResource(id = R.string.drawer_enable_dark_mode)
+    }
     val themeIcon = if (isDarkTheme) Icons.Filled.WbSunny else Icons.Filled.DarkMode
-
 
     ModalDrawerSheet(
         modifier = Modifier.width(280.dp)
     ) {
-        // A principal mudança está aqui
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .verticalScroll(rememberScrollState()) // <<-- ADICIONADO SCROLL
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
             Text(
-                text = "Menu",
+                text = stringResource(id = R.string.drawer_menu_title),
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -64,7 +67,7 @@ fun HabitDrawerContent(
             HorizontalDivider()
 
             NavigationDrawerItem(
-                label = { Text("Estatísticas", fontSize = 18.sp) },
+                label = { Text(stringResource(id = R.string.drawer_statistics), fontSize = 18.sp) },
                 selected = false,
                 onClick = {
                     onStatsClick()
@@ -74,7 +77,7 @@ fun HabitDrawerContent(
             )
 
             NavigationDrawerItem(
-                label = { Text("Adicionar Hábito", fontSize = 18.sp) },
+                label = { Text(stringResource(id = R.string.drawer_add_habit), fontSize = 18.sp) },
                 selected = false,
                 onClick = {
                     onAddHabitClick()
@@ -83,7 +86,7 @@ fun HabitDrawerContent(
             )
 
             NavigationDrawerItem(
-                label = { Text("Sincronizar", fontSize = 18.sp) },
+                label = { Text(stringResource(id = R.string.drawer_sync), fontSize = 18.sp) },
                 selected = false,
                 onClick = {
                     onSyncClick()
@@ -106,15 +109,20 @@ fun HabitDrawerContent(
                 }
             )
 
-
-            Spacer(modifier = Modifier.weight(1f)) // empurra para baixo os itens finais
+            Spacer(modifier = Modifier.weight(1f))
 
             HorizontalDivider()
             HorizontalDivider()
             Spacer(modifier = Modifier.height(8.dp))
 
+            val loginLogoutText = if (isLoggedIn) {
+                stringResource(id = R.string.drawer_logout)
+            } else {
+                stringResource(id = R.string.drawer_login)
+            }
+
             NavigationDrawerItem(
-                label = { Text(if (isLoggedIn) "Sair / Trocar Conta" else "Login", fontSize = 18.sp) },
+                label = { Text(loginLogoutText, fontSize = 18.sp) },
                 selected = false,
                 onClick = {
                     coroutineScope.launch {

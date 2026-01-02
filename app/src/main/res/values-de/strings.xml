@@ -32,6 +32,23 @@
     <string name="delete_habit_confirm">Ja</string>
     <string name="delete_habit_cancel">Nein</string>
 
+    <!-- HabitDrawerContent -->
+    <string name="drawer_menu_title">Menü</string>
+    <string name="drawer_statistics">Statistiken</string>
+    <string name="drawer_add_habit">Gewohnheit hinzufügen</string>
+    <string name="drawer_sync">Synchronisieren</string>
+    <string name="drawer_enable_light_mode">Hellen Modus aktivieren</string>
+    <string name="drawer_enable_dark_mode">Dunklen Modus aktivieren</string>
+    <string name="drawer_logout">Abmelden / Konto wechseln</string>
+    <string name="drawer_login">Anmelden</string>
+
+    <!-- HabitRegisterScreen -->
+    <string name="register_habit_binary_label">Haben Sie diese Gewohnheit heute abgeschlossen?</string>
+    <string name="register_habit_value_label">Wie viel von Ihrem Ziel (%d) haben Sie heute erreicht?</string>
+    <string name="register_habit_value_placeholder">Menge eingeben (Einheit)</string>
+    <string name="common_yes">Ja</string>
+    <string name="common_no">Nein</string>
+
     <!-- HabitScreen -->
     <string name="edit_button_description">Bearbeiten</string>
     <plurals name="streak_days">
@@ -40,13 +57,6 @@
     </plurals>
     <string name="streak_max">Max: %d</string>
     <string name="register_habit_button">Gewohnheit erfassen</string>
-
-    <!-- HabitRegisterScreen -->
-    <string name="register_habit_binary_label">Haben Sie diese Gewohnheit heute abgeschlossen?</string>
-    <string name="register_habit_value_label">Wie viel von Ihrem Ziel (%d) haben Sie heute erreicht?</string>
-    <string name="register_habit_value_placeholder">Menge eingeben (Einheit)</string>
-    <string name="common_yes">Ja</string>
-    <string name="common_no">Nein</string>
 
     <!-- Heatmap -->
     <string name="heatmap_previous_month">Vorheriger Monat</string>

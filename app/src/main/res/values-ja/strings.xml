@@ -32,13 +32,15 @@
     <string name="delete_habit_confirm">はい</string>
     <string name="delete_habit_cancel">いいえ</string>
 
-    <!-- HabitScreen -->
-    <string name="edit_button_description">編集</string>
-    <plurals name="streak_days">
-        <item quantity="other">%d日</item>
-    </plurals>
-    <string name="streak_max">最大：%d</string>
-    <string name="register_habit_button">習慣を記録</string>
+    <!-- HabitDrawerContent -->
+    <string name="drawer_menu_title">メニュー</string>
+    <string name="drawer_statistics">統計</string>
+    <string name="drawer_add_habit">習慣を追加</string>
+    <string name="drawer_sync">同期</string>
+    <string name="drawer_enable_light_mode">ライトモードを有効化</string>
+    <string name="drawer_enable_dark_mode">ダークモードを有効化</string>
+    <string name="drawer_logout">ログアウト / アカウント切替</string>
+    <string name="drawer_login">ログイン</string>
 
     <!-- HabitRegisterScreen -->
     <string name="register_habit_binary_label">今日はこの習慣を達成しましたか？</string>
@@ -46,6 +48,14 @@
     <string name="register_habit_value_placeholder">数量を入力（単位）</string>
     <string name="common_yes">はい</string>
     <string name="common_no">いいえ</string>
+
+    <!-- HabitScreen -->
+    <string name="edit_button_description">編集</string>
+    <plurals name="streak_days">
+        <item quantity="other">%d日</item>
+    </plurals>
+    <string name="streak_max">最大：%d</string>
+    <string name="register_habit_button">習慣を記録</string>
 
     <!-- Heatmap -->
     <string name="heatmap_previous_month">前の月</string>
