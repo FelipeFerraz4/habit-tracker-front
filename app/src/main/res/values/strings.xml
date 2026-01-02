@@ -24,6 +24,10 @@
     <string name="delete_habit_confirm">Sim</string>
     <string name="delete_habit_cancel">Não</string>
 
+    <!-- Heatmap -->
+    <string name="heatmap_previous_month">Mês anterior</string>
+    <string name="heatmap_next_month">Próximo mês</string>
+
     <!-- HabitScreen -->
     <string name="edit_button_description">Editar</string>
     <plurals name="streak_days">

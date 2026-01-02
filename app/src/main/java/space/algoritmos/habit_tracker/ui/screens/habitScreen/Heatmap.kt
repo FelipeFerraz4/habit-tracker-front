@@ -9,8 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.ui.screens.habitScreen.utils.calculateDayColor
 import java.time.YearMonth
@@ -32,7 +34,6 @@ fun Heatmap(
             .padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Cabeçalho com o mês e botões
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -41,12 +42,11 @@ fun Heatmap(
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
                     modifier = Modifier.size(32.dp),
-                    contentDescription = "Mês anterior"
+                    contentDescription = stringResource(id = R.string.heatmap_previous_month)
                 )
-
             }
             Text(
-                text = currentMonth.month.getDisplayName(TextStyle.FULL, Locale("pt", "BR"))
+                text = currentMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
                     .replaceFirstChar { it.uppercaseChar() } + " ${currentMonth.year}",
                 fontSize = 24.sp,
                 style = MaterialTheme.typography.titleMedium
@@ -55,7 +55,7 @@ fun Heatmap(
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowForward,
                     modifier = Modifier.size(32.dp),
-                    contentDescription = "Próximo mês"
+                    contentDescription = stringResource(id = R.string.heatmap_next_month)
                 )
             }
         }
@@ -85,11 +85,11 @@ fun Heatmap(
                                 Text(
                                     text = day.toString(),
                                     fontSize = 18.sp,
-                                    color = MaterialTheme.colorScheme.onBackground
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                         } else {
-                            Spacer(modifier = Modifier.size(32.dp))
+                            Spacer(modifier = Modifier.size(48.dp))
                         }
                     }
                 }
