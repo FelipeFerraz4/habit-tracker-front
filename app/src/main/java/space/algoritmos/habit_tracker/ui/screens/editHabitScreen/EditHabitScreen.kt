@@ -21,6 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import space.algoritmos.habit_tracker.R
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -62,7 +64,7 @@ fun EditHabitScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Editar hábito",
+                            text = stringResource(id = R.string.edit_habit_title),
                             fontSize = 28.sp,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
@@ -73,7 +75,7 @@ fun EditHabitScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Voltar",
+                            contentDescription = stringResource(id = R.string.back_button_description),
                             modifier = Modifier.size(32.dp)
                         )
                     }
@@ -82,7 +84,7 @@ fun EditHabitScreen(
                     IconButton(onClick = { showDeleteDialog = true }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Deletar Hábito",
+                            contentDescription = stringResource(id = R.string.delete_habit_description),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(32.dp)
                         )
@@ -110,7 +112,7 @@ fun EditHabitScreen(
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Nome do Hábito", fontSize = 18.sp) },
+                    label = { Text(stringResource(id = R.string.habit_name_label), fontSize = 18.sp) },
                     textStyle = TextStyle(fontSize = 22.sp),
                     modifier = Modifier
                         .fillMaxWidth(0.93f)
@@ -121,7 +123,7 @@ fun EditHabitScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 // ===== Escolha de cor (MODIFICADO) =====
-                Text("Escolha a cor:", style = MaterialTheme.typography.bodyLarge, fontSize = 20.sp)
+                Text(stringResource(id = R.string.choose_color), style = MaterialTheme.typography.bodyLarge, fontSize = 20.sp)
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -174,20 +176,19 @@ fun EditHabitScreen(
                                 selectedColor = customColor
                                 showColorPicker = false
                             }) {
-                                Text("Confirmar")
+                                Text(stringResource(id = R.string.confirm))
                             }
                         },
                         dismissButton = {
                             TextButton(onClick = { showColorPicker = false }) {
-                                Text("Cancelar")
+                                Text(stringResource(id = R.string.cancel))
                             }
                         },
-                        title = { Text("Escolha uma cor personalizada") },
+                        title = { Text(stringResource(id = R.string.choose_custom_color)) },
                         text = {
-                            // Adicionamos uma Column rolável aqui
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                modifier = Modifier.verticalScroll(rememberScrollState()) // <<--- ESSA É A MUDANÇA
+                                modifier = Modifier.verticalScroll(rememberScrollState())
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -233,7 +234,7 @@ fun EditHabitScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = "Defina a meta para este hábito:",
+                    text = stringResource(id = R.string.define_habit_goal),
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.SemiBold
@@ -244,7 +245,7 @@ fun EditHabitScreen(
                 OutlinedTextField(
                     value = goalText,
                     onValueChange = { goalText = it },
-                    label = { Text("Meta (ex: 20 páginas, 3000 ml, etc.)") },
+                    label = { Text(stringResource(id = R.string.goal_label)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     textStyle = TextStyle(fontSize = 20.sp),
@@ -284,7 +285,7 @@ fun EditHabitScreen(
                         .weight(1f)
                         .height(56.dp)
                 ) {
-                    Text("Salvar", fontSize = 20.sp)
+                    Text(stringResource(id = R.string.save), fontSize = 20.sp)
                 }
             }
 
@@ -298,14 +299,14 @@ fun EditHabitScreen(
                 containerColor = MaterialTheme.colorScheme.surface,
                 title = {
                     Text(
-                        text = "Excluir Hábito",
+                        text = stringResource(id = R.string.delete_habit_dialog_title),
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 },
                 text = {
                     Text(
-                        text = "Você realmente deseja remover este hábito ?",
+                        text = stringResource(id = R.string.delete_habit_dialog_text),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -315,7 +316,6 @@ fun EditHabitScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Botão "Sim" à esquerda
                         Button(
                             onClick = {
                                 onDelete(habit)
@@ -325,20 +325,19 @@ fun EditHabitScreen(
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
-                                text = "Sim",
+                                text = stringResource(id = R.string.delete_habit_confirm),
                                 color = MaterialTheme.colorScheme.onError
                             )
                         }
 
-                        Spacer(modifier = Modifier.width(16.dp)) // espaço entre os botões
+                        Spacer(modifier = Modifier.width(16.dp))
 
-                        // Botão "Não" à direita
                         OutlinedButton(
                             onClick = { showDeleteDialog = false },
                             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                             modifier = Modifier.weight(1f)
                         ) {
-                            Text("Não")
+                            Text(stringResource(id = R.string.delete_habit_cancel))
                         }
                     }
                 },

@@ -15,6 +15,15 @@
     <string name="goal_label">Ziel (z. B. 20 Seiten, 3000 ml usw.)</string>
     <string name="goal_placeholder">Zielwert eingeben</string>
 
+    <!-- EditHabitScreen -->
+    <string name="edit_habit_title">Gewohnheit bearbeiten</string>
+    <string name="back_button_description">Zurück</string>
+    <string name="delete_habit_description">Gewohnheit löschen</string>
+    <string name="delete_habit_dialog_title">Gewohnheit löschen</string>
+    <string name="delete_habit_dialog_text">Möchten Sie diese Gewohnheit wirklich entfernen?</string>
+    <string name="delete_habit_confirm">Ja</string>
+    <string name="delete_habit_cancel">Nein</string>
+
     <!-- StatisticsScreen -->
     <string name="chart_tooltip_format">%1$s\n%2$d</string>
     <string name="weekly_chart_tooltip_format">Woche • %1$d</string>
