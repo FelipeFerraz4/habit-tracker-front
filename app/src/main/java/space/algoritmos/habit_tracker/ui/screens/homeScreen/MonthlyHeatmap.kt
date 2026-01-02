@@ -10,8 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+// Importações para i18n
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.dailyProgress
 import java.time.YearMonth
@@ -42,12 +45,12 @@ fun MonthlyHeatmap(
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
                     modifier = Modifier.size(32.dp),
-                    contentDescription = "Mês anterior"
+                    contentDescription = stringResource(id = R.string.heatmap_previous_month)
                 )
 
             }
             Text(
-                text = currentMonth.month.getDisplayName(TextStyle.FULL, Locale("pt", "BR"))
+                text = currentMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())
                     .replaceFirstChar { it.uppercaseChar() } + " ${currentMonth.year}",
                 fontSize = 24.sp,
                 style = MaterialTheme.typography.titleMedium
@@ -56,7 +59,7 @@ fun MonthlyHeatmap(
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowForward,
                     modifier = Modifier.size(32.dp),
-                    contentDescription = "Próximo mês"
+                    contentDescription = stringResource(id = R.string.heatmap_next_month)
                 )
             }
         }
@@ -71,7 +74,7 @@ fun MonthlyHeatmap(
                         val day = weekStart + dayOffset
                         if (day <= daysInMonth) {
                             val date = currentMonth.atDay(day)
-                            var progress = dailyProgress(date, habits)
+                            val progress = dailyProgress(date, habits)
 
                             val color = if (progress == 0f) {
                                 Color.LightGray.copy(alpha = 0.3f)
@@ -96,7 +99,7 @@ fun MonthlyHeatmap(
                                 )
                             }
                         } else {
-                            Spacer(modifier = Modifier.size(32.dp))
+                            Spacer(modifier = Modifier.size(48.dp))
                         }
                     }
                 }
