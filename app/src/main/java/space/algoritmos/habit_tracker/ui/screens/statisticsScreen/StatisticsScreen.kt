@@ -5,21 +5,29 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+// Importações para i18n
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StatisticsScreen(
-    habits: List<Habit>, // lista vinda do ViewModel
+    habits: List<Habit>,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedOption by remember { mutableStateOf("Geral") }
-    val habitNames = listOf("Geral") + habits.map { it.name }
+    val generalOptionText = stringResource(id = R.string.stats_general_option)
+    var selectedOption by remember { mutableStateOf(generalOptionText) }
+    val habitNames = remember(habits, generalOptionText) {
+        listOf(generalOptionText) + habits.map { it.name }
+    }
     val selectedHabit = habits.find { it.name == selectedOption }
 
     Scaffold(
@@ -31,7 +39,7 @@ fun StatisticsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Habit Tracker",
+                            text = stringResource(id = R.string.app_name),
                             fontSize = 32.sp,
                             style = MaterialTheme.typography.titleLarge,
                             color = MaterialTheme.colorScheme.onSurface
@@ -42,7 +50,7 @@ fun StatisticsScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Voltar",
+                            contentDescription = stringResource(id = R.string.back_button_description),
                             modifier = Modifier.size(32.dp)
                         )
                     }
@@ -67,7 +75,7 @@ fun StatisticsScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             // 🔽 Estatísticas
-            if (selectedOption == "Geral") {
+            if (selectedOption == generalOptionText) {
                 GeneralStatistics(habits)
             } else if (selectedHabit != null) {
                 HabitStatistics(selectedHabit)

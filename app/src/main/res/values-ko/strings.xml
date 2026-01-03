@@ -104,6 +104,9 @@
     <!-- Statistics - HabitStatistics -->
     <string name="stats_total_progress">총 진행도</string>
 
+    <!-- Statistics - StatisticsScreen -->
+    <string name="stats_general_option">全体</string>
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         요일별 패턴 (정규화됨)

@@ -106,6 +106,9 @@
     <!-- Statistics - HabitStatistics -->
     <string name="stats_total_progress">Progresso totale</string>
 
+    <!-- Statistics - StatisticsScreen -->
+    <string name="stats_general_option">Generale</string>
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         Andamento per giorno della settimana (normalizzato)
