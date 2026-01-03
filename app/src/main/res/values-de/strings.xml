@@ -101,4 +101,8 @@
     <string name="chart_average_per_day_label">Durchschnitt pro Tag</string>
     <string name="chart_average_tooltip_subtitle">Durchschnitt: %s</string>
 
+    <!-- Statistics - WeeklyProgressPieChart -->
+    <string name="chart_week_label">Woche</string>
+    <string name="chart_pie_tooltip_format">%1$d / %2$d (%3$d%%)</string>
+
 </resources>

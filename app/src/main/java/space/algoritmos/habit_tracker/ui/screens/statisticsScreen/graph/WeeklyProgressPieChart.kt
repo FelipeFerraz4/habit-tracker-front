@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+// Importações para i18n
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.PieChart
@@ -14,11 +16,14 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.time.temporal.TemporalAdjusters
+import java.util.Locale
 import kotlin.math.min
 
 private data class PieMeta(
@@ -36,9 +41,16 @@ fun WeeklyProgressPieChart(
     capAt100: Boolean = true // limita cada hábito a no máximo 100% da meta semanal
 ) {
     val colorScheme = MaterialTheme.colorScheme
-    val fmt = DateTimeFormatter.ofPattern("dd/MM")
+
+    val weekLabelText = stringResource(id = R.string.chart_week_label)
+    val noDataText = stringResource(id = R.string.chart_no_data)
+
+    val localizedDateFormatter = remember {
+        DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).withLocale(Locale.getDefault())
+    }
     val weekDates = remember(startOfWeek) { (0..6).map { startOfWeek.plusDays(it.toLong()) } }
-    val weekLabel = "${weekDates.first().format(fmt)} – ${weekDates.last().format(fmt)}"
+    val weekIntervalLabel = "${weekDates.first().format(localizedDateFormatter)} – ${weekDates.last().format(localizedDateFormatter)}"
+    val centerLabel = "$weekLabelText\n$weekIntervalLabel"
 
     val entries = remember(habits, weekDates, capAt100) {
         habits.map { habit ->
@@ -60,25 +72,18 @@ fun WeeklyProgressPieChart(
         factory = { ctx ->
             PieChart(ctx).apply {
                 description.isEnabled = false
-                setUsePercentValues(false) // mostramos percentuais no marker, não nos rótulos do gráfico
-                setDrawEntryLabels(false)  // evita rótulos sobre as fatias
-                isDrawHoleEnabled = true
-                centerText = "Semana\n$weekLabel"
-                setCenterTextColor(colorScheme.onSurface.toArgb())
-
-                // ...config padrão...
+                setUsePercentValues(false)
+                setDrawEntryLabels(false)
                 isDrawHoleEnabled = true
                 holeRadius = 45f
                 transparentCircleRadius = 50f
 
-                // Centro preto sólido
-                setHoleColor(colorScheme.onPrimary.toArgb())
-                setTransparentCircleColor(colorScheme.onPrimary.toArgb())
-                setTransparentCircleAlpha(0)
+                // Cor do buraco central
+                setHoleColor(colorScheme.surface.toArgb())
 
-                // Texto central branco
-                setCenterTextColor(colorScheme.onBackground.toArgb())
-                centerText = "Semana\n$weekLabel"
+                // Texto central
+                setCenterTextColor(colorScheme.onSurface.toArgb())
+                centerText = centerLabel
                 setCenterTextSize(14f)
 
                 legend.apply {
@@ -95,26 +100,22 @@ fun WeeklyProgressPieChart(
                     yEntrySpace = 6f
                 }
 
-                setNoDataText("Sem dados")
+                setNoDataText(noDataText)
                 setNoDataTextColor(colorScheme.onSurfaceVariant.toArgb())
             }
         },
         update = { chart ->
             val dataSet = PieDataSet(entries, "").apply {
-                // Cores vindas dos hábitos (uma por fatia)
                 colors = habits.map { it.color.toArgb() }
                 sliceSpace = 2f
                 selectionShift = 6f
-                setDrawValues(false) // sem valores sobre as fatias (usamos marker)
+                setDrawValues(false)
             }
 
             chart.data = PieData(dataSet)
-            chart.centerText = "Semana\n$weekLabel"
-
-            // Espaço extra para afastar o pie da legenda
+            chart.centerText = centerLabel
             chart.setExtraOffsets(0f, 6f, 0f, 18f)
 
-            // Marker/tooltip com nome, bruto e percentual normalizado da semana
             chart.marker = object : com.github.mikephil.charting.components.MarkerView(
                 chart.context, android.R.layout.simple_list_item_2
             ) {
@@ -125,12 +126,15 @@ fun WeeklyProgressPieChart(
                     h: com.github.mikephil.charting.highlight.Highlight?
                 ) {
                     val meta = e?.data as? PieMeta
-                    val name = meta?.habitName ?: ""
-                    val raw = meta?.rawSum ?: 0
-                    val target = meta?.target ?: 0
-                    val pct = meta?.percent ?: 0
-                    title.text = name
-                    subtitle.text = "$raw / $target (${pct}%)"
+                    title.text = meta?.habitName ?: ""
+
+                    subtitle.text = chart.context.getString(
+                        R.string.chart_pie_tooltip_format,
+                        meta?.rawSum ?: 0,
+                        meta?.target ?: 0,
+                        meta?.percent ?: 0
+                    )
+
                     title.setTextColor(colorScheme.onSurface.toArgb())
                     subtitle.setTextColor(colorScheme.onSurfaceVariant.toArgb())
                     setBackgroundColor(colorScheme.surfaceContainerHigh.toArgb())
@@ -141,7 +145,6 @@ fun WeeklyProgressPieChart(
             }
 
             chart.animateY(700)
-
             chart.data.notifyDataChanged()
             chart.notifyDataSetChanged()
             chart.invalidate()
