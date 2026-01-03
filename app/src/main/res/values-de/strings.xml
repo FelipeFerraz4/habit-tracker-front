@@ -97,4 +97,8 @@
         Stichproben: %1$d
     </string>
 
+    <!-- Statistics - WeekdayPatternBarChartSingle -->
+    <string name="chart_average_per_day_label">Durchschnitt pro Tag</string>
+    <string name="chart_average_tooltip_subtitle">Durchschnitt: %s</string>
+
 </resources>

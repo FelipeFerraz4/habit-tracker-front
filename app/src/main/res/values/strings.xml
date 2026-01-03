@@ -91,4 +91,8 @@
     <string name="chart_weekday_pattern_tooltip_title">%1$s — %2$d%%</string>
     <string name="chart_weekday_pattern_tooltip_subtitle">Amostras: %1$d</string>
 
+    <!-- Statistics - WeekdayPatternBarChartSingle -->
+    <string name="chart_average_per_day_label">Média por dia</string>
+    <string name="chart_average_tooltip_subtitle">Média: %s</string>
+
 </resources>

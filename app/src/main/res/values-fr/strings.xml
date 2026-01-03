@@ -98,5 +98,7 @@
         Échantillons : %1$d
     </string>
 
-
+    <!-- Statistics - WeekdayPatternBarChartSingle -->
+    <string name="chart_average_per_day_label"> Moyenne par jour </string>
+    <string name="chart_average_tooltip_subtitle"> Moyenne: %s </string>
 </resources>

@@ -96,5 +96,8 @@
         샘플 수: %1$d
     </string>
 
+    <!-- Statistics - WeekdayPatternBarChartSingle -->
+    <string name="chart_average_per_day_label"> 하루 평균 </string>
+    <string name="chart_average_tooltip_subtitle"> 평균: %s </string>
 
 </resources>

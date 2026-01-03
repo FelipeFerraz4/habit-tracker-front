@@ -98,6 +98,9 @@
         Campioni: %1$d
     </string>
 
+    <!-- Statistics - WeekdayPatternBarChartSingle -->
+    <string name="chart_average_per_day_label"> Media per giorno </string>
+    <string name="chart_average_tooltip_subtitle"> Media: %s </string>
 
 
 </resources>
