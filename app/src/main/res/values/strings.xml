@@ -99,5 +99,9 @@
     <string name="chart_week_label">Semana</string>
     <string name="chart_pie_tooltip_format">%1$d / %2$d (%3$d%%)</string>
 
+    <!-- Statistics - WeeklyStatusDonut -->
+    <string name="donut_chart_completed">Concluído</string>
+    <string name="donut_chart_remaining">Restante</string>
+    <string name="donut_chart_tooltip_format">%1$d / %2$d (%3$d%%)</string>
 
 </resources>
