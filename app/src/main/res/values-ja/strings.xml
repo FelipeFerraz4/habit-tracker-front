@@ -85,6 +85,19 @@
         %1$s\n%2$s\n%3$d
     </string>
 
+    <!-- Statistics - GeneralStatistics -->
+    <string name="stats_general_title">全体統計</string>
+    <string name="stats_total_habits">習慣の数</string>
+    <string name="stats_total_days_registered">記録された日数</string>
+    <string name="stats_current_streak">現在の連続記録</string>
+    <string name="stats_max_streak">最長連続記録</string>
+    <string name="stats_avg_progress_per_day">1日あたりの平均進捗</string>
+
+    <string name="stats_habits_completed_chart_title">完了した習慣</string>
+    <string name="stats_habits_progress_chart_title">習慣の進捗</string>
+    <string name="stats_weekday_progress_chart_title">曜日別の進捗</string>
+    <string name="stats_weekly_progress_chart_title">週間進捗</string>
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         曜日別の傾向（正規化）

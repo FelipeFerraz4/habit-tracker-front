@@ -85,6 +85,19 @@
         %1$s\n%2$s\n%3$d
     </string>
 
+    <!-- Statistics - GeneralStatistics -->
+    <string name="stats_general_title">전체 통계</string>
+    <string name="stats_total_habits">습관 수</string>
+    <string name="stats_total_days_registered">기록된 일수</string>
+    <string name="stats_current_streak">현재 연속 기록</string>
+    <string name="stats_max_streak">최대 연속 기록</string>
+    <string name="stats_avg_progress_per_day">일일 평균 진행도</string>
+
+    <string name="stats_habits_completed_chart_title">완료된 습관</string>
+    <string name="stats_habits_progress_chart_title">습관 진행도</string>
+    <string name="stats_weekday_progress_chart_title">요일별 진행도</string>
+    <string name="stats_weekly_progress_chart_title">주간 진행도</string>
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         요일별 패턴 (정규화됨)

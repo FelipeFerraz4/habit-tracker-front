@@ -87,6 +87,19 @@
         %1$s\n%2$s\n%3$d
     </string>
 
+    <!-- Statistics - GeneralStatistics -->
+    <string name="stats_general_title">Statistiche Generali</string>
+    <string name="stats_total_habits">Numero di Abitudini</string>
+    <string name="stats_total_days_registered">Giorni Registrati</string>
+    <string name="stats_current_streak">Serie Attuale</string>
+    <string name="stats_max_streak">Serie Massima Registrata</string>
+    <string name="stats_avg_progress_per_day">Progresso Medio Giornaliero</string>
+
+    <string name="stats_habits_completed_chart_title">Abitudini Completate</string>
+    <string name="stats_habits_progress_chart_title">Progresso delle Abitudini</string>
+    <string name="stats_weekday_progress_chart_title">Progresso per Giorno della Settimana</string>
+    <string name="stats_weekly_progress_chart_title">Progresso Settimanale</string>
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         Andamento per giorno della settimana (normalizzato)

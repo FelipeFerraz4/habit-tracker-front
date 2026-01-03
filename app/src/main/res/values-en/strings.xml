@@ -86,6 +86,20 @@
         %1$s\n%2$s\n%3$d
     </string>
 
+    <!-- Statistics - GeneralStatistics -->
+    <string name="stats_general_title">General Statistics</string>
+    <string name="stats_total_habits">Number of Habits</string>
+    <string name="stats_total_days_registered">Registered Days</string>
+    <string name="stats_current_streak">Current Streak</string>
+    <string name="stats_max_streak">Longest Recorded Streak</string>
+    <string name="stats_avg_progress_per_day">Average Progress per Day</string>
+
+    <string name="stats_habits_completed_chart_title">Completed Habits</string>
+    <string name="stats_habits_progress_chart_title">Habit Progress</string>
+    <string name="stats_weekday_progress_chart_title">Progress by Weekday</string>
+    <string name="stats_weekly_progress_chart_title">Weekly Progress</string>
+
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         Pattern by weekday (normalised)

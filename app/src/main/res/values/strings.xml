@@ -79,12 +79,21 @@
     <string name="chart_habits_per_day_label">Hábitos por dia</string>
 
     <!-- Statistics - GeneralHabitsProgressLineChart & Common -->
-    <string name="chart_progress_tooltip_percent">
-        %1$s\n%2$s\n%3$d (%4$d%%)
-    </string>
-    <string name="chart_progress_tooltip_raw">
-        %1$s\n%2$s\n%3$d
-    </string>
+    <string name="chart_progress_tooltip_percent">%1$s\n%2$s\n%3$d (%4$d%%)</string>
+    <string name="chart_progress_tooltip_raw">%1$s\n%2$s\n%3$d</string>
+
+    <!-- Statistics - GeneralStatistics -->
+    <string name="stats_general_title">Estatísticas Gerais</string>
+    <string name="stats_total_habits">Número de Hábitos</string>
+    <string name="stats_total_days_registered">Dias Registrados</string>
+    <string name="stats_current_streak">Ofensiva Atual</string>
+    <string name="stats_max_streak">Maior Ofensiva Registrada</string>
+    <string name="stats_avg_progress_per_day">Média de Progresso por Dia</string>
+
+    <string name="stats_habits_completed_chart_title">Hábitos Concluídos</string>
+    <string name="stats_habits_progress_chart_title">Progresso dos Hábitos</string>
+    <string name="stats_weekday_progress_chart_title">Progresso por Dia da Semana</string>
+    <string name="stats_weekly_progress_chart_title">Progresso Semanal</string>
 
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">Padrão por dia (normalizado)</string>
@@ -103,5 +112,8 @@
     <string name="donut_chart_completed">Concluído</string>
     <string name="donut_chart_remaining">Restante</string>
     <string name="donut_chart_tooltip_format">%1$d / %2$d (%3$d%%)</string>
+
+
+
 
 </resources>
