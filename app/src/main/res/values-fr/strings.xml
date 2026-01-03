@@ -81,7 +81,7 @@
 
     <!-- Statistics - GeneralHabitsProgressLineChart & Common -->
     <string name="chart_progress_tooltip_percent">
-        %1$s\n%2$s\n%3$d (%4$d %%)
+        %1$s\n%2$s\n%3$d (%4$d%%)
     </string>
     <string name="chart_progress_tooltip_raw">
         %1$s\n%2$s\n%3$d

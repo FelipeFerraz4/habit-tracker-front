@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+// Importações para i18n
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.BarChart
@@ -17,6 +19,7 @@ import com.github.mikephil.charting.data.BarEntry
 import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import java.time.LocalDate
+import java.time.format.FormatStyle
 
 @Composable
 fun HabitDailyProgressChart(
@@ -25,6 +28,7 @@ fun HabitDailyProgressChart(
     daysToShow: Int = 30
 ) {
     val colors = MaterialTheme.colorScheme
+    val noDataText = stringResource(id = R.string.chart_no_data)
 
     val entries = remember(habit, daysToShow) {
         val today = LocalDate.now()
@@ -32,7 +36,7 @@ fun HabitDailyProgressChart(
 
         (0 until daysToShow).map { offset ->
             val date = startDate.plusDays(offset.toLong())
-            val value = habit.progress[date] ?: 0
+            val value = habit.progressOn(date) // Usando a função helper
             BarEntry(date.toX(), value.toFloat())
         }
     }
@@ -51,7 +55,7 @@ fun HabitDailyProgressChart(
                 legend.isEnabled = false
 
                 xAxis.apply {
-                    valueFormatter = DateAxisFormatter("dd/MM")
+                    valueFormatter = DateAxisFormatter()
                     position = XAxis.XAxisPosition.BOTTOM
                     textColor = colors.onSurface.toArgb()
                     gridColor = colors.outlineVariant.toArgb()
@@ -69,7 +73,7 @@ fun HabitDailyProgressChart(
                 }
                 axisRight.isEnabled = false
 
-                setNoDataText("Sem dados")
+                setNoDataText(noDataText)
                 setNoDataTextColor(colors.onSurfaceVariant.toArgb())
             }
         },
@@ -85,22 +89,19 @@ fun HabitDailyProgressChart(
                 barWidth = 0.6f
             }
 
-            // Ajuste para encaixar exatamente as barras nas bordas (útil quando não há janela rolável completa)
             chart.setFitBars(true)
-
             chart.data.notifyDataChanged()
             chart.notifyDataSetChanged()
 
-            // Janela e foco no mais recente
             chart.setVisibleXRangeMaximum(daysToShow.toFloat())
             chart.moveViewToX(entries.lastOrNull()?.x ?: 0f)
 
-            // Tooltip (Marker)
             chart.marker = object : com.github.mikephil.charting.components.MarkerView(
                 chart.context, android.R.layout.simple_list_item_1
             ) {
                 private val tv = findViewById<android.widget.TextView>(android.R.id.text1)
-                private val vf = DateAxisFormatter("dd MMM")
+                private val vf = DateAxisFormatter(FormatStyle.MEDIUM)
+
                 override fun refreshContent(
                     e: com.github.mikephil.charting.data.Entry?,
                     h: com.github.mikephil.charting.highlight.Highlight?
@@ -116,11 +117,11 @@ fun HabitDailyProgressChart(
                     tv.setBackgroundColor(colors.surfaceContainerHigh.toArgb())
                     super.refreshContent(e, h)
                 }
+
                 override fun getX(): Float = (-width / 2).toFloat()
                 override fun getY(): Float = (-height).toFloat()
             }
 
-            // Animação de entrada (vertical) após configurar dados/viewport
             chart.animateY(700)
         }
     )
