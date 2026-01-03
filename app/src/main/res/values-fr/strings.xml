@@ -87,4 +87,16 @@
         %1$s\n%2$s\n%3$d
     </string>
 
+    <!-- Statistics - WeekdayPatternBarChartMulti -->
+    <string name="chart_weekday_pattern_label">
+        Modèle par jour de la semaine (normalisé)
+    </string>
+    <string name="chart_weekday_pattern_tooltip_title">
+        %1$s — %2$d%%
+    </string>
+    <string name="chart_weekday_pattern_tooltip_subtitle">
+        Échantillons : %1$d
+    </string>
+
+
 </resources>

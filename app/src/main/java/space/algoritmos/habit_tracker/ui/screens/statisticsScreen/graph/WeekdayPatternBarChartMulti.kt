@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.github.mikephil.charting.charts.BarChart
@@ -16,8 +17,12 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
 
 private data class DayMeta(val samples: Int)
 
@@ -29,7 +34,15 @@ fun WeekdayPatternBarChartMulti(
     capAt100: Boolean = true
 ) {
     val cs = MaterialTheme.colorScheme
-    val labels = listOf("Seg","Ter","Qua","Qui","Sex","Sáb","Dom")
+
+    val labels = remember {
+        DayOfWeek.entries.map {
+            it.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+        }
+    }
+
+    val noDataText = stringResource(id = R.string.chart_no_data)
+    val chartLabel = stringResource(id = R.string.chart_weekday_pattern_label)
 
     val entries = remember(habits, weeksBack, capAt100) {
         val today = LocalDate.now()
@@ -38,16 +51,8 @@ fun WeekdayPatternBarChartMulti(
         val counts = IntArray(7)
         var d = start
         while (!d.isAfter(today)) {
-            val idx = when (d.dayOfWeek) {
-                java.time.DayOfWeek.MONDAY -> 0
-                java.time.DayOfWeek.TUESDAY -> 1
-                java.time.DayOfWeek.WEDNESDAY -> 2
-                java.time.DayOfWeek.THURSDAY -> 3
-                java.time.DayOfWeek.FRIDAY -> 4
-                java.time.DayOfWeek.SATURDAY -> 5
-                java.time.DayOfWeek.SUNDAY -> 6
-            }
-            // Considera apenas pontos registrados por hábito no dia (inclui zeros registrados)
+            val idx = d.dayOfWeek.value - 1
+
             habits.forEach { habit ->
                 if (habit.progress.containsKey(d)) {
                     val goal = habit.goal.coerceAtLeast(1)
@@ -110,12 +115,12 @@ fun WeekdayPatternBarChartMulti(
                 }
                 axisRight.isEnabled = false
 
-                setNoDataText("Sem dados")
+                setNoDataText(noDataText)
                 setNoDataTextColor(cs.onSurfaceVariant.toArgb())
             }
         },
         update = { chart ->
-            val dataSet = BarDataSet(entries, "Padrão por dia (normalizado)").apply {
+            val dataSet = BarDataSet(entries, chartLabel).apply {
                 setColor(cs.primary.toArgb())
                 setDrawValues(false)
                 highLightColor = cs.secondary.toArgb()
@@ -123,7 +128,6 @@ fun WeekdayPatternBarChartMulti(
             chart.data = BarData(dataSet).apply { barWidth = 0.6f }
             chart.setFitBars(true)
 
-            // Marker: dia + média % + amostras (quantos pontos compõem a média)
             chart.marker = object : com.github.mikephil.charting.components.MarkerView(
                 chart.context, android.R.layout.simple_list_item_2
             ) {
@@ -140,8 +144,15 @@ fun WeekdayPatternBarChartMulti(
                     val meta = e?.data as? DayMeta
                     val samples = meta?.samples ?: 0
 
-                    title.text = "$day — $pct%"
-                    subtitle.text = "Amostras: $samples"
+                    title.text = chart.context.getString(
+                        R.string.chart_weekday_pattern_tooltip_title,
+                        day,
+                        pct
+                    )
+                    subtitle.text = chart.context.getString(
+                        R.string.chart_weekday_pattern_tooltip_subtitle,
+                        samples
+                    )
 
                     title.setTextColor(cs.onSurface.toArgb())
                     subtitle.setTextColor(cs.onSurfaceVariant.toArgb())
