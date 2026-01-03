@@ -98,6 +98,9 @@
     <string name="stats_weekday_progress_chart_title">曜日別の進捗</string>
     <string name="stats_weekly_progress_chart_title">週間進捗</string>
 
+    <!-- Statistics - HabitSelector -->
+    <string name="habit_selector_selected_description">選択済み</string>
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         曜日別の傾向（正規化）

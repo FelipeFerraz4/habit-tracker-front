@@ -95,6 +95,8 @@
     <string name="stats_weekday_progress_chart_title">Fortschritt nach Wochentag</string>
     <string name="stats_weekly_progress_chart_title">Wöchentlicher Fortschritt</string>
 
+    <!-- Statistics - HabitSelector -->
+    <string name="habit_selector_selected_description">Ausgewählt</string>
 
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">

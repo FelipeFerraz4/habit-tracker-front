@@ -21,9 +21,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+// Importações para i18n
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import space.algoritmos.habit_tracker.R
 
 @OptIn(ExperimentalMaterial3Api::class) // Necessário para ExposedDropdownMenuBox
 @Composable
@@ -35,14 +38,11 @@ fun HabitSelector(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    // Use ExposedDropdownMenuBox para coordenar o TextField e o Menu
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = it },
         modifier = modifier
     ) {
-        // Este é o campo que fica sempre visível. Usamos um OutlinedTextField read-only para
-        // se parecer com um botão, como você queria.
         OutlinedTextField(
             value = selected,
             onValueChange = {}, // Deixe vazio pois não é editável
@@ -53,13 +53,10 @@ fun HabitSelector(
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-            // O modificador 'menuAnchor' é crucial. Ele diz ao Box qual
-            // componente ancora o menu suspenso.
             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable)
 
         )
 
-        // Este é o menu que aparece
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
@@ -76,7 +73,10 @@ fun HabitSelector(
 
                     leadingIcon = {
                         if (isSelected) {
-                            Icon(Icons.Default.Check, contentDescription = "Selecionado")
+                            Icon(
+                                imageVector = Icons.Default.Check,
+                                contentDescription = stringResource(id = R.string.habit_selector_selected_description)
+                            )
                         }
                     },
                     colors = MenuDefaults.itemColors(

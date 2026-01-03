@@ -100,6 +100,9 @@
     <string name="stats_weekday_progress_chart_title">Progreso por Día de la Semana</string>
     <string name="stats_weekly_progress_chart_title">Progreso Semanal</string>
 
+    <!-- Statistics - HabitSelector -->
+    <string name="habit_selector_selected_description">Seleccionado</string>
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         Patrón por día de la semana (normalizado)
