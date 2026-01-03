@@ -103,6 +103,9 @@
     <!-- Statistics - HabitSelector -->
     <string name="habit_selector_selected_description">Sélectionné</string>
 
+    <!-- Statistics - HabitStatistics -->
+    <string name="stats_total_progress">Progression totale</string>
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         Modèle par jour de la semaine (normalisé)

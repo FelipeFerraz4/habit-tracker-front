@@ -101,6 +101,9 @@
     <!-- Statistics - HabitSelector -->
     <string name="habit_selector_selected_description">選択済み</string>
 
+    <!-- Statistics - HabitStatistics -->
+    <string name="stats_total_progress">合計進捗</string>
+
     <!-- Statistics - WeekdayPatternBarChartMulti -->
     <string name="chart_weekday_pattern_label">
         曜日別の傾向（正規化）
