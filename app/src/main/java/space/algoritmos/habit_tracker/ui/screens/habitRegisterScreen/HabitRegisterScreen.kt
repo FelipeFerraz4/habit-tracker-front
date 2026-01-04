@@ -57,7 +57,10 @@ fun HabitRegisterScreen(
     var value by remember {
         mutableStateOf(
             when (habit.trackingMode) {
-                TrackingMode.VALUE -> (habit.progress[today] ?: 0).toString()
+                TrackingMode.VALUE -> {
+                    val progress = habit.progress[today] ?: 0
+                    if (progress == 0) "" else progress.toString()
+                }
                 TrackingMode.BINARY -> if ((habit.progress[today] ?: 0) > 0) "1" else "0"
             }
         )
@@ -68,15 +71,6 @@ fun HabitRegisterScreen(
             when (habit.trackingMode) {
                 TrackingMode.BINARY -> habit.progress[today] ?: 0
                 TrackingMode.VALUE -> value.toIntOrNull()
-            }
-        )
-    }
-
-    val statusMode by remember {
-        mutableStateOf(
-            when (habit.trackingMode) {
-                TrackingMode.BINARY -> "binary"
-                TrackingMode.VALUE -> "value"
             }
         )
     }
@@ -114,10 +108,8 @@ fun HabitRegisterScreen(
                 .padding(innerPadding)
                 .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            // Adicionado para manter os botões na parte inferior
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // A Column rolável para o conteúdo principal
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -148,8 +140,8 @@ fun HabitRegisterScreen(
                         textAlign = TextAlign.Center
                     )
 
-                    when (statusMode) {
-                        "binary" -> {
+                    when (habit.trackingMode) {
+                        TrackingMode.BINARY -> {
                             Spacer(modifier = Modifier.height(80.dp))
                             Row(
                                 horizontalArrangement = Arrangement.Center,
@@ -190,18 +182,21 @@ fun HabitRegisterScreen(
                             }
                         }
 
-                        "value" -> {
+                        TrackingMode.VALUE -> {
                             Spacer(modifier = Modifier.height(40.dp))
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 OutlinedTextField(
                                     value = value,
                                     onValueChange = {
-                                        value = it
-                                        selectedValue = it.toIntOrNull()?.coerceAtLeast(0) ?: 0
+                                        if (it.all { char -> char.isDigit() }) {
+                                            value = it
+                                            selectedValue = it.toIntOrNull()
+                                        }
                                     },
                                     label = {
                                         Text(stringResource(id = R.string.register_habit_value_placeholder), fontSize = 20.sp)
                                     },
+                                    placeholder = { Text("0") },
                                     textStyle = TextStyle(
                                         fontSize = 20.sp,
                                         textAlign = TextAlign.Center
@@ -270,14 +265,14 @@ fun HabitRegisterScreen(
                 Button(
                     onClick = {
                         val finalValue = when (habit.trackingMode) {
-                            TrackingMode.BINARY -> selectedValue ?: return@Button
-                            TrackingMode.VALUE -> (value.toIntOrNull() ?: return@Button).coerceAtLeast(0)
+                            TrackingMode.BINARY -> selectedValue ?: 0
+                            TrackingMode.VALUE -> value.toIntOrNull() ?: 0
                         }
                         onSave(finalValue)
                     },
                     enabled = when (habit.trackingMode) {
                         TrackingMode.BINARY -> selectedValue != null
-                        else -> value.toIntOrNull() != null
+                        else -> true
                     },
                     modifier = Modifier
                         .height(56.dp)
