@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-// Importações para i18n
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,7 +25,8 @@ fun MonthlyHeatmap(
     habits: List<Habit>,
     currentMonth: YearMonth,
     onPreviousMonth: () -> Unit,
-    onNextMonth: () -> Unit
+    onNextMonth: () -> Unit,
+    heatmapColor: Color
 ) {
     val daysInMonth = currentMonth.lengthOfMonth()
 
@@ -79,7 +79,7 @@ fun MonthlyHeatmap(
                             val color = if (progress == 0f) {
                                 Color.LightGray.copy(alpha = 0.3f)
                             } else {
-                                Color(0xFF2196F3).copy(alpha = progress)
+                                heatmapColor.copy(alpha = progress)
                             }
 
                             Box(

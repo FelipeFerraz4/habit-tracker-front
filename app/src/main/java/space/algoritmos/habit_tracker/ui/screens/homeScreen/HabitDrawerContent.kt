@@ -34,6 +34,7 @@ fun HabitDrawerContent(
     onToggleTheme: () -> Unit,
     onLoginClick: () -> Unit,
     onLogoutClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     onStatsClick: () -> Unit,
     onAddHabitClick: () -> Unit,
     onSyncClick: () -> Unit,
@@ -105,6 +106,17 @@ fun HabitDrawerContent(
                 selected = false,
                 onClick = {
                     onToggleTheme()
+                    coroutineScope.launch { drawerState.close() }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            NavigationDrawerItem(
+                label = { Text(stringResource(id = R.string.settings_title), fontSize = 18.sp) },
+                selected = false,
+                onClick = {
+                    onSettingsClick()
                     coroutineScope.launch { drawerState.close() }
                 }
             )

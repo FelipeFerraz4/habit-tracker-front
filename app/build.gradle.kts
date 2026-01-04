@@ -51,6 +51,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    //implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
 
     // Compose BoM
     implementation(platform(libs.androidx.compose.bom))

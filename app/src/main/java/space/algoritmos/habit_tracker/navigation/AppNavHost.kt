@@ -17,12 +17,17 @@ import space.algoritmos.habit_tracker.ui.screens.homeScreen.HomeScreen
 import java.time.LocalDate
 import java.util.UUID
 import android.util.Log
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import space.algoritmos.habit_tracker.navigation.utils.addHabit
 import space.algoritmos.habit_tracker.navigation.utils.deleteHabit
 import space.algoritmos.habit_tracker.navigation.utils.updateHabit
 import space.algoritmos.habit_tracker.navigation.utils.updateHabitProgress
 import space.algoritmos.habit_tracker.ui.screens.editHabitScreen.EditHabitScreen
+import space.algoritmos.habit_tracker.ui.screens.settingsScreen.SettingsScreen
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.StatisticsScreen // 👈 import da tela
+import space.algoritmos.habit_tracker.viewmodels.SettingsViewModel
 
 @Composable
 fun AppNavHost(
@@ -31,6 +36,8 @@ fun AppNavHost(
     onToggleTheme: () -> Unit,
     habitRepository: HabitRepository
 ) {
+    val settingsViewModel: SettingsViewModel = viewModel()
+    val heatmapColor by settingsViewModel.heatmapColor.collectAsState()
     val habitsState = remember { mutableStateListOf<Habit>().apply { addAll(habitRepository.getAllHabits()) } }
 
     NavHost(navController = navController, startDestination = "home") {
@@ -38,6 +45,7 @@ fun AppNavHost(
         composable("home") {
             HomeScreen(
                 habits = habitsState,
+                heatmapColor = heatmapColor,
                 onHabitClick = { habit ->
                     navController.navigate("habitDetail/${habit.id}")
                 },
@@ -47,6 +55,9 @@ fun AppNavHost(
                 onLoginClick = { /* TODO */ },
                 onLogoutClick = { /* TODO */ },
                 onSyncClick = { /* TODO */ },
+                onSettingsClick = {
+                    navController.navigate("settings")
+                },
                 onStatsClick = {
                     navController.navigate("statistics")
                 },
@@ -56,7 +67,19 @@ fun AppNavHost(
             )
         }
 
-        composable("statistics") { // 👈 nova rota adicionada
+        composable("settings") {
+            SettingsScreen(
+                currentHeatmapColor = heatmapColor,
+                onSaveSettings = { newColor ->
+                    settingsViewModel.setHeatmapColor(newColor)
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable("statistics") {
             StatisticsScreen(
                 habits = habitsState,
                 onBackClick = { navController.popBackStack() }

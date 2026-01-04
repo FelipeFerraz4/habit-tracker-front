@@ -12,16 +12,14 @@ import androidx.compose.runtime.*
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.work.WorkManager
-import androidx.work.OneTimeWorkRequestBuilder
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import space.algoritmos.habit_tracker.data.local.DatabaseHelper
-import space.algoritmos.habit_tracker.data.local.ThemeMode
-import space.algoritmos.habit_tracker.data.local.ThemePreferences
+import space.algoritmos.habit_tracker.data.local.preferences.ThemeMode
+import space.algoritmos.habit_tracker.data.local.preferences.ThemePreferences
 import space.algoritmos.habit_tracker.data.local.dao.HabitDao
 import space.algoritmos.habit_tracker.data.repository.HabitRepository
 import space.algoritmos.habit_tracker.navigation.AppNavHost
-import space.algoritmos.habit_tracker.notifications.DailyNotificationWorker
 // Importa o agendador
 import space.algoritmos.habit_tracker.notifications.scheduleDailyNotification
 import space.algoritmos.habit_tracker.notifications.scheduleHabitReminder

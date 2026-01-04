@@ -61,6 +61,10 @@
     <string name="heatmap_previous_month">前の月</string>
     <string name="heatmap_next_month">次の月</string>
 
+    <!-- SettingsScreen -->
+    <string name="settings_title">設定</string>
+    <string name="settings_heatmap_color_label">ヒートマップの色：</string>
+
     <!-- HomeScreen -->
     <string name="home_menu_description">メニュー</string>
     <string name="home_sync_description">同期</string>

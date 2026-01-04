@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +29,7 @@ import java.time.YearMonth
 @Composable
 fun HomeScreen(
     habits: List<Habit>,
+    heatmapColor: Color,
     onHabitClick: (Habit) -> Unit,
 
     // Drawer + tema + conta
@@ -35,6 +38,7 @@ fun HomeScreen(
     onToggleTheme: () -> Unit,
     onLoginClick: () -> Unit,
     onLogoutClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     onStatsClick: () -> Unit,
 
     // Ações de botão
@@ -79,6 +83,7 @@ fun HomeScreen(
                     showDialog = true
                     coroutineScope.launch { drawerState.close() }
                 },
+                onSettingsClick = { onSettingsClick() },
                 onStatsClick = {
                     onStatsClick()
                     coroutineScope.launch { drawerState.close() }
@@ -205,6 +210,7 @@ fun HomeScreen(
                         onNextMonth = {
                             currentMonth = currentMonth.plusMonths(1)
                         },
+                        heatmapColor = heatmapColor
                     )
                 }
 

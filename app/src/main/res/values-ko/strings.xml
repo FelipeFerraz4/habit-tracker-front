@@ -67,6 +67,10 @@
     <string name="home_add_habit_description">습관 추가</string>
     <string name="home_your_habits_title">내 습관:</string>
 
+    <!-- SettingsScreen -->
+    <string name="settings_title">설정</string>
+    <string name="settings_heatmap_color_label">히트맵 색상:</string>
+
     <!-- StatisticsScreen -->
     <string name="chart_tooltip_format">%1$s\n%2$d</string>
     <string name="weekly_chart_tooltip_format">주 • %1$d</string>
