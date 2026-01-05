@@ -63,6 +63,7 @@ fun HabitDailyProgressChart(
                     setDrawAxisLine(false)
                     granularity = 1f
                     isGranularityEnabled = true
+                    setLabelCount(4, true)
                     textSize = 14f
                 }
                 axisLeft.apply {

@@ -115,6 +115,7 @@ fun GeneralHabitsProgressLineChart(
                     setDrawAxisLine(false)
                     granularity = 1f
                     isGranularityEnabled = true
+                    setLabelCount(4, true)
                     textSize = 12f
                 }
 
