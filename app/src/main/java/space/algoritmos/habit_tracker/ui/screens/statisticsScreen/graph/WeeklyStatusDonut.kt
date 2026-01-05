@@ -45,15 +45,25 @@ fun WeeklyStatusDonut(
     val weekIntervalLabel = "${days.first().format(fmt)} – ${days.last().format(fmt)}"
     val centerLabel = "$weekLabel\n$weekIntervalLabel"
 
-    val weeklyGoal = (habit.goal.coerceAtLeast(1)) * 7
-    val raw = remember(habit, days) { days.sumOf { habit.progressOn(it) } }
-    val done = if (capAt100) minOf(raw, weeklyGoal) else raw
-    val remaining = (weeklyGoal - done).coerceAtLeast(0)
+    val weeklyGoal = habit.goal.coerceAtLeast(1f) * 7f
+
+    val raw = remember(habit, days) {
+        days.sumOf { habit.progressOn(it).done.toDouble() }
+    }
+
+    val done = if (capAt100) {
+        minOf(raw, weeklyGoal.toDouble())
+    } else {
+        raw
+    }
+
+    val remaining = (weeklyGoal - done.toFloat()).coerceAtLeast(0f)
+
 
     val entries = remember(done, remaining, completedLabel, remainingLabel) {
         listOf(
             PieEntry(done.toFloat(), completedLabel),
-            PieEntry(remaining.toFloat(), remainingLabel)
+            PieEntry(remaining, remainingLabel)
         )
     }
 

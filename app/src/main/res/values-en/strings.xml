@@ -22,6 +22,9 @@
     <string name="define_habit_goal">Define the goal for this habit:</string>
     <string name="goal_label">Goal (e.g. 20 pages, 3000 ml, etc.)</string>
     <string name="goal_placeholder">Enter the goal value</string>
+    <string name="unit_label">Unit</string>
+    <string name="unit_placeholder">e.g. pages, kcal, minutes</string>
+    <string name="default_unit">units</string>
 
     <!-- EditHabitScreen -->
     <string name="edit_habit_title">Edit habit</string>
@@ -45,6 +48,7 @@
     <!-- HabitRegisterScreen -->
     <string name="register_habit_binary_label">Did you complete this habit today?</string>
     <string name="register_habit_value_label">How much of your goal (%d) did you complete today?</string>
+    <string name="register_habit_value_label_with_unit"> How much did you complete today?\nGoal: %1$.0f %2$s </string>
     <string name="register_habit_value_placeholder">Enter the amount (unit)</string>
     <string name="common_yes">Yes</string>
     <string name="common_no">No</string>
@@ -83,12 +87,8 @@
     <string name="chart_habits_per_day_label">Habits per day</string>
 
     <!-- Statistics - GeneralHabitsProgressLineChart & Common -->
-    <string name="chart_progress_tooltip_percent">
-        %1$s\n%2$s\n%3$d (%4$d%%)
-    </string>
-    <string name="chart_progress_tooltip_raw">
-        %1$s\n%2$s\n%3$d
-    </string>
+    <string name="chart_progress_tooltip_percent">%1$s\n%2$s\n%3$.2f (%4$.2f%%)</string>
+    <string name="chart_progress_tooltip_raw">%1$s\n%2$s\n%3$.2f</string>
 
     <!-- Statistics - GeneralStatistics -->
     <string name="stats_general_title">General Statistics</string>
@@ -129,7 +129,7 @@
 
     <!-- Statistics - WeeklyProgressPieChart -->
     <string name="chart_week_label">Week</string>
-    <string name="chart_pie_tooltip_format">%1$d / %2$d (%3$d%%)</string>
+    <string name="chart_pie_tooltip_format">%1$.2f / %2$.2f (%3$.2f%%)</string>
 
     <!-- Statistics - WeeklyStatusDonut -->
     <string name="donut_chart_completed">Completed</string>

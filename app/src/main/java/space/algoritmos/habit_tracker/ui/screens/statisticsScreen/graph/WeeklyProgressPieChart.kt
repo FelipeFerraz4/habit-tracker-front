@@ -28,9 +28,9 @@ import kotlin.math.min
 
 private data class PieMeta(
     val habitName: String,
-    val rawSum: Int,
-    val target: Int,
-    val percent: Int
+    val rawSum: Float,
+    val target: Float,
+    val percent: Float
 )
 
 @Composable
@@ -54,13 +54,13 @@ fun WeeklyProgressPieChart(
 
     val entries = remember(habits, weekDates, capAt100) {
         habits.map { habit ->
-            val rawSum = weekDates.sumOf { day -> habit.progressOn(day) }
-            val target = (habit.goal.coerceAtLeast(1)) * 7
-            val ratio = if (target > 0) rawSum.toFloat() / target.toFloat() else 0f
+            val rawSum = weekDates.sumOf { day -> habit.progressOn(day).done.toDouble() }
+            val target = (habit.goal.coerceAtLeast(1f)) * 7
+            val ratio = if (target > 0) rawSum.toFloat() / target else 0f
             val capped = if (capAt100) min(ratio, 1f) else ratio
-            val percent = ((ratio * 100f).toInt()).coerceAtLeast(0)
+            val percent = ((ratio * 100f)).coerceAtLeast(0f)
             PieEntry(capped, habit.name).apply {
-                data = PieMeta(habit.name, rawSum, target, percent)
+                data = PieMeta(habit.name, rawSum.toFloat(), target, percent)
             }
         }
     }
@@ -130,9 +130,9 @@ fun WeeklyProgressPieChart(
 
                     subtitle.text = chart.context.getString(
                         R.string.chart_pie_tooltip_format,
-                        meta?.rawSum ?: 0,
-                        meta?.target ?: 0,
-                        meta?.percent ?: 0
+                        meta?.rawSum ?: 0f,
+                        meta?.target ?: 0f,
+                        meta?.percent ?: 0f
                     )
 
                     title.setTextColor(colorScheme.onSurface.toArgb())

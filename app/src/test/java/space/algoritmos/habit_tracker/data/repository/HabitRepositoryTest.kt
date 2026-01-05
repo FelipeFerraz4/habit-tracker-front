@@ -25,8 +25,8 @@ class HabitRepositoryTest {
             id = UUID.randomUUID(),
             name = "Drink Water",
             color = Color.Blue,
-            trackingMode = TrackingMode.VALUE,
-            goal = 2000,
+            goal = 2000f,
+            unit = "ml",
             progress = emptyMap(),
             status = HabitStatus.ACTIVE
         )
@@ -65,11 +65,11 @@ class HabitRepositoryTest {
         whenever(habitDao.getHabitById(habit.id)).thenReturn(habit)
 
         val today = LocalDate.now()
-        repository.updateProgress(habit.id, today, 500)
+        repository.updateProgress(habit.id, today, 500f, habit.goal)
 
         verify(habitDao).updateHabit(
             check {
-                assertEquals(500, it.progress[today])
+                assertEquals(DailyProgress(habit.goal, 500f), it.progress[today])
             }
         )
     }

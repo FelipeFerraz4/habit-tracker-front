@@ -8,13 +8,13 @@ import java.util.UUID
 
 class HabitTest {
 
-    private fun makeHabit(progress: Map<LocalDate, Int>): Habit {
+    private fun makeHabit(progress: Map<LocalDate, DailyProgress>): Habit {
         return Habit(
             name = "Test Habit",
             color = Color.Red,
-            trackingMode = TrackingMode.BINARY,
             status = HabitStatus.ACTIVE,
-            goal = 1,
+            goal = 100f,
+            unit = "cards",
             progress = progress
         )
     }
@@ -26,17 +26,17 @@ class HabitTest {
 
         val result = habit.progressOn(today)
 
-        assertEquals(0, result)
+        assertEquals(DailyProgress(0f, 0f), result)
     }
 
     @Test
     fun `progressOn returns correct value when there is progress`() {
         val today = LocalDate.of(2025, 9, 4)
-        val habit = makeHabit(mapOf(today to 5))
+        val habit = makeHabit(mapOf(today to DailyProgress(100f, 5f)))
 
         val result = habit.progressOn(today)
 
-        assertEquals(5, result)
+        assertEquals(DailyProgress(100f, 5f), result)
     }
 
     @Test
@@ -52,11 +52,11 @@ class HabitTest {
     fun `maxStreak calculates the longest sequence correctly`() {
         val today = LocalDate.of(2025, 9, 4)
         val progress = mapOf(
-            today to 1,
-            today.minusDays(1) to 1,
-            today.minusDays(2) to 1, // sequence of 3
-            today.minusDays(5) to 1,
-            today.minusDays(6) to 1 // sequence of 2
+            today to DailyProgress(100f, 1f),
+            today.minusDays(1) to DailyProgress(100f, 1f),
+            today.minusDays(2) to DailyProgress(100f, 1f), // sequence of 3
+            today.minusDays(5) to DailyProgress(100f, 1f),
+            today.minusDays(6) to DailyProgress(100f, 1f), // sequence of 2
         )
         val habit = makeHabit(progress)
 
@@ -68,7 +68,7 @@ class HabitTest {
     @Test
     fun `streakCount returns 0 when there is no progress today`() {
         val today = LocalDate.of(2025, 9, 4)
-        val habit = makeHabit(mapOf(today.minusDays(1) to 1))
+        val habit = makeHabit(mapOf(today.minusDays(1) to DailyProgress(100f, 1f)))
 
         val result = habit.streakCount(today)
 
@@ -79,9 +79,9 @@ class HabitTest {
     fun `streakCount counts streak starting from today`() {
         val today = LocalDate.of(2025, 9, 4)
         val progress = mapOf(
-            today to 1,
-            today.minusDays(1) to 1,
-            today.minusDays(2) to 1
+            today to DailyProgress(100f, 1f),
+            today.minusDays(1) to DailyProgress(100f, 1f),
+            today.minusDays(2) to DailyProgress(100f, 1f)
         )
         val habit = makeHabit(progress)
 
@@ -94,8 +94,8 @@ class HabitTest {
     fun `streakCount stops when there is a missing day in between`() {
         val today = LocalDate.of(2025, 9, 4)
         val progress = mapOf(
-            today to 1,
-            today.minusDays(2) to 1 // yesterday is missing
+            today to DailyProgress(100f, 1f),
+            today.minusDays(2) to DailyProgress(100f, 1f) // yesterday is missing
         )
         val habit = makeHabit(progress)
 
@@ -108,9 +108,9 @@ class HabitTest {
     fun `negativeOrZeroProgress does not count towards streak`() {
         val today = LocalDate.now()
         val habit = makeHabit(mapOf(
-            today to 0,
-            today.minusDays(1) to -3,
-            today.minusDays(2) to 1
+            today to DailyProgress(100f, 0f),
+            today.minusDays(1) to DailyProgress(100f, -3f),
+            today.minusDays(2) to DailyProgress(100f, 1f)
         ))
         assertEquals(0, habit.streakCount(today)) // today is 0, so streak breaks
         assertEquals(1, habit.maxStreak()) // only counts day -2
@@ -121,9 +121,10 @@ class HabitTest {
         val today = LocalDate.now()
         val future = today.plusDays(5)
         val habit = makeHabit(mapOf(
-            future to 1
+            today to DailyProgress(100f, 0f),
+            future to DailyProgress(100f, 1f)
         ))
-        assertEquals(0, habit.progressOn(today)) // future should not affect today
+        assertEquals(DailyProgress(100f, 0f), habit.progressOn(today)) // future should not affect today
         assertEquals(0, habit.streakCount(today)) // today's streak is 0
     }
 
@@ -134,9 +135,9 @@ class HabitTest {
             id = UUID.randomUUID(),
             name = "Habit with goal 0",
             color = Color.Green,
-            trackingMode = TrackingMode.BINARY,
-            goal = 0, // incoherent
-            progress = mapOf(today to 5),
+            goal = 0f, // incoherent
+            unit = "units",
+            progress = mapOf(today to DailyProgress(100f, 5f)),
             status = HabitStatus.ACTIVE
         )
         assertEquals(1, habit.streakCount(today))

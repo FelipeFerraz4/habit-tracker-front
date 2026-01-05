@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -21,6 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import space.algoritmos.habit_tracker.R
 import androidx.compose.ui.text.TextStyle
@@ -29,7 +33,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import space.algoritmos.habit_tracker.domain.model.Habit
-import space.algoritmos.habit_tracker.domain.model.TrackingMode
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,8 +45,8 @@ fun EditHabitScreen(
     var name by remember { mutableStateOf(habit.name) }
     var selectedColor by remember { mutableStateOf(habit.color) }
     var goalText by remember { mutableStateOf(habit.goal.toString()) }
-    var showGoalField by remember { mutableStateOf(habit.trackingMode == TrackingMode.VALUE) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var unit by remember { mutableStateOf(habit.unit) }
 
     val colors = listOf(
         Color(0xFFE91E63), Color(0xFF9C27B0), Color(0xFF3F51B5), Color(0xFF2196F3),
@@ -54,6 +57,9 @@ fun EditHabitScreen(
     var showColorPicker by remember { mutableStateOf(false) }
     // Inicializa 'customColor' com a cor selecionada (que vem do hábito)
     var customColor by remember { mutableStateOf(selectedColor) }
+
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Scaffold(
         topBar = {
@@ -100,7 +106,13 @@ fun EditHabitScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(12.dp),
+                .padding(12.dp)
+                .pointerInput(Unit) {
+                    detectTapGestures {
+                        focusManager.clearFocus()
+                        keyboardController?.hide()
+                    }
+                },
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
@@ -255,7 +267,30 @@ fun EditHabitScreen(
                     shape = RoundedCornerShape(16.dp),
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedTextField(
+                    value = unit,
+                    onValueChange = { unit = it },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.unit_label),
+                            fontSize = 18.sp
+                        )
+                    },
+                    placeholder = {
+                        Text(stringResource(id = R.string.unit_placeholder))
+                    },
+                    singleLine = true,
+                    textStyle = TextStyle(fontSize = 20.sp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    shape = RoundedCornerShape(16.dp)
+                )
+
+
+//                Spacer(modifier = Modifier.height(20.dp))
 
                 Spacer(modifier = Modifier.height(20.dp))
             }
@@ -269,17 +304,16 @@ fun EditHabitScreen(
             ) {
                 Button(
                     onClick = {
-                        val goal = if (showGoalField) goalText.toIntOrNull() ?: 1 else 1
-                        val finalMode = if (showGoalField) TrackingMode.VALUE else TrackingMode.BINARY
+                        val goal = goalText.toFloatOrNull() ?: 1f
                         val updatedHabit = habit.copy(
                             name = name,
                             color = selectedColor,
-                            trackingMode = finalMode,
+                            unit = unit.trim(),
                             goal = goal
                         )
                         onSave(updatedHabit)
                     },
-                    enabled = name.isNotBlank(),
+                    enabled = name.isNotBlank() && goalText.isNotBlank() && unit.isNotBlank(),
                     border = BorderStroke(2.dp, Color.Gray),
                     modifier = Modifier
                         .weight(1f)

@@ -3,9 +3,9 @@ package space.algoritmos.habit_tracker.ui.screens.homeScreen.utils
 import androidx.compose.ui.graphics.Color
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import space.algoritmos.habit_tracker.domain.model.DailyProgress
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.domain.model.HabitStatus
-import space.algoritmos.habit_tracker.domain.model.TrackingMode
 import java.time.LocalDate
 
 class CalculateCombinedStreakTest {
@@ -14,10 +14,10 @@ class CalculateCombinedStreakTest {
         return Habit(
             name = "Test Habit",
             color = Color.Companion.Red,
-            trackingMode = TrackingMode.BINARY,
+            unit = "units",
             status = HabitStatus.ACTIVE,
-            goal = 1,
-            progress = completedDates.associateWith { 1 }
+            goal = 1f,
+            progress = completedDates.associateWith { DailyProgress(1f, 1f) }
         )
     }
 

@@ -35,8 +35,8 @@ fun HabitStatistics(
 ) {
     val streak = habit.streakCount()
     val maxStreak = habit.maxStreak()
-    val totalProgress = habit.progress.values.sum()
-    val avgProgress = habit.progress.values.average()
+    val totalProgress = habit.totalProgress()
+    val avgProgress = habit.average()
 
     val resources = LocalContext.current.resources
     val streakText = resources.getQuantityString(R.plurals.streak_days, streak, streak)

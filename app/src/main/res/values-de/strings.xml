@@ -22,6 +22,9 @@
     <string name="define_habit_goal">Ziel für diese Gewohnheit festlegen:</string>
     <string name="goal_label">Ziel (z. B. 20 Seiten, 3000 ml usw.)</string>
     <string name="goal_placeholder">Zielwert eingeben</string>
+    <string name="unit_label">Einheit</string>
+    <string name="unit_placeholder">z. B. Seiten, kcal, Minuten</string>
+    <string name="default_unit">Einheiten</string>
 
     <!-- EditHabitScreen -->
     <string name="edit_habit_title">Gewohnheit bearbeiten</string>
@@ -45,6 +48,7 @@
     <!-- HabitRegisterScreen -->
     <string name="register_habit_binary_label">Haben Sie diese Gewohnheit heute abgeschlossen?</string>
     <string name="register_habit_value_label">Wie viel von Ihrem Ziel (%d) haben Sie heute erreicht?</string>
+    <string name="register_habit_value_label_with_unit"> Wie viel hast du heute geschafft?\nZiel: %1$.0f %2$s </string>
     <string name="register_habit_value_placeholder">Menge eingeben (Einheit)</string>
     <string name="common_yes">Ja</string>
     <string name="common_no">Nein</string>
@@ -83,8 +87,8 @@
     <string name="chart_habits_per_day_label">Gewohnheiten pro Tag</string>
 
     <!-- Statistics - GeneralHabitsProgressLineChart & Common -->
-    <string name="chart_progress_tooltip_percent">%1$s\n%2$s\n%3$d (%4$d%%)</string>
-    <string name="chart_progress_tooltip_raw">%1$s\n%2$s\n%3$d</string>
+    <string name="chart_progress_tooltip_percent">%1$s\n%2$s\n%3$.2f (%4$.2f%%)</string>
+    <string name="chart_progress_tooltip_raw">%1$s\n%2$s\n%3$.2f</string>
 
     <!-- Statistics - GeneralStatistics -->
     <string name="stats_general_title">Allgemeine Statistiken</string>
@@ -125,7 +129,7 @@
 
     <!-- Statistics - WeeklyProgressPieChart -->
     <string name="chart_week_label">Woche</string>
-    <string name="chart_pie_tooltip_format">%1$d / %2$d (%3$d%%)</string>
+    <string name="chart_pie_tooltip_format">%1$.2f / %2$.2f (%3$.2f%%)</string>
 
     <!-- Statistics - WeeklyStatusDonut -->
     <string name="donut_chart_completed">Abgeschlossen</string>

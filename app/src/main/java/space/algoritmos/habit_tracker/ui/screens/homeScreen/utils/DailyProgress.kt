@@ -8,11 +8,11 @@ fun dailyProgress(date: LocalDate, habits: List<Habit>): Float {
 
     return habits
         .map { habit ->
-            val progress = habit.progressOn(date).toFloat()
+            val progress = habit.progressOn(date).done
             when {
-                habit.goal <= 0 -> 0f
-                progress > habit.goal -> 1f
-                else -> progress / habit.goal
+                habit.progressOn(date).goal <= 0f -> 0f
+                progress > habit.progressOn(date).goal-> 1f
+                else -> progress / habit.progressOn(date).goal
             }
         }
         .average()

@@ -130,7 +130,7 @@ fun HabitDetailScreen(
             Button(
                 onClick = {
                     val today = LocalDate.now()
-                    val newValue = habit.progress[today] ?: 0
+                    val newValue = habit.progressOn(today)
 
                     onRegisterClick()
 

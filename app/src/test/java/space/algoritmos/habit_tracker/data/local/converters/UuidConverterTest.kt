@@ -2,7 +2,6 @@ package space.algoritmos.habit_tracker.data.local.converters
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import space.algoritmos.habit_tracker.data.local.converters.UuidConverter
 import java.util.UUID
 
 class UuidConverterTest {

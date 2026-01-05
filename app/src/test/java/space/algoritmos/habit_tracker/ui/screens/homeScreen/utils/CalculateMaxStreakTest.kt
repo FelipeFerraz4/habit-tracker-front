@@ -3,9 +3,9 @@ package space.algoritmos.habit_tracker.ui.screens.homeScreen.utils
 import androidx.compose.ui.graphics.Color
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import space.algoritmos.habit_tracker.domain.model.DailyProgress
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.domain.model.HabitStatus
-import space.algoritmos.habit_tracker.domain.model.TrackingMode
 import java.time.LocalDate
 
 class CalculateMaxStreakTest {
@@ -13,11 +13,11 @@ class CalculateMaxStreakTest {
     private fun makeHabit(vararg completedDates: LocalDate): Habit {
         return Habit(
             name = "Test Habit",
-            color = Color.Companion.Red,
-            trackingMode = TrackingMode.BINARY,
+            color = Color.Red,
+            unit = "units",
             status = HabitStatus.ACTIVE,
-            goal = 1,
-            progress = completedDates.associateWith { 1 }
+            goal = 1f,
+            progress = completedDates.associateWith { DailyProgress(1f, 1f) }
         )
     }
 
@@ -31,10 +31,10 @@ class CalculateMaxStreakTest {
     fun `returns 0 when no habit has progress`() {
         val habit = Habit(
             name = "Empty Habit",
-            color = Color.Companion.Blue,
-            trackingMode = TrackingMode.BINARY,
+            color = Color.Blue,
+            unit = "units",
             status = HabitStatus.ACTIVE,
-            goal = 1,
+            goal = 1f,
             progress = emptyMap()
         )
         val result = calculateMaxStreak(listOf(habit))

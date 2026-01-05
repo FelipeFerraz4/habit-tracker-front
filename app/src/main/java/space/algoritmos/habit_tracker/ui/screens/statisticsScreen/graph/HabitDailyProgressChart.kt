@@ -36,8 +36,8 @@ fun HabitDailyProgressChart(
 
         (0 until daysToShow).map { offset ->
             val date = startDate.plusDays(offset.toLong())
-            val value = habit.progressOn(date) // Usando a função helper
-            BarEntry(date.toX(), value.toFloat())
+            val value = habit.progressOn(date).done
+            BarEntry(date.toX(), value)
         }
     }
 

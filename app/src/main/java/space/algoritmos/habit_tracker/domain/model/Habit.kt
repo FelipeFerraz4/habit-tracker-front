@@ -5,23 +5,36 @@ import java.time.LocalDate
 import java.util.UUID
 
 data class Habit(
-    val id: UUID = UUID.randomUUID(), // Gera um ID único por padrão
+    val id: UUID = UUID.randomUUID(),
     val name: String,
     val color: Color,
-    val trackingMode: TrackingMode,
     val status: HabitStatus,
-    val goal: Int,
-    val progress: Map<LocalDate, Int> = emptyMap()
+    val unit: String,
+    val goal: Float,
+    val progress: Map<LocalDate, DailyProgress> = emptyMap()
 ) {
-    fun progressOn(date: LocalDate): Int {
-        return progress[date] ?: 0
+    fun progressOn(date: LocalDate): DailyProgress {
+        return progress[date] ?: DailyProgress(0f, 0f)
+    }
+
+    fun totalProgress(): Float {
+        return progress.values
+            .sumOf { it.done.toDouble() }
+            .toFloat()
+    }
+
+    fun average(): Float {
+        return progress.values
+            .map { it.done.toDouble() }
+            .average()
+            .toFloat()
     }
 
     fun maxStreak(): Int {
         if (progress.isEmpty()) return 0
 
         val completedDates = progress
-            .filter { it.value > 0 }
+            .filter { it.value.done > 0f }
             .keys
             .sorted()
 
@@ -51,7 +64,7 @@ data class Habit(
         var streak = 0
         var date = today
 
-        while (progress[date]?.let { it > 0 } == true) {
+        while (progress[date]?.let { it.done > 0f } == true) {
             streak++
             date = date.minusDays(1)
         }

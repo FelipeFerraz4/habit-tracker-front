@@ -37,7 +37,7 @@ fun DailyHabitCountBarChart(
 
         (0 until daysToShow).map { offset ->
             val date = startDate.plusDays(offset.toLong())
-            val count = habits.count { (it.progress[date] ?: 0) > 0 }
+            val count = habits.count { (it.progress[date]?.done ?: 0f) > 0f }
             BarEntry(date.toX(), count.toFloat())
         }
     }

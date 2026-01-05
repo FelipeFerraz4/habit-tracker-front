@@ -1,6 +1,7 @@
 package space.algoritmos.habit_tracker.data.repository
 
 import space.algoritmos.habit_tracker.data.local.dao.HabitDao
+import space.algoritmos.habit_tracker.domain.model.DailyProgress
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.domain.model.HabitStatus
 import java.time.LocalDate
@@ -27,10 +28,10 @@ class HabitRepository(private val habitDao: HabitDao) {
         updateHabit(deletedHabit)
     }
 
-    fun updateProgress(habitId: UUID, date: LocalDate, value: Int) {
+    fun updateProgress(habitId: UUID, date: LocalDate, done: Float, goal: Float) {
         val habit = getHabitById(habitId) ?: return
         val newProgress = habit.progress.toMutableMap()
-        newProgress[date] = value
+        newProgress[date] = DailyProgress(goal, done)
         val updatedHabit = habit.copy(progress = newProgress)
         updateHabit(updatedHabit)
     }

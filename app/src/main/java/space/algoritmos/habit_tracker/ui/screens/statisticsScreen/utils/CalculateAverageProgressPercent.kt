@@ -14,11 +14,14 @@ fun calculateAverageProgressPercent(
     if (totalPoints == 0) return 0f
 
     val sumRatios = habits.sumOf { habit ->
-        val goal = habit.goal.coerceAtLeast(1)
         (0 until daysToShow).sumOf { offset ->
             val date = start.plusDays(offset.toLong())
-            val raw = habit.progressOn(date).toDouble()
-            (raw / goal).coerceAtMost(1.0)
+            val daily = habit.progressOn(date)
+
+            val goal = daily.goal.coerceAtLeast(1f)
+            val raw = daily.done
+
+            ((raw / goal).coerceAtMost(1f)).toDouble()
         }
     }
 

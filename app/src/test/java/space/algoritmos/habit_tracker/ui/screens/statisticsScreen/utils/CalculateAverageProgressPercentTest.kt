@@ -3,21 +3,21 @@ package space.algoritmos.habit_tracker.ui.screens.statisticsScreen.utils
 import androidx.compose.ui.graphics.Color
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import space.algoritmos.habit_tracker.domain.model.DailyProgress
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.domain.model.HabitStatus
-import space.algoritmos.habit_tracker.domain.model.TrackingMode
 import java.time.LocalDate
 
 class CalculateAverageProgressPercentTest {
 
     private fun makeHabit(
-        goal: Int = 100,
-        progress: Map<LocalDate, Int> = emptyMap()
+        goal: Float = 100f,
+        progress: Map<LocalDate, DailyProgress> = emptyMap()
     ): Habit {
         return Habit(
             name = "Test Habit",
             color = Color.Red,
-            trackingMode = TrackingMode.VALUE,
+            unit = "units",
             status = HabitStatus.ACTIVE,
             goal = goal,
             progress = progress
@@ -40,9 +40,9 @@ class CalculateAverageProgressPercentTest {
     fun `calculates 100 percent when progress equals goal every day`() {
         val today = LocalDate.of(2025, 10, 19)
         val progress = (0 until 5).associate { offset ->
-            today.minusDays(offset.toLong()) to 100
+            today.minusDays(offset.toLong()) to DailyProgress(100f, 100f)
         }
-        val habit = makeHabit(goal = 100, progress = progress)
+        val habit = makeHabit(goal = 100f, progress = progress)
 
         val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 5, referenceDate = today)
         assertEquals(100f, result, 0.001f)
@@ -52,9 +52,9 @@ class CalculateAverageProgressPercentTest {
     fun `calculates 50 percent when progress is half the goal`() {
         val today = LocalDate.of(2025, 10, 19)
         val progress = (0 until 5).associate { offset ->
-            today.minusDays(offset.toLong()) to 50
+            today.minusDays(offset.toLong()) to DailyProgress(100f, 50f)
         }
-        val habit = makeHabit(goal = 100, progress = progress)
+        val habit = makeHabit(goal = 100f, progress = progress)
 
         val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 5, referenceDate = today)
         assertEquals(50f, result, 0.001f)
@@ -64,9 +64,9 @@ class CalculateAverageProgressPercentTest {
     fun `caps at 100 percent when progress exceeds goal`() {
         val today = LocalDate.of(2025, 10, 19)
         val progress = (0 until 3).associate { offset ->
-            today.minusDays(offset.toLong()) to 200 // 200% progresso
+            today.minusDays(offset.toLong()) to DailyProgress(100f, 200f) // 200% progresso
         }
-        val habit = makeHabit(goal = 100, progress = progress)
+        val habit = makeHabit(goal = 100f, progress = progress)
 
         val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 3, referenceDate = today)
         assertEquals(100f, result, 0.001f) // deve limitar a 100%
@@ -75,8 +75,8 @@ class CalculateAverageProgressPercentTest {
     @Test
     fun `handles goal equal to zero safely`() {
         val today = LocalDate.of(2025, 10, 19)
-        val progress = mapOf(today to 10)
-        val habit = makeHabit(goal = 0, progress = progress)
+        val progress = mapOf(today to DailyProgress(0f, 10f))
+        val habit = makeHabit(goal = 0f, progress = progress)
 
         val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 1, referenceDate = today)
         // goal = 0 é coerced para 1, então 10/1 = 10 → coerceAtMost(1.0) = 1.0 = 100%
@@ -87,9 +87,9 @@ class CalculateAverageProgressPercentTest {
     fun `averages progress across multiple habits`() {
         val today = LocalDate.of(2025, 10, 19)
 
-        val habit1 = makeHabit(goal = 100, progress = mapOf(today to 100)) // 100%
-        val habit2 = makeHabit(goal = 100, progress = mapOf(today to 0))   // 0%
-        val habit3 = makeHabit(goal = 100, progress = mapOf(today to 50))  // 50%
+        val habit1 = makeHabit(goal = 100f, progress = mapOf(today to DailyProgress(100f, 100f))) // 100%
+        val habit2 = makeHabit(goal = 100f, progress = mapOf(today to DailyProgress(100f, 0f)))   // 0%
+        val habit3 = makeHabit(goal = 100f, progress = mapOf(today to DailyProgress(100f, 50f)))  // 50%
 
         val result = calculateAverageProgressPercent(
             listOf(habit1, habit2, habit3),
@@ -103,10 +103,10 @@ class CalculateAverageProgressPercentTest {
     fun `considers only last N days`() {
         val today = LocalDate.of(2025, 10, 19)
         val progress = mapOf(
-            today to 100,
-            today.minusDays(5) to 100 // fora dos últimos 3 dias
+            today to DailyProgress(100f, 100f),
+            today.minusDays(5) to DailyProgress(100f, 100f) // fora dos últimos 3 dias
         )
-        val habit = makeHabit(goal = 100, progress = progress)
+        val habit = makeHabit(goal = 100f, progress = progress)
 
         val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 3, referenceDate = today)
         assertEquals(100f / 3f, result, 0.1f) // apenas 1 dia dos 3 tem progresso
@@ -117,17 +117,17 @@ class CalculateAverageProgressPercentTest {
         val today = LocalDate.of(2025, 10, 19)
 
         val habit1 = makeHabit(
-            goal = 100,
+            goal = 100f,
             progress = mapOf(
-                today to 50,
-                today.minusDays(1) to 100
+                today to DailyProgress(100f, 50f),
+                today.minusDays(1) to DailyProgress(100f, 100f)
             )
         )
         val habit2 = makeHabit(
-            goal = 200,
+            goal = 200f,
             progress = mapOf(
-                today to 200,
-                today.minusDays(1) to 100
+                today to DailyProgress(200f, 200f),
+                today.minusDays(1) to DailyProgress(200f, 100f)
             )
         )
 

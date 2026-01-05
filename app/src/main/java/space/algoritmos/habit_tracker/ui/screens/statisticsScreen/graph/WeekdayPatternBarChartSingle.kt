@@ -51,7 +51,7 @@ fun WeekdayPatternBarChartSingle(
         while (!d.isAfter(today)) {
             val idx = d.dayOfWeek.value - 1 // MONDAY (1) -> 0, SUNDAY (7) -> 6
 
-            val raw = habit.progressOn(d).toDouble()
+            val raw = habit.progressOn(d).done
             val hasRecord = habit.progress.containsKey(d)
             if (hasRecord) {
                 sums[idx] += raw

@@ -22,6 +22,9 @@
     <string name="define_habit_goal">この習慣の目標を設定：</string>
     <string name="goal_label">目標（例：20ページ、3000ml など）</string>
     <string name="goal_placeholder">目標の値を入力</string>
+    <string name="unit_label">単位</string>
+    <string name="unit_placeholder">例：ページ、kcal、分</string>
+    <string name="default_unit">単位</string>
 
     <!-- EditHabitScreen -->
     <string name="edit_habit_title">習慣を編集</string>
@@ -45,6 +48,8 @@
     <!-- HabitRegisterScreen -->
     <string name="register_habit_binary_label">今日はこの習慣を達成しましたか？</string>
     <string name="register_habit_value_label">今日、目標（%d）のうちどれくらい達成しましたか？</string>
+    <string name="register_habit_value_label_with_unit">今日どれくらい達成しましたか？\n目標: %1$.0f %2$s</string>
+
     <string name="register_habit_value_placeholder">数量を入力（単位）</string>
     <string name="common_yes">はい</string>
     <string name="common_no">いいえ</string>
@@ -82,12 +87,8 @@
     <string name="chart_habits_per_day_label">1日あたりの習慣</string>
 
     <!-- Statistics - GeneralHabitsProgressLineChart & Common -->
-    <string name="chart_progress_tooltip_percent">
-        %1$s\n%2$s\n%3$d（%4$d%%）
-    </string>
-    <string name="chart_progress_tooltip_raw">
-        %1$s\n%2$s\n%3$d
-    </string>
+    <string name="chart_progress_tooltip_percent">%1$s\n%2$s\n%3$.2f (%4$.2f%%)</string>
+    <string name="chart_progress_tooltip_raw">%1$s\n%2$s\n%3$.2f</string>
 
     <!-- Statistics - GeneralStatistics -->
     <string name="stats_general_title">全体統計</string>
@@ -128,7 +129,7 @@
 
     <!-- Statistics - WeeklyProgressPieChart -->
     <string name="chart_week_label">週</string>
-    <string name="chart_pie_tooltip_format">%1$d / %2$d（%3$d%%）</string>
+    <string name="chart_pie_tooltip_format">%1$.2f / %2$.2f (%3$.2f%%)</string>
 
     <!-- Statistics - WeeklyStatusDonut -->
     <string name="donut_chart_completed">完了</string>

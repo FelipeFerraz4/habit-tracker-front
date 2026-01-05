@@ -2,6 +2,7 @@ package space.algoritmos.habit_tracker.navigation.utils
 
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.data.repository.HabitRepository
+import space.algoritmos.habit_tracker.domain.model.DailyProgress
 import java.time.LocalDate
 import java.util.*
 
@@ -9,11 +10,11 @@ import java.util.*
  * Updates the progress of a habit on a specific date.
  * Returns a new Habit instance with the updated progress.
  */
-fun updateHabitProgress(habit: Habit, date: LocalDate, value: Int, habitRepository: HabitRepository): Habit {
-    habitRepository.updateProgress(habit.id, date, value)
+fun updateHabitProgress(habit: Habit, date: LocalDate, value: Float, habitRepository: HabitRepository): Habit {
+    habitRepository.updateProgress(habit.id, date, value, habit.goal)
     return habit.copy(
         progress = habit.progress.toMutableMap().apply {
-            put(date, value)
+            put(date, DailyProgress(habit.goal, value))
         }
     )
 }

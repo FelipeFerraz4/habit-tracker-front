@@ -7,7 +7,7 @@ fun calculateMaxStreak(habits: List<Habit>): Int {
 
     // Coleta todos os dias em que houve progresso (> 0f) em pelo menos um hábito
     val allProgressDates = habits.flatMap { it.progress.entries }
-        .filter { it.value > 0f }
+        .filter { it.value.done > 0f }
         .map { it.key }
         .toSet()
 

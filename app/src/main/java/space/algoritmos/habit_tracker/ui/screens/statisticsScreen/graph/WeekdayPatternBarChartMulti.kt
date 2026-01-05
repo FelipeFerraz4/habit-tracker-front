@@ -55,10 +55,10 @@ fun WeekdayPatternBarChartMulti(
 
             habits.forEach { habit ->
                 if (habit.progress.containsKey(d)) {
-                    val goal = habit.goal.coerceAtLeast(1)
-                    val raw = habit.progressOn(d).toDouble()
+                    val goal = habit.progressOn(d).goal.coerceAtLeast(1f)
+                    val raw = habit.progressOn(d).done
                     val ratio = raw / goal
-                    val capped = if (capAt100) ratio.coerceAtMost(1.0) else ratio
+                    val capped = if (capAt100) ratio.coerceAtMost(1.0f) else ratio
                     sums[idx] += capped
                     counts[idx] += 1
                 }

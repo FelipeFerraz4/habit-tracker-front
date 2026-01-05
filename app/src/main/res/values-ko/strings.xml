@@ -22,6 +22,9 @@
     <string name="define_habit_goal">이 습관의 목표 설정:</string>
     <string name="goal_label">목표 (예: 20페이지, 3000ml 등)</string>
     <string name="goal_placeholder">목표 값 입력</string>
+    <string name="unit_label">단위</string>
+    <string name="unit_placeholder">예: 페이지, kcal, 분</string>
+    <string name="default_unit">단위</string>
 
     <!-- EditHabitScreen -->
     <string name="edit_habit_title">습관 수정</string>
@@ -45,6 +48,8 @@
     <!-- HabitRegisterScreen -->
     <string name="register_habit_binary_label">오늘 이 습관을 완료했나요?</string>
     <string name="register_habit_value_label">오늘 목표(%d) 중 얼마나 완료했나요?</string>
+    <string name="register_habit_value_label_with_unit">오늘 얼마나 완료했나요?\n목표: %1$.0f %2$s</string>
+
     <string name="register_habit_value_placeholder">수량 입력 (단위)</string>
     <string name="common_yes">예</string>
     <string name="common_no">아니요</string>
@@ -82,12 +87,8 @@
     <string name="chart_habits_per_day_label">하루당 습관</string>
 
     <!-- Statistics - GeneralHabitsProgressLineChart & Common -->
-    <string name="chart_progress_tooltip_percent">
-        %1$s\n%2$s\n%3$d (%4$d%%)
-    </string>
-    <string name="chart_progress_tooltip_raw">
-        %1$s\n%2$s\n%3$d
-    </string>
+    <string name="chart_progress_tooltip_percent">%1$s\n%2$s\n%3$.2f (%4$.2f%%)</string>
+    <string name="chart_progress_tooltip_raw">%1$s\n%2$s\n%3$.2f</string>
 
     <!-- Statistics - GeneralStatistics -->
     <string name="stats_general_title">전체 통계</string>
@@ -128,7 +129,7 @@
 
     <!-- Statistics - WeeklyProgressPieChart -->
     <string name="chart_week_label">주</string>
-    <string name="chart_pie_tooltip_format">%1$d / %2$d (%3$d%%)</string>
+    <string name="chart_pie_tooltip_format">%1$.2f / %2$.2f (%3$.2f%%)</string>
 
     <!-- Statistics - WeeklyStatusDonut -->
     <string name="donut_chart_completed">완료</string>

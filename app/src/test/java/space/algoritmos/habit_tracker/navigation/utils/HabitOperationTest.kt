@@ -6,9 +6,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.*
 import space.algoritmos.habit_tracker.data.repository.HabitRepository
+import space.algoritmos.habit_tracker.domain.model.DailyProgress
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.domain.model.HabitStatus
-import space.algoritmos.habit_tracker.domain.model.TrackingMode
 import java.time.LocalDate
 import java.util.*
 
@@ -23,15 +23,15 @@ class HabitOperationTest {
         sampleHabit = Habit(
             id = UUID.randomUUID(),
             name = "Test Habit",
-            color = Color.Companion.Red,
-            trackingMode = TrackingMode.BINARY,
+            color = Color.Red,
+            unit = "units",
             status = HabitStatus.ACTIVE,
-            goal = 1,
+            goal = 1f,
             progress = mapOf(
-                LocalDate.now().minusDays(3) to 1,
-                LocalDate.now().minusDays(2) to 1,
-                LocalDate.now().minusDays(1) to 1,
-                LocalDate.now() to 1
+                LocalDate.now().minusDays(3) to DailyProgress(1f, 1f),
+                LocalDate.now().minusDays(2) to DailyProgress(1f, 1f),
+                LocalDate.now().minusDays(1) to DailyProgress(1f, 1f),
+                LocalDate.now() to DailyProgress(1f, 1f)
             )
         )
     }
@@ -39,13 +39,13 @@ class HabitOperationTest {
     @Test
     fun `updateHabitProgress should update progress and call repository`() {
         val date = LocalDate.now()
-        val updated = updateHabitProgress(sampleHabit, date, 5, habitRepository)
+        val updated = updateHabitProgress(sampleHabit, date, 5f, habitRepository)
 
         // repository called
-        verify(habitRepository).updateProgress(sampleHabit.id, date, 5)
+        verify(habitRepository).updateProgress(sampleHabit.id, date, 5f, sampleHabit.goal)
 
         // progress updated
-        assertEquals(5, updated.progress[date])
+        assertEquals(DailyProgress(sampleHabit.goal, 5f), updated.progress[date])
     }
 
     @Test

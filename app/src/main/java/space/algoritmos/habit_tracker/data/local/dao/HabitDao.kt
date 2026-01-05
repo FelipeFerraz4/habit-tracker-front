@@ -2,56 +2,75 @@ package space.algoritmos.habit_tracker.data.local.dao
 
 import android.content.ContentValues
 import android.database.Cursor
-import android.util.Log
 import space.algoritmos.habit_tracker.data.local.DatabaseHelper
 import space.algoritmos.habit_tracker.data.local.converters.ColorConverter
 import space.algoritmos.habit_tracker.data.local.converters.ProgressJsonConverter
 import space.algoritmos.habit_tracker.data.local.converters.UuidConverter
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.domain.model.HabitStatus
-import space.algoritmos.habit_tracker.domain.model.TrackingMode
 import java.util.UUID
 
 class HabitDao(private val dbHelper: DatabaseHelper) {
 
+    companion object {
+        private const val TABLE = "habits"
+
+        private const val COL_ID = "id"
+        private const val COL_NAME = "name"
+        private const val COL_COLOR = "color"
+        private const val COL_STATUS = "status"
+        private const val COL_UNIT = "unit"
+        private const val COL_GOAL = "goal"
+        private const val COL_PROGRESS = "progress"
+    }
+
     fun addHabit(habit: Habit) {
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
-            put("id", UuidConverter.toString(habit.id))
-            put("name", habit.name)
-            put("color", ColorConverter.toString(habit.color))
-            put("tracking_mode", habit.trackingMode.name)
-            put("status", habit.status.name)
-            put("goal", habit.goal)
-            put("progress", ProgressJsonConverter.toJson(habit.progress))
+            put(COL_ID, UuidConverter.toString(habit.id))
+            put(COL_NAME, habit.name)
+            put(COL_COLOR, ColorConverter.toString(habit.color))
+            put(COL_STATUS, habit.status.name)
+            put(COL_UNIT, habit.unit)
+            put(COL_GOAL, habit.goal)
+            put(COL_PROGRESS, ProgressJsonConverter.toJson(habit.progress))
         }
-        db.insert("habits", null, values)
+        db.insert(TABLE, null, values)
         db.close()
     }
 
     fun getAllHabits(): List<Habit> {
         val db = dbHelper.readableDatabase
-        val cursor = db.query("habits", null, null, null, null, null, null)
         val habits = mutableListOf<Habit>()
+
+        val cursor = db.query(TABLE, null, null, null, null, null, null)
         cursor.use {
             while (it.moveToNext()) {
                 habits.add(cursorToHabit(it))
             }
         }
+
         db.close()
         return habits
     }
 
     fun getHabitById(id: UUID): Habit? {
         val db = dbHelper.readableDatabase
+
         val cursor = db.query(
-            "habits",
+            TABLE,
             null,
-            "id = ?",
-            arrayOf(id.toString()),
-            null, null, null
+            "$COL_ID = ?",
+            arrayOf(UuidConverter.toString(id)),
+            null,
+            null,
+            null
         )
-        val habit = cursor.use { if (it.moveToFirst()) cursorToHabit(it) else null }
+
+        val habit = cursor.use {
+            if (it.moveToFirst()) cursorToHabit(it) else null
+        }
+
         db.close()
         return habit
     }
@@ -59,41 +78,50 @@ class HabitDao(private val dbHelper: DatabaseHelper) {
     fun updateHabit(habit: Habit) {
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
-            put("name", habit.name)
-            put("color", ColorConverter.toString(habit.color))
-            put("tracking_mode", habit.trackingMode.name)
-            put("status", habit.status.name)
-            put("goal", habit.goal)
-            put("progress", ProgressJsonConverter.toJson(habit.progress))
+            put(COL_NAME, habit.name)
+            put(COL_COLOR, ColorConverter.toString(habit.color))
+            put(COL_STATUS, habit.status.name)
+            put(COL_UNIT, habit.unit)
+            put(COL_GOAL, habit.goal)
+            put(COL_PROGRESS, ProgressJsonConverter.toJson(habit.progress))
         }
-        db.update("habits", values, "id = ?", arrayOf(habit.id.toString()))
+
+        db.update(
+            TABLE,
+            values,
+            "$COL_ID = ?",
+            arrayOf(UuidConverter.toString(habit.id))
+        )
+
         db.close()
     }
 
     fun deleteHabit(id: UUID) {
         val db = dbHelper.writableDatabase
-        db.delete("habits", "id = ?", arrayOf(id.toString()))
+        db.delete(TABLE, "$COL_ID = ?", arrayOf(UuidConverter.toString(id)))
         db.close()
     }
 
-    // Helper interno
+    // =========================
+    // Cursor → Domain
+    // =========================
     private fun cursorToHabit(cursor: Cursor): Habit {
-        // Adicione logs para depurar
-        val goalValue = cursor.getInt(cursor.getColumnIndexOrThrow("goal"))
-        val progressJson = cursor.getString(cursor.getColumnIndexOrThrow("progress"))
-
-        // Log para ver o que está no banco
-        Log.d("HabitDaoDebug", "Goal from DB: $goalValue")
-        Log.d("HabitDaoDebug", "Progress JSON from DB: $progressJson")
-
         return Habit(
-            id = UuidConverter.fromString(cursor.getString(cursor.getColumnIndexOrThrow("id")))!!,
-            name = cursor.getString(cursor.getColumnIndexOrThrow("name")),
-            color = ColorConverter.fromString(cursor.getString(cursor.getColumnIndexOrThrow("color")))!!,
-            trackingMode = TrackingMode.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("tracking_mode"))),
-            status = HabitStatus.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("status"))),
-            goal = goalValue,
-            progress = ProgressJsonConverter.fromJson(progressJson)
+            id = UuidConverter.fromString(
+                cursor.getString(cursor.getColumnIndexOrThrow(COL_ID))
+            )!!,
+            name = cursor.getString(cursor.getColumnIndexOrThrow(COL_NAME)),
+            color = ColorConverter.fromString(
+                cursor.getString(cursor.getColumnIndexOrThrow(COL_COLOR))
+            )!!,
+            status = HabitStatus.valueOf(
+                cursor.getString(cursor.getColumnIndexOrThrow(COL_STATUS))
+            ),
+            unit = cursor.getString(cursor.getColumnIndexOrThrow(COL_UNIT)),
+            goal = cursor.getFloat(cursor.getColumnIndexOrThrow(COL_GOAL)),
+            progress = ProgressJsonConverter.fromJson(
+                cursor.getString(cursor.getColumnIndexOrThrow(COL_PROGRESS))
+            )
         )
     }
 }
