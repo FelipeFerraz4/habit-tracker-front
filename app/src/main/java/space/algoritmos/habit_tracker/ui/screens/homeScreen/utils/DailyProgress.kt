@@ -3,7 +3,7 @@ package space.algoritmos.habit_tracker.ui.screens.homeScreen.utils
 import space.algoritmos.habit_tracker.domain.model.Habit
 import java.time.LocalDate
 
-fun dailyProgress(date: LocalDate, habits: List<Habit>): Float {
+fun dailyProgress(date: LocalDate = LocalDate.now(), habits: List<Habit>): Float {
     if (habits.isEmpty()) return 0f
 
     return habits

@@ -4,15 +4,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AcUnit
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.outlined.LocalFireDepartment
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,6 +28,7 @@ import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateCombinedStreak
 import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.calculateMaxStreak
+import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.dailyProgress
 import java.time.YearMonth
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,6 +64,26 @@ fun HomeScreen(
 
     var showDialog by remember { mutableStateOf(false) }
     var dialogType by remember { mutableStateOf("") }
+
+    val isDoneToday = dailyProgress(habits = habits) > 0f
+
+    val streakLevel = when {
+        isDoneToday -> 3
+        streakCount > 0 -> 2
+        else -> 1
+    }
+
+    val streakIcon = when (streakLevel) {
+        3 -> Icons.Filled.LocalFireDepartment
+        2 -> Icons.Filled.LocalFireDepartment
+        else -> Icons.Filled.AcUnit
+    }
+
+    val streakColor = when (streakLevel) {
+        3 -> Color(0xFFFF6D00) // laranja intenso
+        2 -> Color(0xFF42A5F5) // fogo azulado
+        else -> Color(0xFF81D4FA) // azul gelo
+    }
 
     if (showDialog) {
         ComingSoonDialog(
@@ -174,8 +200,16 @@ fun HomeScreen(
                             .padding(horizontal = 16.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = "🔥", fontSize = 36.sp)
-                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Icon(
+                                imageVector = streakIcon,
+                                contentDescription = null,
+                                tint = streakColor,
+                                modifier = Modifier.size(44.dp) // ícone maior
+                            )
+
+                            Spacer(modifier = Modifier.width(10.dp))
+
                             Text(
                                 text = LocalContext.current.resources.getQuantityString(
                                     R.plurals.streak_days,
@@ -186,16 +220,29 @@ fun HomeScreen(
                             )
                         }
 
+
                         Spacer(modifier = Modifier.weight(1f))
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = "🏆", fontSize = 36.sp)
+
+                            Icon(
+                                imageVector = Icons.Filled.EmojiEvents,
+                                contentDescription = null,
+                                tint = Color(0xFFFFC107), // dourado
+                                modifier = Modifier.size(40.dp)
+                            )
+
                             Spacer(modifier = Modifier.width(8.dp))
+
                             Text(
-                                text = stringResource(id = R.string.streak_max, maxStreak),
+                                text = stringResource(
+                                    id = R.string.streak_max,
+                                    maxStreak
+                                ),
                                 fontSize = 20.sp
                             )
                         }
+
                     }
                 }
 

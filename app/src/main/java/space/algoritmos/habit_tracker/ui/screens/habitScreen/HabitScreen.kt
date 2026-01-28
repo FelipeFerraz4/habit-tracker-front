@@ -6,7 +6,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AcUnit
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalContext
 import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
+import space.algoritmos.habit_tracker.ui.screens.homeScreen.utils.dailyProgress
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -35,6 +39,27 @@ fun HabitDetailScreen(
 ) {
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     var habitState by remember { mutableStateOf(habit) }
+
+    val isDoneToday = habit.progressOn(LocalDate.now()).done > 0f
+    val streakCount = habit.streakCount()
+
+    val streakLevel = when {
+        isDoneToday -> 3
+        streakCount > 0 -> 2
+        else -> 1
+    }
+
+    val streakIcon = when (streakLevel) {
+        3 -> Icons.Filled.LocalFireDepartment
+        2 -> Icons.Filled.LocalFireDepartment
+        else -> Icons.Filled.AcUnit
+    }
+
+    val streakColor = when (streakLevel) {
+        3 -> Color(0xFFFF6D00) // laranja intenso
+        2 -> Color(0xFF42A5F5) // fogo azulado
+        else -> Color(0xFF81D4FA) // azul gelo
+    }
 
     Scaffold(
         topBar = {
@@ -97,6 +122,7 @@ fun HabitDetailScreen(
                     fontSize = 32.sp
                 )
 
+
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -105,13 +131,23 @@ fun HabitDetailScreen(
                         .padding(horizontal = 16.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "🔥", fontSize = 36.sp)
+                        Icon(
+                            imageVector = streakIcon,
+                            contentDescription = null,
+                            tint = streakColor,
+                            modifier = Modifier.size(44.dp) // ícone maior
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = LocalContext.current.resources.getQuantityString(R.plurals.streak_days, habit.streakCount(), habit.streakCount()), fontSize = 20.sp)
                     }
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = "🏆", fontSize = 36.sp)
+                        Icon(
+                            imageVector = Icons.Filled.EmojiEvents,
+                            contentDescription = null,
+                            tint = Color(0xFFFFC107), // dourado
+                            modifier = Modifier.size(40.dp)
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(text = stringResource(id = R.string.streak_max, habit.maxStreak()), fontSize = 20.sp)
                     }
