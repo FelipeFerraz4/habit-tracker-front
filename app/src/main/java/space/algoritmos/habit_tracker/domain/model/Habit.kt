@@ -58,13 +58,20 @@ data class Habit(
         return maxOf(maxStreak, currentStreak)
     }
 
+    fun isDone(date: LocalDate): Boolean = progress[date]?.done?.let { it > 0f } == true
+
     fun streakCount(today: LocalDate = LocalDate.now()): Int {
         if (progress.isEmpty()) return 0
 
-        var streak = 0
-        var date = today
+        var date = when {
+            isDone(today) -> today
+            isDone(today.minusDays(1)) -> today.minusDays(1)
+            else -> return 0
+        }
 
-        while (progress[date]?.let { it.done > 0f } == true) {
+        var streak = 0
+
+        while (isDone(date)) {
             streak++
             date = date.minusDays(1)
         }

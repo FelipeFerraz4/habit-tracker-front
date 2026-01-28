@@ -66,9 +66,18 @@ class HabitTest {
     }
 
     @Test
-    fun `streakCount returns 0 when there is no progress today`() {
+    fun `streakCount returns 0 when there is no progress today and yesterday`() {
         val today = LocalDate.of(2025, 9, 4)
-        val habit = makeHabit(mapOf(today.minusDays(1) to DailyProgress(100f, 1f)))
+
+        val progress = mapOf(
+            today to DailyProgress(100f, 0f),
+            today.minusDays(1) to DailyProgress(100f, 0f),
+            today.minusDays(2) to DailyProgress(100f, 1f),
+            today.minusDays(5) to DailyProgress(100f, 1f),
+            today.minusDays(6) to DailyProgress(100f, 1f),
+        )
+
+        val habit = makeHabit(progress)
 
         val result = habit.streakCount(today)
 
