@@ -134,6 +134,6 @@
     <!-- Statistics - WeeklyStatusDonut -->
     <string name="donut_chart_completed">完了</string>
     <string name="donut_chart_remaining">残り</string>
-    <string name="donut_chart_tooltip_format">%1$d / %2$d（%3$d%%）</string>
+    <string name="donut_chart_tooltip_format">%1$d / %2$.1f (%3$d%%)</string>
 
 </resources>
