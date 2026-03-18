@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     //implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+
 
     // Compose BoM
     implementation(platform(libs.androidx.compose.bom))

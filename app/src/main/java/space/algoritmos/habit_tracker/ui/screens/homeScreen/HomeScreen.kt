@@ -10,14 +10,12 @@ import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Sync
-import androidx.compose.material.icons.outlined.LocalFireDepartment
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -41,6 +39,7 @@ fun HomeScreen(
     // Drawer + tema + conta
     isLoggedIn: Boolean,
     isDarkTheme: Boolean,
+    onAboutClick: () -> Unit,
     onToggleTheme: () -> Unit,
     onLoginClick: () -> Unit,
     onLogoutClick: () -> Unit,
@@ -98,6 +97,10 @@ fun HomeScreen(
             HabitDrawerContent(
                 isLoggedIn = isLoggedIn,
                 isDarkTheme = isDarkTheme,
+                onAboutClick = {
+                    onAboutClick()
+                    coroutineScope.launch { drawerState.close() }
+                },
                 onToggleTheme = onToggleTheme,
                 onLoginClick = {
                     dialogType = "login"

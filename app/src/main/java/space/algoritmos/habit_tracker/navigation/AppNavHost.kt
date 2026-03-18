@@ -24,6 +24,7 @@ import space.algoritmos.habit_tracker.navigation.utils.addHabit
 import space.algoritmos.habit_tracker.navigation.utils.deleteHabit
 import space.algoritmos.habit_tracker.navigation.utils.updateHabit
 import space.algoritmos.habit_tracker.navigation.utils.updateHabitProgress
+import space.algoritmos.habit_tracker.ui.screens.aboutScreen.AboutScreen
 import space.algoritmos.habit_tracker.ui.screens.editHabitScreen.EditHabitScreen
 import space.algoritmos.habit_tracker.ui.screens.settingsScreen.SettingsScreen
 import space.algoritmos.habit_tracker.ui.screens.statisticsScreen.StatisticsScreen // 👈 import da tela
@@ -63,6 +64,9 @@ fun AppNavHost(
                 },
                 onAddHabitClick = {
                     navController.navigate("habitCreate")
+                },
+                onAboutClick = {
+                    navController.navigate("about")
                 }
             )
         }
@@ -176,6 +180,14 @@ fun AppNavHost(
             } else {
                 Text("Hábito não encontrado.")
             }
+        }
+
+        composable("about") {
+            AboutScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

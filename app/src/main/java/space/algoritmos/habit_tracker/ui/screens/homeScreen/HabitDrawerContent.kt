@@ -31,6 +31,7 @@ import space.algoritmos.habit_tracker.R
 fun HabitDrawerContent(
     isLoggedIn: Boolean,
     isDarkTheme: Boolean,
+    onAboutClick: () -> Unit,
     onToggleTheme: () -> Unit,
     onLoginClick: () -> Unit,
     onLogoutClick: () -> Unit,
@@ -117,6 +118,17 @@ fun HabitDrawerContent(
                 selected = false,
                 onClick = {
                     onSettingsClick()
+                    coroutineScope.launch { drawerState.close() }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            NavigationDrawerItem(
+                label = { Text(stringResource(id = R.string.about_title), fontSize = 18.sp) },
+                selected = false,
+                onClick = {
+                    onAboutClick()
                     coroutineScope.launch { drawerState.close() }
                 }
             )
