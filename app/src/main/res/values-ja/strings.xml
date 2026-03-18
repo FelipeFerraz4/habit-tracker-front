@@ -6,6 +6,37 @@
     <string name="cancel">キャンセル</string>
     <string name="save">保存</string>
 
+    <!-- AboutScreen -->
+    <string name="about_title">アプリについて</string>
+    <string name="about_app_name">Daily Habitについて</string>
+    <string name="about_description">
+        Daily Habitは、シンプルで視覚的かつ継続的に習慣を構築するのを支援するアプリです。
+    </string>
+    <string name="about_description_2">
+        これは個人の生産性と継続的な改善に焦点を当てた独立したプロジェクトです。
+    </string>
+    <string name="about_objective_title">目的</string>
+    <string name="about_objective_1">習慣を作り維持する</string>
+    <string name="about_objective_2">進捗を可視化する</string>
+    <string name="about_objective_3">継続力を高める</string>
+    <string name="about_version_title">現在のバージョン</string>
+    <string name="about_version_description">
+        これはアプリの初期バージョンで、習慣作成や進捗管理などの基本機能に重点を置いています。
+    </string>
+    <string name="about_project_title">プロジェクトについて</string>
+    <string name="about_project_description">
+        このアプリは実際の使用とユーザーフィードバックに基づいて継続的に改善されています。
+    </string>
+    <string name="about_privacy_title">プライバシーと利用規約</string>
+    <string name="about_privacy_policy">プライバシーポリシー</string>
+    <string name="about_terms_of_use">利用規約</string>
+    <string name="about_feedback_title">フィードバック</string>
+    <string name="about_feedback_description">
+        ご意見や改善提案はいつでも歓迎します。アプリは継続的に進化しています。
+    </string>
+    <string name="about_app_version">バージョン 1.0.0</string>
+    <string name="about_developer">Felipe Ferraz · Blue Fox Group により開発</string>
+
     <!-- ComingSoonDialog -->
     <string name="coming_soon_title">近日公開！</string>
     <string name="coming_soon_login_message">ログインは次のバージョンで利用可能になります。</string>

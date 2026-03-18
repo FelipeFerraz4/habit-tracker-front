@@ -6,6 +6,37 @@
     <string name="cancel">Annulla</string>
     <string name="save">Salva</string>
 
+    <!-- AboutScreen -->
+    <string name="about_title">Informazioni</string>
+    <string name="about_app_name">Informazioni su Daily Habit</string>
+    <string name="about_description">
+        Daily Habit è un\'app progettata per aiutarti a costruire abitudini in modo semplice, visivo e coerente.
+    </string>
+    <string name="about_description_2">
+        Questo è un progetto indipendente focalizzato sulla produttività personale e sul miglioramento continuo.
+    </string>
+    <string name="about_objective_title">Obiettivo</string>
+    <string name="about_objective_1">Creare e mantenere abitudini</string>
+    <string name="about_objective_2">Monitorare i progressi</string>
+    <string name="about_objective_3">Sviluppare costanza</string>
+    <string name="about_version_title">Versione attuale</string>
+    <string name="about_version_description">
+        Questa è la prima versione dell\'app, focalizzata sulle funzionalità essenziali come la creazione di abitudini e il monitoraggio dei progressi.
+    </string>
+    <string name="about_project_title">Informazioni sul progetto</string>
+    <string name="about_project_description">
+        L\'app è in continua evoluzione, con miglioramenti basati sull\'uso reale e sul feedback degli utenti.
+    </string>
+    <string name="about_privacy_title">Privacy e termini</string>
+    <string name="about_privacy_policy">Informativa sulla privacy</string>
+    <string name="about_terms_of_use">Termini di utilizzo</string>
+    <string name="about_feedback_title">Feedback</string>
+    <string name="about_feedback_description">
+        Suggerimenti e miglioramenti sono sempre benvenuti. L\'app è in continua evoluzione.
+    </string>
+    <string name="about_app_version">Versione 1.0.0</string>
+    <string name="about_developer">Sviluppato da Felipe Ferraz · Blue Fox Group</string>
+
     <!-- ComingSoonDialog -->
     <string name="coming_soon_title">In arrivo!</string>
     <string name="coming_soon_login_message">Il login sarà disponibile nella prossima versione dell’app.</string>

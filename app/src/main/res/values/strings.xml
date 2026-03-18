@@ -6,6 +6,37 @@
     <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
 
+    <!-- AboutScreen -->
+    <string name="about_title">Sobre</string>
+    <string name="about_app_name">Sobre o Daily Habit</string>
+    <string name="about_description">
+        O Daily Habit é um aplicativo criado para ajudar você a construir hábitos de forma simples, visual e consistente.
+    </string>
+    <string name="about_description_2">
+        Este é um projeto independente, focado em produtividade pessoal e evolução contínua.
+    </string>
+    <string name="about_objective_title">Objetivo</string>
+    <string name="about_objective_1">Criar e manter hábitos</string>
+    <string name="about_objective_2">Visualizar seu progresso</string>
+    <string name="about_objective_3">Desenvolver consistência</string>
+    <string name="about_version_title">Versão Atual</string>
+    <string name="about_version_description">
+        Esta é a primeira versão do app, com foco nas funcionalidades essenciais como criação de hábitos e acompanhamento de progresso.
+    </string>
+    <string name="about_project_title">Sobre o Projeto</string>
+    <string name="about_project_description">
+        O app está em constante evolução, com melhorias baseadas no uso real e feedback dos usuários.
+    </string>
+    <string name="about_privacy_title">Privacidade e Termos</string>
+    <string name="about_privacy_policy">Política de Privacidade</string>
+    <string name="about_terms_of_use">Termos de Uso</string>
+    <string name="about_feedback_title">Feedback</string>
+    <string name="about_feedback_description">
+        Sugestões e melhorias são sempre bem-vindas. O app está evoluindo continuamente.
+    </string>
+    <string name="about_app_version">Versão 1.0.0</string>
+    <string name="about_developer">Desenvolvido por Felipe Ferraz · Blue Fox Group</string>
+
     <!-- ComingSoonDialog -->
     <string name="coming_soon_title">Em breve!</string>
     <string name="coming_soon_login_message">O login estará disponível na próxima versão do aplicativo.</string>

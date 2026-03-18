@@ -6,6 +6,37 @@
     <string name="cancel">Cancelar</string>
     <string name="save">Guardar</string>
 
+    <!-- AboutScreen -->
+    <string name="about_title">Acerca de</string>
+    <string name="about_app_name">Acerca de Daily Habit</string>
+    <string name="about_description">
+        Daily Habit es una aplicación creada para ayudarte a construir hábitos de forma simple, visual y consistente.
+    </string>
+    <string name="about_description_2">
+        Este es un proyecto independiente enfocado en la productividad personal y la mejora continua.
+    </string>
+    <string name="about_objective_title">Objetivo</string>
+    <string name="about_objective_1">Crear y mantener hábitos</string>
+    <string name="about_objective_2">Visualizar tu progreso</string>
+    <string name="about_objective_3">Desarrollar consistencia</string>
+    <string name="about_version_title">Versión Actual</string>
+    <string name="about_version_description">
+        Esta es la primera versión de la app, enfocada en funcionalidades esenciales como la creación de hábitos y el seguimiento del progreso.
+    </string>
+    <string name="about_project_title">Sobre el Proyecto</string>
+    <string name="about_project_description">
+        La app está en constante evolución, con mejoras basadas en el uso real y la retroalimentación de los usuarios.
+    </string>
+    <string name="about_privacy_title">Privacidad y Términos</string>
+    <string name="about_privacy_policy">Política de Privacidad</string>
+    <string name="about_terms_of_use">Términos de Uso</string>
+    <string name="about_feedback_title">Feedback</string>
+    <string name="about_feedback_description">
+        Las sugerencias y mejoras siempre son bienvenidas. La app está en constante evolución.
+    </string>
+    <string name="about_app_version">Versión 1.0.0</string>
+    <string name="about_developer">Desarrollado por Felipe Ferraz · Blue Fox Group</string>
+
     <!-- ComingSoonDialog -->
     <string name="coming_soon_title">¡Próximamente!</string>
     <string name="coming_soon_login_message">El inicio de sesión estará disponible en la próxima versión de la aplicación.</string>

@@ -6,6 +6,37 @@
     <string name="cancel">Abbrechen</string>
     <string name="save">Speichern</string>
 
+    <!-- AboutScreen -->
+    <string name="about_title">Über</string>
+    <string name="about_app_name">Über Daily Habit</string>
+    <string name="about_description">
+        Daily Habit ist eine Anwendung, die Ihnen hilft, Gewohnheiten auf einfache, visuelle und konsistente Weise aufzubauen.
+    </string>
+    <string name="about_description_2">
+        Dies ist ein unabhängiges Projekt mit Fokus auf persönliche Produktivität und kontinuierliche Verbesserung.
+    </string>
+    <string name="about_objective_title">Ziel</string>
+    <string name="about_objective_1">Gewohnheiten erstellen und beibehalten</string>
+    <string name="about_objective_2">Fortschritt verfolgen</string>
+    <string name="about_objective_3">Konsistenz entwickeln</string>
+    <string name="about_version_title">Aktuelle Version</string>
+    <string name="about_version_description">
+        Dies ist die erste Version der App, die sich auf grundlegende Funktionen wie das Erstellen von Gewohnheiten und das Verfolgen des Fortschritts konzentriert.
+    </string>
+    <string name="about_project_title">Über das Projekt</string>
+    <string name="about_project_description">
+        Die App entwickelt sich ständig weiter, basierend auf realer Nutzung und Nutzerfeedback.
+    </string>
+    <string name="about_privacy_title">Datenschutz und Bedingungen</string>
+    <string name="about_privacy_policy">Datenschutzrichtlinie</string>
+    <string name="about_terms_of_use">Nutzungsbedingungen</string>
+    <string name="about_feedback_title">Feedback</string>
+    <string name="about_feedback_description">
+        Vorschläge und Verbesserungen sind immer willkommen. Die App entwickelt sich kontinuierlich weiter.
+    </string>
+    <string name="about_app_version">Version 1.0.0</string>
+    <string name="about_developer">Entwickelt von Felipe Ferraz · Blue Fox Group</string>
+
     <!-- ComingSoonDialog -->
     <string name="coming_soon_title">Demnächst!</string>
     <string name="coming_soon_login_message">Die Anmeldung wird in der nächsten Version der App verfügbar sein.</string>

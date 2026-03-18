@@ -6,6 +6,37 @@
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
 
+    <!-- AboutScreen -->
+    <string name="about_title">About</string>
+    <string name="about_app_name">About Daily Habit</string>
+    <string name="about_description">
+        Daily Habit is an application designed to help you build habits in a simple, visual, and consistent way.
+    </string>
+    <string name="about_description_2">
+        This is an independent project focused on personal productivity and continuous improvement.
+    </string>
+    <string name="about_objective_title">Objective</string>
+    <string name="about_objective_1">Create and maintain habits</string>
+    <string name="about_objective_2">Track your progress</string>
+    <string name="about_objective_3">Build consistency</string>
+    <string name="about_version_title">Current Version</string>
+    <string name="about_version_description">
+        This is the first version of the app, focused on core features such as habit creation and progress tracking.
+    </string>
+    <string name="about_project_title">About the Project</string>
+    <string name="about_project_description">
+        The app is constantly evolving, with improvements based on real usage and user feedback.
+    </string>
+    <string name="about_privacy_title">Privacy and Terms</string>
+    <string name="about_privacy_policy">Privacy Policy</string>
+    <string name="about_terms_of_use">Terms of Use</string>
+    <string name="about_feedback_title">Feedback</string>
+    <string name="about_feedback_description">
+        Suggestions and improvements are always welcome. The app is continuously evolving.
+    </string>
+    <string name="about_app_version">Version 1.0.0</string>
+    <string name="about_developer">Developed by Felipe Ferraz · Blue Fox Group</string>
+
     <!-- ComingSoonDialog -->
     <string name="coming_soon_title">Coming soon!</string>
     <string name="coming_soon_login_message">Login will be available in the next version of the app.</string>
