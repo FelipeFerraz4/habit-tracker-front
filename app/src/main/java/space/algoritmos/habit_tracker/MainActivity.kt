@@ -18,6 +18,7 @@ import space.algoritmos.habit_tracker.data.local.DatabaseHelper
 import space.algoritmos.habit_tracker.data.local.preferences.ThemeMode
 import space.algoritmos.habit_tracker.data.local.preferences.ThemePreferences
 import space.algoritmos.habit_tracker.data.local.dao.HabitDao
+import space.algoritmos.habit_tracker.data.mocks.MockDataGenerator
 import space.algoritmos.habit_tracker.data.repository.HabitRepository
 import space.algoritmos.habit_tracker.navigation.AppNavHost
 // Importa o agendador
@@ -60,10 +61,12 @@ class MainActivity : ComponentActivity() {
 
         }
 
-        // -------------------------------------------------
-        // 🔽 O resto do teu código continua igual 🔽
-        // -------------------------------------------------
         val themePrefs = ThemePreferences(this)
+
+        // Mock
+//        val dbHelperForMock = DatabaseHelper(this)
+//        val db = dbHelperForMock.writableDatabase
+//        MockDataGenerator(db).insertMockData()
 
         setContent {
             var themeMode by remember { mutableStateOf(ThemeMode.DARK) }

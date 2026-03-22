@@ -34,7 +34,11 @@ fun GeneralStatistics(
     modifier: Modifier = Modifier
 ) {
     val totalHabits = habits.size
-    val totalDays = habits.sumOf { it.progress.size }
+    val totalDays = habits
+            .flatMap { it.progress.keys }
+            .toSet()
+            .size
+
     val combinedStreak = calculateCombinedStreak(habits, LocalDate.now())
     val maxStreak = calculateMaxStreak(habits)
 

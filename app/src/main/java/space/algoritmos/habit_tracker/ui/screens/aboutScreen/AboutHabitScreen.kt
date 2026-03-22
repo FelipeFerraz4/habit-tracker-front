@@ -90,7 +90,7 @@ fun AboutScreen(
 
             TextButton(
                 onClick = {
-                    openUrl("https://bluefoxaquarismo.space/app/daily-habit/privacy-policy")
+                    openUrl("https://bluefoxaquarismo.space/app/daily-habits/privacy-policy")
                 }
             ) {
                 Text("• ${stringResource(R.string.about_privacy_policy)}", fontSize = 16.sp)
@@ -98,7 +98,7 @@ fun AboutScreen(
 
             TextButton(
                 onClick = {
-                    openUrl("https://bluefoxaquarismo.space/app/daily-habit/terms-of-use")
+                    openUrl("https://bluefoxaquarismo.space/app/daily-habits/terms-of-use")
                 }
             ) {
                 Text("• ${stringResource(R.string.about_terms_of_use)}", fontSize = 16.sp)

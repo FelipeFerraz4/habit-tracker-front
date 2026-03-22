@@ -26,7 +26,7 @@ class CalculateAverageProgressPercentTest {
 
     @Test
     fun `returns 0 when there are no habits`() {
-        val result = calculateAverageProgressPercent(emptyList(), daysToShow = 7)
+        val result = calculateAverageProgressPercent(emptyList())
         assertEquals(0f, result)
     }
 
@@ -44,7 +44,7 @@ class CalculateAverageProgressPercentTest {
         }
         val habit = makeHabit(goal = 100f, progress = progress)
 
-        val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 5, referenceDate = today)
+        val result = calculateAverageProgressPercent(listOf(habit))
         assertEquals(100f, result, 0.001f)
     }
 
@@ -56,7 +56,7 @@ class CalculateAverageProgressPercentTest {
         }
         val habit = makeHabit(goal = 100f, progress = progress)
 
-        val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 5, referenceDate = today)
+        val result = calculateAverageProgressPercent(listOf(habit))
         assertEquals(50f, result, 0.001f)
     }
 
@@ -68,7 +68,7 @@ class CalculateAverageProgressPercentTest {
         }
         val habit = makeHabit(goal = 100f, progress = progress)
 
-        val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 3, referenceDate = today)
+        val result = calculateAverageProgressPercent(listOf(habit))
         assertEquals(100f, result, 0.001f) // deve limitar a 100%
     }
 
@@ -78,7 +78,7 @@ class CalculateAverageProgressPercentTest {
         val progress = mapOf(today to DailyProgress(0f, 10f))
         val habit = makeHabit(goal = 0f, progress = progress)
 
-        val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 1, referenceDate = today)
+        val result = calculateAverageProgressPercent(listOf(habit))
         // goal = 0 é coerced para 1, então 10/1 = 10 → coerceAtMost(1.0) = 1.0 = 100%
         assertEquals(100f, result, 0.001f)
     }
@@ -92,24 +92,9 @@ class CalculateAverageProgressPercentTest {
         val habit3 = makeHabit(goal = 100f, progress = mapOf(today to DailyProgress(100f, 50f)))  // 50%
 
         val result = calculateAverageProgressPercent(
-            listOf(habit1, habit2, habit3),
-            daysToShow = 1,
-            referenceDate = today
+            listOf(habit1, habit2, habit3)
         )
         assertEquals(50f, result, 0.001f) // média (100 + 0 + 50)/3 = 50%
-    }
-
-    @Test
-    fun `considers only last N days`() {
-        val today = LocalDate.of(2025, 10, 19)
-        val progress = mapOf(
-            today to DailyProgress(100f, 100f),
-            today.minusDays(5) to DailyProgress(100f, 100f) // fora dos últimos 3 dias
-        )
-        val habit = makeHabit(goal = 100f, progress = progress)
-
-        val result = calculateAverageProgressPercent(listOf(habit), daysToShow = 3, referenceDate = today)
-        assertEquals(100f / 3f, result, 0.1f) // apenas 1 dia dos 3 tem progresso
     }
 
     @Test
@@ -132,9 +117,7 @@ class CalculateAverageProgressPercentTest {
         )
 
         val result = calculateAverageProgressPercent(
-            listOf(habit1, habit2),
-            daysToShow = 2,
-            referenceDate = today
+            listOf(habit1, habit2)
         )
 
         // habit1: (0.5 + 1.0) / 2 = 0.75
