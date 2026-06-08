@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -29,6 +30,9 @@ import space.algoritmos.habit_tracker.R
 import space.algoritmos.habit_tracker.domain.model.Habit
 import space.algoritmos.habit_tracker.ui.screens.habitRegisterScreen.utils.toInputString
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,8 +43,13 @@ fun HabitRegisterScreen(
 ) {
 
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val dateFormatter = remember(configuration) {
+        DateTimeFormatter
+            .ofLocalizedDate(FormatStyle.SHORT)
+    }
 
     var selectedDate by remember {
         mutableStateOf(LocalDate.now())
@@ -63,7 +72,7 @@ fun HabitRegisterScreen(
     )
 
     val label = stringResource(
-        R.string.register_habit_value_label_with_unit,
+        R.string.register_habit_value_label,
         habit.goal,
         habit.unit
     )
@@ -126,7 +135,10 @@ fun HabitRegisterScreen(
                     }
                 ) {
                     Text(
-                        text = selectedDate.toString(),
+                        text = stringResource(
+                            R.string.register_habit_selected_date,
+                            selectedDate.format(dateFormatter)
+                        ),
                         fontSize = 18.sp
                     )
                 }

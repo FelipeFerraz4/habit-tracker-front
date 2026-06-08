@@ -77,9 +77,19 @@
     <string name="drawer_login">Connexion</string>
 
     <!-- HabitRegisterScreen -->
-    <string name="register_habit_binary_label">Avez-vous accompli cette habitude aujourd’hui ?</string>
-    <string name="register_habit_value_label">Quelle part de votre objectif (%d) avez-vous accomplie aujourd’hui ?</string>
-    <string name="register_habit_value_label_with_unit"> Combien as-tu complété aujourd’hui ?\nObjectif : %1$.0f %2$s </string>
+    <string name="register_habit_binary_label">Avez-vous terminé cette habitude ?</string>
+
+    <string name="register_habit_value_label">
+        Combien avez-vous accompli de votre objectif (%1$.0f %2$s) ?
+    </string>
+
+    <string name="register_habit_value_label_with_unit">
+        Combien avez-vous accompli ?\nObjectif : %1$.0f %2$s
+    </string>
+
+    <string name="register_habit_selected_date">
+        Date sélectionnée : %1$s
+    </string>
     <string name="register_habit_value_placeholder">Saisir la quantité (unité)</string>
     <string name="common_yes">Oui</string>
     <string name="common_no">Non</string>

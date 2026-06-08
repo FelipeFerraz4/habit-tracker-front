@@ -77,9 +77,19 @@
     <string name="drawer_login">Anmelden</string>
 
     <!-- HabitRegisterScreen -->
-    <string name="register_habit_binary_label">Haben Sie diese Gewohnheit heute abgeschlossen?</string>
-    <string name="register_habit_value_label">Wie viel von Ihrem Ziel (%d) haben Sie heute erreicht?</string>
-    <string name="register_habit_value_label_with_unit"> Wie viel hast du heute geschafft?\nZiel: %1$.0f %2$s </string>
+    <string name="register_habit_binary_label">Hast du diese Gewohnheit abgeschlossen?</string>
+
+    <string name="register_habit_value_label">
+        Wie viel von deinem Ziel hast du erreicht (%1$.0f %2$s)?
+    </string>
+
+    <string name="register_habit_value_label_with_unit">
+        Wie viel hast du geschafft?\nZiel: %1$.0f %2$s
+    </string>
+
+    <string name="register_habit_selected_date">
+        Ausgewähltes Datum: %1$s
+    </string>
     <string name="register_habit_value_placeholder">Menge eingeben (Einheit)</string>
     <string name="common_yes">Ja</string>
     <string name="common_no">Nein</string>

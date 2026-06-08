@@ -77,9 +77,19 @@
     <string name="drawer_login">Iniciar sesión</string>
 
     <!-- HabitRegisterScreen -->
-    <string name="register_habit_binary_label">¿Completaste este hábito hoy?</string>
-    <string name="register_habit_value_label">¿Cuánto de tu objetivo (%d) completaste hoy?</string>
-    <string name="register_habit_value_label_with_unit"> ¿Cuánto completaste hoy?\nMeta: %1$.0f %2$s </string>
+    <string name="register_habit_binary_label">¿Completaste este hábito?</string>
+
+    <string name="register_habit_value_label">
+        ¿Cuánto completaste de tu meta (%1$.0f %2$s)?
+    </string>
+
+    <string name="register_habit_value_label_with_unit">
+        ¿Cuánto completaste?\nMeta: %1$.0f %2$s
+    </string>
+
+    <string name="register_habit_selected_date">
+        Fecha seleccionada: %1$s
+    </string>
     <string name="register_habit_value_placeholder">Introduce la cantidad (unidad)</string>
     <string name="common_yes">Sí</string>
     <string name="common_no">No</string>

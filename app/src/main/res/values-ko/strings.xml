@@ -77,9 +77,19 @@
     <string name="drawer_login">로그인</string>
 
     <!-- HabitRegisterScreen -->
-    <string name="register_habit_binary_label">오늘 이 습관을 완료했나요?</string>
-    <string name="register_habit_value_label">오늘 목표(%d) 중 얼마나 완료했나요?</string>
-    <string name="register_habit_value_label_with_unit">오늘 얼마나 완료했나요?\n목표: %1$.0f %2$s</string>
+    <string name="register_habit_binary_label">이 습관을 완료했나요?</string>
+
+    <string name="register_habit_value_label">
+        목표 중 얼마나 완료했나요? (%1$.0f %2$s)
+    </string>
+
+    <string name="register_habit_value_label_with_unit">
+        얼마나 완료했나요?\n목표: %1$.0f %2$s
+    </string>
+
+    <string name="register_habit_selected_date">
+        선택한 날짜: %1$s
+    </string>
 
     <string name="register_habit_value_placeholder">수량 입력 (단위)</string>
     <string name="common_yes">예</string>

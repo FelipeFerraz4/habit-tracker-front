@@ -77,9 +77,18 @@
     <string name="drawer_login">Login</string>
 
     <!-- HabitRegisterScreen -->
-    <string name="register_habit_binary_label">Você completou este hábito hoje?</string>
-    <string name="register_habit_value_label">Quanto você completou sua meta (%d) hoje?</string>
-    <string name="register_habit_value_label_with_unit">Quanto você completou hoje?\nMeta: %1$.0f %2$s</string>
+    <string name="register_habit_binary_label">Você completou este hábito?</string>
+    <string name="register_habit_value_label">
+        Quanto você completou da sua meta (%1$.0f %2$s)?
+    </string>
+
+    <string name="register_habit_value_label_with_unit">
+        Quanto você completou?\nMeta: %1$.0f %2$s
+    </string>
+
+    <string name="register_habit_selected_date">
+        Data selecionada: %1$s
+    </string>
 
     <string name="register_habit_value_placeholder">Digite a quantidade (un)</string>
     <string name="common_yes">Sim</string>

@@ -77,10 +77,19 @@
     <string name="drawer_login">ログイン</string>
 
     <!-- HabitRegisterScreen -->
-    <string name="register_habit_binary_label">今日はこの習慣を達成しましたか？</string>
-    <string name="register_habit_value_label">今日、目標（%d）のうちどれくらい達成しましたか？</string>
-    <string name="register_habit_value_label_with_unit">今日どれくらい達成しましたか？\n目標: %1$.0f %2$s</string>
+    <string name="register_habit_binary_label">この習慣を完了しましたか？</string>
 
+    <string name="register_habit_value_label">
+        目標のうちどれくらい達成しましたか？ (%1$.0f %2$s)
+    </string>
+
+    <string name="register_habit_value_label_with_unit">
+        どれくらい達成しましたか？\n目標: %1$.0f %2$s
+    </string>
+
+    <string name="register_habit_selected_date">
+        選択した日付: %1$s
+    </string>
     <string name="register_habit_value_placeholder">数量を入力（単位）</string>
     <string name="common_yes">はい</string>
     <string name="common_no">いいえ</string>
