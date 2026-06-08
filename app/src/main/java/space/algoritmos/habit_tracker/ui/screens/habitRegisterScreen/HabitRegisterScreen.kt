@@ -1,5 +1,6 @@
 package space.algoritmos.habit_tracker.ui.screens.habitRegisterScreen
 
+import android.app.DatePickerDialog
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -32,18 +34,33 @@ import java.time.LocalDate
 @Composable
 fun HabitRegisterScreen(
     habit: Habit,
-    onSave: (Float) -> Unit,
+    onSave: (LocalDate, Float) -> Unit,
     onCancel: () -> Unit
 ) {
-    val today = LocalDate.now()
+
+    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    var value by remember(habit.id, today) {
+    var selectedDate by remember {
+        mutableStateOf(LocalDate.now())
+    }
+
+    var value by remember(habit.id, selectedDate) {
         mutableStateOf(
-            habit.progress[today]?.done?.toInputString() ?: ""
+            habit.progress[selectedDate]?.done?.toInputString() ?: ""
         )
     }
+
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _, year, month, dayOfMonth ->
+            selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+        },
+        selectedDate.year,
+        selectedDate.monthValue - 1,
+        selectedDate.dayOfMonth
+    )
 
     val label = stringResource(
         R.string.register_habit_value_label_with_unit,
@@ -69,6 +86,7 @@ fun HabitRegisterScreen(
             )
         }
     ) { innerPadding ->
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -83,21 +101,36 @@ fun HabitRegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            // Nome do hábito
-            Text(
-                text = habit.name,
-                fontSize = 32.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
 
-            // Label com meta + unidade
-            Text(
-                text = label,
-                fontSize = 22.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Text(
+                    text = habit.name,
+                    fontSize = 32.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+
+                Text(
+                    text = label,
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 24.dp)
+                )
+
+                OutlinedButton(
+                    onClick = {
+                        datePickerDialog.show()
+                    }
+                ) {
+                    Text(
+                        text = selectedDate.toString(),
+                        fontSize = 18.sp
+                    )
+                }
+            }
 
             Box(
                 modifier = Modifier
@@ -106,7 +139,10 @@ fun HabitRegisterScreen(
                     .verticalScroll(rememberScrollState()),
                 contentAlignment = Alignment.Center
             ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
                     OutlinedTextField(
                         value = value,
@@ -145,11 +181,11 @@ fun HabitRegisterScreen(
 
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    // Botões + / -
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = Modifier.fillMaxWidth(0.6f)
                     ) {
+
                         Button(
                             onClick = {
                                 val current = value.toFloatOrNull() ?: 0f
@@ -175,32 +211,44 @@ fun HabitRegisterScreen(
                 }
             }
 
-            // Ações
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+
                 OutlinedButton(
                     onClick = onCancel,
-                    border = BorderStroke(2.dp, MaterialTheme.colorScheme.onBackground),
+                    border = BorderStroke(
+                        2.dp,
+                        MaterialTheme.colorScheme.onBackground
+                    ),
                     modifier = Modifier
                         .height(56.dp)
                         .weight(1f)
                 ) {
-                    Text(stringResource(id = R.string.cancel), fontSize = 22.sp)
+                    Text(
+                        stringResource(id = R.string.cancel),
+                        fontSize = 22.sp
+                    )
                 }
 
                 Button(
                     onClick = {
-                        onSave(value.toFloatOrNull() ?: 0f)
+                        onSave(
+                            selectedDate,
+                            value.toFloatOrNull() ?: 0f
+                        )
                     },
                     modifier = Modifier
                         .height(56.dp)
                         .weight(1f)
                 ) {
-                    Text(stringResource(id = R.string.save), fontSize = 22.sp)
+                    Text(
+                        stringResource(id = R.string.save),
+                        fontSize = 22.sp
+                    )
                 }
             }
         }

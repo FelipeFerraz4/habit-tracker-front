@@ -119,9 +119,13 @@ fun AppNavHost(
             if (habitIndex != -1) {
                 HabitRegisterScreen(
                     habit = habitsState[habitIndex],
-                    onSave = { value ->
-                        val today = LocalDate.now()
-                        val updatedHabit = updateHabitProgress(habitsState[habitIndex], today, value, habitRepository)
+                    onSave = { date, value ->
+                        val updatedHabit = updateHabitProgress(
+                            habitsState[habitIndex],
+                            date,
+                            value,
+                            habitRepository
+                        )
                         habitsState[habitIndex] = updatedHabit
                         navController.popBackStack()
                     },
